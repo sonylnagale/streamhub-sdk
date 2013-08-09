@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: streamhub-sdk/content/content</title>
+    <title>JSDoc: Module: streamhub-sdk/clients/livefyre-auth-client</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: streamhub-sdk/content/content</h1>
+    <h1 class="page-title">Module: streamhub-sdk/clients/livefyre-auth-client</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    streamhub-sdk/content/content
+    streamhub-sdk/clients/livefyre-auth-client
     </h2>
     
 </header>  
@@ -38,78 +38,10 @@
     
     
         
-<dt>
-    <h4 class="name" id="streamhub-sdk/content/content"><span class="type-signature"></span>new streamhub-sdk/content/content<span class="signature">(body)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A piece of Web Content</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
+            <div class="description"><p>A Client for requesting Livefyre's Auth Endpoint</p></div>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>body</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>A string of HTML, the Content body.
-    If an object, it should have a .body property</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
+        
 <dl class="details">
     
         
@@ -132,7 +64,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        content/content.js, line 13
+        clients/livefyre-auth-client.js, line 7
     </li></ul></dd>
     
     
@@ -143,20 +75,8 @@
     
 </dl>
 
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
@@ -178,7 +98,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="addAttachment"><span class="type-signature"></span>addAttachment<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getAuthData"><span class="type-signature">&lt;static> </span>getAuthData<span class="signature">(opts, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -186,7 +106,7 @@
     
     
     <div class="description">
-        <p>Attach an Oembed to the Content</p>
+        <p>Fetches data from the livefyre auth service with the arguments given.</p>
     </div>
     
 
@@ -220,251 +140,7 @@
 	
         <tr>
             
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Oembed</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>An Oembed Content instance to attach</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        content/content.js, line 32
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    <h5>Fires:</h5>
-    <ul>
-        <li>Content#event:addAttachment</li>
-    </ul>
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addReply"><span class="type-signature"></span>addReply<span class="signature">(obj)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Add a reply to the Content</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Content</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>A piece of Content in reply to this one</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        content/content.js, line 42
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    <h5>Fires:</h5>
-    <ul>
-        <li>Content#event:addReply</li>
-    </ul>
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(newProperties)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Set some properties and emit 'change' and 'change:{property}' events</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>newProperties</code></td>
+                <td class="name"><code>opts</code></td>
             
             
             <td class="type">
@@ -480,7 +156,148 @@
             
             
             
-            <td class="description last"><p>An object of properties to set on this Content</p></td>
+            <td class="description last"><p>The livefyre collection options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>network</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The name of the network in the livefyre platform</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>siteId</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The livefyre siteId for the conversation</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>articleId</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The livefyre articleId for the conversation</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The livefyre token for the user</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback that is called upon success/failure of the
+    auth request. Callback signature is "function(error, data)".</p></td>
         </tr>
 	
 	
@@ -511,7 +328,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        content/content.js, line 53
+        clients/livefyre-auth-client.js, line 19
     </li></ul></dd>
     
     
@@ -523,13 +340,6 @@
 </dl>
 
     
-    
-    <h5>Fires:</h5>
-    <ul>
-        <li>Content#event:change</li>
-    
-        <li>Content#event:change:_property_</li>
-    </ul>
     
 
     
@@ -565,7 +375,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Aug 09 2013 13:44:43 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Aug 09 2013 13:44:42 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
