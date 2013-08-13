@@ -9,7 +9,8 @@ require.config({
     json: 'lib/requirejs-plugins/src/json',
     jasmine: 'lib/jasmine/lib/jasmine-core/jasmine',
     'jasmine-html': 'lib/jasmine/lib/jasmine-core/jasmine-html',
-    'jasmine-jquery': 'lib/jasmine-jquery/lib/jasmine-jquery'
+    'jasmine-jquery': 'lib/jasmine-jquery/lib/jasmine-jquery',
+    'event-emitter': 'src/event-emitter'
   },
   packages: [{
      name: "streamhub-sdk",
@@ -17,6 +18,9 @@ require.config({
   },{
      name: "streamhub-sdk-tests",
      location: "tests/"
+  },{
+     name: "stream",
+     location: "lib/stream/src"
   }],
   shim: {
     jquery: {
