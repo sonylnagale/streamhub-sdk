@@ -82,6 +82,7 @@ function ($, Readable, util, BootstrapClient, debug) {
 
 
     /**
+     * @private
      * Get options to pass to this._bootstrapClient methods to specify
      * which Collection we care about
      */
@@ -96,6 +97,7 @@ function ($, Readable, util, BootstrapClient, debug) {
 
 
     /**
+     * @private
      * Request the Bootstrap init endpoint for the Collection to learn about
      * what pages of Content there are. This gets called the first time Stream
      * base calls _read().
@@ -138,6 +140,7 @@ function ($, Readable, util, BootstrapClient, debug) {
 
 
     /**
+     * @private
      * Convert a bootstrapDocument to an array of states
      * @param bootstrapDocument {object} an object with content and authors keys
      *     e.g. http://bootstrap.livefyre.com/bs3/livefyre.com/4/NTg0/0.json
