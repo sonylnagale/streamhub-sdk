@@ -59,4 +59,4 @@ function (Readable, util, LivefyreBootstrapClient, LivefyreStreamClient) {
 	};
 
 	return LivefyreStream;
-})
+});
