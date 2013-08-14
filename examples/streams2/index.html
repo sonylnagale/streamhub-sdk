@@ -20,32 +20,23 @@
             'jquery',
             'streamhub-sdk',
             'streamhub-sdk/views/list-view',
-            'streamhub-sdk/streams/bootstrap-state-stream'
-        ],function ($, Hub, ListView, BootstrapStateStream) {
+            'streamhub-sdk/streams/archive-state-stream'
+        ],function ($, Hub, ListView, ArchiveStateStream) {
             var $el = $('#listView');
 
             var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "labs_demo_fire",
-                "environment": "t402.livefyre.com"
+                "environment": "t402.livefyre.com",
+                highWaterMark: 1
             };
             
-            var bss = new BootstrapStateStream(opts);
+            var bss = new ArchiveStateStream(opts);
             window.numRead = 0;
             var MAX = 100;
             bss.on('readable', function () {
                 console.log('bss readable');
-                if (window.numRead <= MAX) {
-                    var c = bss.read();
-                    if (c) {
-                        window.numRead++
-                    } else {
-                        debugger;
-                    }
-                    console.log('read', window.numRead, c);
-                    $el.prepend('<pre>'+JSON.stringify(c)+'</pre>');
-                }
             });
             bss.on('error', function (err) {
                 console.log('bss error', err);

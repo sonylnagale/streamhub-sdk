@@ -8,7 +8,7 @@ function ($, Readable, util, BootstrapClient, debug) {
     "use strict";
 
 
-    var log = debug('streamhub-sdk/streams/bootstrap-state-stream');
+    var log = debug('streamhub-sdk/streams/archive-state-stream');
 
 
     /**
@@ -22,7 +22,7 @@ function ($, Readable, util, BootstrapClient, debug) {
      * @param [opts.environment] {string} If not production, the hostname of the
      *     StreamHub environment the Collection resides on
      */
-    function BootstrapStateStream (opts) {
+    function ArchiveStateStream (opts) {
         opts = opts || {};
 
         this._network = opts.network;
@@ -34,9 +34,10 @@ function ($, Readable, util, BootstrapClient, debug) {
         this._isInitingFromBootstrap = false;
         this._finishedInitFromBootstrap = false;
 
+        this._statesToPush = [];
         Readable.call(this, opts);
     }
-    util.inherits(BootstrapStateStream, Readable);
+    util.inherits(ArchiveStateStream, Readable);
 
 
     /**
@@ -44,10 +45,16 @@ function ($, Readable, util, BootstrapClient, debug) {
      * Called by Readable base class. Do not call directly
      * Get content from bootstrap and .push() onto the read buffer
      */
-    BootstrapStateStream.prototype._read = function () {
+    ArchiveStateStream.prototype._read = function () {
         var self = this,
-            bootstrapClientOpts;
-        log('_read', this);
+            bootstrapClientOpts,
+            stateToPush;
+        log('_read', 'Buffer length is ' + this._readableState.buffer.length);
+
+        if ( ! this._pushStates()) {
+            return;
+        }
+
         // The first time this is called, we first need to get Bootstrap init
         // to know what the latest page of data
         if ( ! this._finishedInitFromBootstrap) {
@@ -56,8 +63,7 @@ function ($, Readable, util, BootstrapClient, debug) {
                 var states = self._statesFromBootstrapDoc(headDocument);
                 // Bootstrap pages are zero-based. Store the highest 
                 self._nextPage = nPages - 1;
-                // Push the states in the headDocument onto the read buffer
-                self.push.apply(self, states);
+                self._pushStates.apply(self, states);
             });
         }
         // After that, request the latest page
@@ -75,18 +81,31 @@ function ($, Readable, util, BootstrapClient, debug) {
                     return;
                 }
                 var states = self._statesFromBootstrapDoc(data);
-                self.push.apply(self, states);
+                self._pushStates.apply(self, states);
             });
         }
     };
 
-
+    ArchiveStateStream.prototype._pushStates = function (states) {
+        var stateToPush;
+        if (states) {
+            this._statesToPush.push.apply(this._statesToPush, arguments);
+        }
+        // If we have states in ._statesToPush from earlier requests upstream, push them first
+        while (stateToPush = this._statesToPush.shift()) {
+            if ( ! this.push(stateToPush)) {
+                return false;
+            }
+        }
+        // Keep pushing!
+        return true;
+    }
     /**
      * @private
      * Get options to pass to this._bootstrapClient methods to specify
      * which Collection we care about
      */
-    BootstrapStateStream.prototype._getCollectionOptions = function () {
+    ArchiveStateStream.prototype._getCollectionOptions = function () {
         return {
             environment: this._environment,
             network: this._network,
@@ -105,7 +124,7 @@ function ($, Readable, util, BootstrapClient, debug) {
      *     of pages of content in the collection, the headDocument containing
      *     the latest data)
      */
-    BootstrapStateStream.prototype._getBootstrapInit = function (errback) {
+    ArchiveStateStream.prototype._getBootstrapInit = function (errback) {
         var self = this,
             collectionOpts;
 
@@ -145,7 +164,7 @@ function ($, Readable, util, BootstrapClient, debug) {
      * @param bootstrapDocument {object} an object with content and authors keys
      *     e.g. http://bootstrap.livefyre.com/bs3/livefyre.com/4/NTg0/0.json
      */
-    BootstrapStateStream.prototype._statesFromBootstrapDoc = function (bootstrapDocument) {
+    ArchiveStateStream.prototype._statesFromBootstrapDoc = function (bootstrapDocument) {
         var content = bootstrapDocument.content || [],
             authors = bootstrapDocument.authors || {},
             state,
@@ -159,5 +178,5 @@ function ($, Readable, util, BootstrapClient, debug) {
     };
 
 
-    return BootstrapStateStream;
+    return ArchiveStateStream;
 });
