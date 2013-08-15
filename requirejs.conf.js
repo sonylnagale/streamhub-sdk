@@ -10,7 +10,7 @@ require.config({
     jasmine: 'lib/jasmine/lib/jasmine-core/jasmine',
     'jasmine-html': 'lib/jasmine/lib/jasmine-core/jasmine-html',
     'jasmine-jquery': 'lib/jasmine-jquery/lib/jasmine-jquery',
-    'event-emitter': 'src/event-emitter'
+    'event-emitter': 'lib/event-emitter/src/event-emitter'
   },
   packages: [{
      name: "streamhub-sdk",

@@ -17,6 +17,7 @@
     "jasmine": "*",
     "jasmine-jquery": "*",
     "almond": "~0.2.5",
-    "stream": "https://github.com/Livefyre/stream.git"
+    "stream": "https://github.com/Livefyre/stream.git",
+    "event-emitter": "https://github.com/Livefyre/event-emitter.git"
   }
 }

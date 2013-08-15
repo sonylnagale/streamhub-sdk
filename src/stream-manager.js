@@ -1,5 +1,4 @@
-define(['streamhub-sdk/jquery', 'streamhub-sdk/event-emitter', 'streamhub-sdk/util'], function ($, EventEmitter, util) {
-
+define(['streamhub-sdk/jquery', 'event-emitter', 'streamhub-sdk/util'], function ($, EventEmitter, util) {
     /**
      * Manages a collection of Streams
      * @param streamObj {?Object<string, Stream>} A set of streams, keyed by name to add to this

@@ -2,7 +2,7 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/auth',
     'streamhub-sdk/debug',
-    'streamhub-sdk/event-emitter',
+    'event-emitter',
     'streamhub-sdk/storage',
     'streamhub-sdk/stream',
     'streamhub-sdk/stream-manager',

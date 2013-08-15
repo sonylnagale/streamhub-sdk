@@ -1,5 +1,4 @@
-define(['streamhub-sdk/jquery', 'streamhub-sdk/event-emitter', 'streamhub-sdk/util'], function($, EventEmitter, util) {
-
+define(['streamhub-sdk/jquery', 'event-emitter', 'streamhub-sdk/util'], function($, EventEmitter, util) {
     /**
      * This module is extremely EXPERIMENTAL. Currently, it provides a simple oauth login
      * against Livefyre's QA environment, to test oauth. It should not be used in a production
