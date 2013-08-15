@@ -24,22 +24,37 @@
         ],function ($, Hub, ListView, ArchiveStateStream) {
             var $el = $('#listView');
 
-            var opts = {
+            /*var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "labs_demo_fire",
                 "environment": "t402.livefyre.com",
-                highWaterMark: 1
+                highWaterMark: 200
+            };*/
+            var opts = {
+                "network": "livefyre.com",
+                "siteId": "4",
+                "articleId": "584",
+                highWaterMark: 200
             };
             
             var bss = new ArchiveStateStream(opts);
             window.numRead = 0;
-            var MAX = 100;
+            window.readableCount = 0;
+            var MAX = 10000;
             bss.on('readable', function () {
-                console.log('bss readable');
+                console.log('bss readable', window.readableCount++);
+                var state;
+                while ((window.numRead < MAX) && (state = bss.read())) {
+                    window.numRead++;
+                }
             });
             bss.on('error', function (err) {
                 console.log('bss error', err);
+            });
+            bss.on('end', function () {
+                console.log('bss end');
+                debugger;
             });
             window.bss = bss
         });
