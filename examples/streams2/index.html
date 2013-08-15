@@ -12,6 +12,7 @@
 </head>
     <body>
         <div id="listView"></div>
+        <a class="show-more">Add 50</a>
 
         <script src="../../lib/requirejs/require.js" type="text/javascript"></script>
         <script src="/requirejs.conf.js" type="text/javascript"></script>
@@ -20,43 +21,92 @@
             'jquery',
             'streamhub-sdk',
             'streamhub-sdk/views/list-view',
-            'streamhub-sdk/streams/archive-state-stream'
-        ],function ($, Hub, ListView, ArchiveStateStream) {
+            'streamhub-sdk/streams/archive-state-stream',
+            'streamhub-sdk/streams/livefyre-stream'
+        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream) {
             var $el = $('#listView');
+            var view = new ListView({
+                el: $el[0]
+            });
 
-            /*var opts = {
+            var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "labs_demo_fire",
                 "environment": "t402.livefyre.com",
-                highWaterMark: 200
-            };*/
-            var opts = {
-                "network": "livefyre.com",
-                "siteId": "4",
-                "articleId": "584",
-                highWaterMark: 200
+                highWaterMark: 50
             };
             
             var bss = new ArchiveStateStream(opts);
-            window.numRead = 0;
-            window.readableCount = 0;
-            var MAX = 10000;
+
             bss.on('readable', function () {
-                console.log('bss readable', window.readableCount++);
-                var state;
-                while ((window.numRead < MAX) && (state = bss.read())) {
-                    window.numRead++;
-                }
-            });
+                console.log('bss readable');
+            })
             bss.on('error', function (err) {
                 console.log('bss error', err);
             });
             bss.on('end', function () {
                 console.log('bss end');
-                debugger;
             });
             window.bss = bss
+
+            // SHOW MORE
+
+            var addedSoFar = 0;
+            /**
+             * Add Content to the view
+             * @param size {number} Number of things to add
+             */
+            function addToView (size) {
+                var remaining = size || 50;
+                // When the stream is readable, read some data
+                bss.on('readable', readSome);
+                // When there's no more data, we're done
+                bss.on('end', done);
+                // But readable may already have fired, so try now
+                readSome();
+                // Read data off the stream until size is reached
+                function readSome () {
+                    var state,
+                        content;
+                    // Read until .read() returns falsy
+                    // Which could be before `size` items
+                    while (state = bss.read()) {
+                        addedSoFar++;
+                        
+                        // Convert state to content
+                        content = LivefyreStream.createContent(state);
+                        // And add to view
+                        view.add(content);
+
+                        // And now we need one less
+                        // If we need no more
+                        if ( ! --remaining) {
+                            // We're done
+                            done();
+                            console.log("Added so far: "+addedSoFar);
+                            // Stop reading
+                            break;
+                        }
+                    }
+                }
+
+                function done () {
+                    // We're done reading, either because we read
+                    // size items or the stream has ended.
+                    // So stop listening
+                    bss.remove('readable', readSome);
+                    bss.remove('end', done);
+                }
+            }
+            window.add = addToView;
+
+            // SHOW MORE BUTTON
+
+            $('.show-more').on('click', function () {
+                addToView(50);
+            });
+
         });
         </script>
     </body>
