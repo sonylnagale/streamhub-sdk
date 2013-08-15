@@ -34,7 +34,6 @@ function ($, Readable, util, BootstrapClient, debug) {
         this._isInitingFromBootstrap = false;
         this._finishedInitFromBootstrap = false;
 
-        this._statesToPush = [];
         Readable.call(this, opts);
     }
     util.inherits(ArchiveStateStream, Readable);
@@ -51,10 +50,6 @@ function ($, Readable, util, BootstrapClient, debug) {
             stateToPush;
         log('_read', 'Buffer length is ' + this._readableState.buffer.length);
 
-        if ( ! this._pushStates()) {
-            return;
-        }
-
         // The first time this is called, we first need to get Bootstrap init
         // to know what the latest page of data
         if ( ! this._finishedInitFromBootstrap) {
@@ -63,7 +58,7 @@ function ($, Readable, util, BootstrapClient, debug) {
                 var states = self._statesFromBootstrapDoc(headDocument);
                 // Bootstrap pages are zero-based. Store the highest 
                 self._nextPage = nPages - 1;
-                self._pushStates.apply(self, states);
+                self.push.apply(self, states);
             });
         }
         // After that, request the latest page
@@ -81,25 +76,12 @@ function ($, Readable, util, BootstrapClient, debug) {
                     return;
                 }
                 var states = self._statesFromBootstrapDoc(data);
-                self._pushStates.apply(self, states);
+                self.push.apply(self, states);
             });
         }
     };
 
-    ArchiveStateStream.prototype._pushStates = function (states) {
-        var stateToPush;
-        if (states) {
-            this._statesToPush.push.apply(this._statesToPush, arguments);
-        }
-        // If we have states in ._statesToPush from earlier requests upstream, push them first
-        while (stateToPush = this._statesToPush.shift()) {
-            if ( ! this.push(stateToPush)) {
-                return false;
-            }
-        }
-        // Keep pushing!
-        return true;
-    }
+
     /**
      * @private
      * Get options to pass to this._bootstrapClient methods to specify
