@@ -62,6 +62,10 @@ function ($, Readable, util, BootstrapClient, debug) {
             });
         }
         // After that, request the latest page
+        // unless there are no more pages, in which case we're done
+        if (this._nextPage === null) {
+            return this.push(null);
+        }
         if (typeof this._nextPage === 'number') {
             bootstrapClientOpts = this._getCollectionOptions();
             bootstrapClientOpts.page = this._nextPage;
