@@ -95,8 +95,8 @@
                     // We're done reading, either because we read
                     // size items or the stream has ended.
                     // So stop listening
-                    bss.remove('readable', readSome);
-                    bss.remove('end', done);
+                    bss.removeListener('readable', readSome);
+                    bss.removeListener('end', done);
                 }
             }
             window.add = addToView;
