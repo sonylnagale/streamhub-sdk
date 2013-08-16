@@ -25,26 +25,10 @@ function ($, jasmine, EventEmitter) {
             expect(callback.callCount).toBe(1);
         });
 
-        it ("should remove listener when .remove() is called", function () {
+        it ("should remove listener when .removeListener() is called", function () {
             emitter.on("blah", callback);
-            emitter.remove("blah", callback);
+            emitter.removeListener("blah", callback);
             expect(emitter._listeners.blah.length).toBe(0);
-        });
-
-        it ("should return an emitter when .emits() is called", function () {
-            emitter.on("blah", callback);
-
-            var callback2 = jasmine.createSpy();
-            var resultFn = emitter.emits("blah", callback2);
-            resultFn(1, "a");
-            
-            expect(callback).toHaveBeenCalled();
-            expect(callback.callCount).toBe(1);
-            
-            expect(callback2).toHaveBeenCalled();
-            expect(callback2.callCount).toBe(1);
-            expect(callback2.mostRecentCall.args[0]).toBe(1);
-            expect(callback2.mostRecentCall.args[1]).toBe("a");
         });
     }); 
 });
