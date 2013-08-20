@@ -19,12 +19,31 @@ define(['streamhub-sdk/jquery', 'event-emitter', 'streamhub-sdk/util'], function
                 return;
             }
 
-            var content = stream.read(),
-                view;
-            for (var i=0; i < self._views.length; i++) {
-                view = self._views[i];
-                if (typeof view.add === 'function') {
-                    view.add(content, stream);
+            if (stream.readable) {
+                readStreams2(stream)
+            } else {
+                readOldStream(stream)
+            }
+
+            function readStreams2 (stream) {
+                var content;
+                while (content = stream.read()) {
+                    add(content);
+                }
+            }
+            function readOldStream (stream) {
+                add(stream.read());
+            }
+
+            function add (content) {
+                var view;
+                for (var i=0; i < self._views.length; i++) {
+                    view = self._views[i];
+                    if (typeof view.write === 'function') {
+                        view.write(content);
+                    } else if (typeof view.add === 'function') {
+                        view.add(content, stream);
+                    }
                 }
             }
         });
@@ -121,7 +140,11 @@ define(['streamhub-sdk/jquery', 'event-emitter', 'streamhub-sdk/util'], function
      */
     StreamManager.prototype.start = function () {
         this.forEach(function (stream, name) {
-            stream.start();
+            if (typeof stream.start === 'function') {
+                stream.start();
+            } else if (stream.readable) {
+                stream.read(0);
+            }
         });
         this.isStarted = true;
         return this;

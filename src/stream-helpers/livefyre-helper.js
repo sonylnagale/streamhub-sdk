@@ -7,8 +7,10 @@ define([
     'streamhub-sdk/stream-manager',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
     'streamhub-sdk/streams/livefyre-stream',
-    'streamhub-sdk/streams/livefyre-reverse-stream'],
-function ($, StreamManager, LivefyreBootstrapClient, LivefyreStream, LivefyreReverseStream) {
+    'streamhub-sdk/streams/livefyre-reverse-stream',
+    'streamhub-sdk/streams/collection-archive'],
+function ($, StreamManager, LivefyreBootstrapClient, LivefyreStream,
+LivefyreReverseStream, CollectionArchive) {
 
     /**
      * Get a StreamManager that will later be bound to a Livefyre Collection. No HTTP requests
@@ -42,10 +44,7 @@ function ($, StreamManager, LivefyreBootstrapClient, LivefyreStream, LivefyreRev
                 followers: followers
             }, opts));
             
-            var reverseStream = new LivefyreReverseStream($.extend({
-                followers: followers,
-                initData: data
-            }, opts));
+            var reverseStream = new CollectionArchive(opts);
 
             streamManager.set({ 'main': mainStream, 'reverse': reverseStream });
         });

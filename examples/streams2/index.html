@@ -66,7 +66,7 @@
                     this._requestMoreWrites = requestMore;
                     return;
                 }
-                this._view.add(content);
+                this._view.write(content);
                 this._itemCountGoal--;
                 requestMore();
             }
@@ -80,7 +80,7 @@
                 }
             }
 
-            var writableView = window.wV = new WritableView(view, 10);
+            var writableView = window.wV = new WritableView(view, 1);
             window.showMore = function (n) {
                 writableView.showMore(n);
             }
@@ -92,7 +92,7 @@
             // SHOW MORE BUTTON
 
             $('.show-more').on('click', function () {
-                writableView.showMore(50);
+                writableView.showMore(2);
             });
 
         });

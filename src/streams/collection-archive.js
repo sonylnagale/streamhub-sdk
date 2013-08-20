@@ -180,6 +180,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      */
     CollectionArchive.prototype._contentsFromBootstrapDoc = function (bootstrapDoc, opts) {
         opts = opts || {};
+        bootstrapDoc = bootstrapDoc || {};
         var states = bootstrapDoc.content || [],
             authors = bootstrapDoc.authors || {},
             stateToContent = new StateToContent(bootstrapDoc),
