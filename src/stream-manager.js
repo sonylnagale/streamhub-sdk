@@ -94,7 +94,7 @@ define(['streamhub-sdk/jquery', 'event-emitter', 'streamhub-sdk/util'], function
         stream.on('readable', function () {
             self.emit('readable', stream);
         });
-        if (self.isStarted) {
+        if (self.isStarted && (typeof stream.start === 'function')) {
             stream.start();
         }
         self.emit('add', name, stream);

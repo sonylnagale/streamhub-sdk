@@ -120,6 +120,14 @@ function ($, jasmine, Hub, jasminejquery, ReadableArray, JasmineSpyStream, MockS
                     streamManager.start();
                 }).not.toThrow();
             });
+            it('can have stream added after streamManager is started', function () {
+                streamManager.start();
+                expect(function () {
+                    streamManager.set({
+                        new: new ReadableArray([1,2])
+                    });
+                }).not.toThrow();
+            });
             it(".isStarted returns started status", function () {
                 expect(streamManager.isStarted).toBe(false);
                 streamManager.start();
