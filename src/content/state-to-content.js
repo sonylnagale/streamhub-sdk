@@ -9,12 +9,17 @@ define(['streamhub-sdk/streams/livefyre-stream'], function (LivefyreStream) {
 		this._authors = opts.authors || {};
 	}
 
+
 	StateToContent.prototype.transform = function (state) {
-		return StateToContent.transform(state);
+		var authorId = state.content && state.content.authorId;
+		return StateToContent.transform(state, this._authors[authorId]);
 	};
 
 
-	StateToContent.transform = LivefyreStream.createContent;
+	StateToContent.transform = function (state, author) {
+		state.author = author;
+		return LivefyreStream.createContent(state);
+	}
 
 
 	return StateToContent;

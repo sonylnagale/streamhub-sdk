@@ -2,9 +2,10 @@ define([
     'jquery',
     'stream/readable',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
+    'streamhub-sdk/content/state-to-content',
     'streamhub-sdk/debug',
     'inherits'],
-function ($, Readable, BootstrapClient, debug, inherits) {
+function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
     "use strict";
 
 
@@ -56,7 +57,9 @@ function ($, Readable, BootstrapClient, debug, inherits) {
         if ( ! this._finishedInitFromBootstrap) {
             log('requesting bootstrap init');
             return this._getBootstrapInit(function (err, nPages, headDocument) {
-                var states = self._statesFromBootstrapDoc(headDocument),
+                var states = self._contentsFromBootstrapDoc(headDocument, {
+                        isHead: true
+                    }),
                     stateEvents = $.map(states, function (state) {
                         return state.event;
                     });
@@ -99,16 +102,14 @@ function ($, Readable, BootstrapClient, debug, inherits) {
                 self.emit('error', new Error('Error requesting Bootstrap page '+bootstrapClientOpts.page));
                 return;
             }
-            var states = self._statesFromBootstrapDoc(data);
-            var filteredStates = states.filter(function (state) {
-                return self._stateEventsInHeadDocument.indexOf(state.event) === -1;
-            });
+            var states = data.content,
+                contents = self._contentsFromBootstrapDoc(data);
 
-            if ( ! filteredStates.length) {
+            if ( ! contents.length) {
                 // Everything was a duplicate... fetch next page
                 return self._readNextPage();
             }
-            self.push.apply(self, filteredStates);
+            self.push.apply(self, contents);
         });
     };
 
@@ -173,21 +174,29 @@ function ($, Readable, BootstrapClient, debug, inherits) {
 
     /**
      * @private
-     * Convert a bootstrapDocument to an array of states
+     * Convert a bootstrapDocument to an array of Content instances
      * @param bootstrapDocument {object} an object with content and authors keys
      *     e.g. http://bootstrap.livefyre.com/bs3/livefyre.com/4/NTg0/0.json
      */
-    ArchiveStateStream.prototype._statesFromBootstrapDoc = function (bootstrapDocument) {
-        var content = bootstrapDocument.content || [],
-            authors = bootstrapDocument.authors || {},
+    ArchiveStateStream.prototype._contentsFromBootstrapDoc = function (bootstrapDoc, opts) {
+        opts = opts || {};
+        var states = bootstrapDoc.content || [],
+            authors = bootstrapDoc.authors || {},
+            stateToContent = new StateToContent(bootstrapDoc),
             state,
-            states = [];
-        for (var i=0, contentCount=content.length; i < contentCount; i++) {
-            state = content[i];
-            state.author = authors[state.content && state.content.authorId];
-            states.push(state);
+            contents = [];
+        for (var i=0, statesCount=states.length; i < statesCount; i++) {
+            state = states[i];
+            if (this._stateEventsInHeadDocument.indexOf(state.event) !== -1) {
+                continue;
+            }
+            if (opts.isHead) {
+                this._stateEventsInHeadDocument.push(state.event);
+            }
+            contents.push(stateToContent.transform(state));
         }
-        return states;
+        log("created contents from bootstrapDoc", contents);
+        return contents;
     };
 
 

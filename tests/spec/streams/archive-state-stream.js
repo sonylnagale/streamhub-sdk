@@ -72,22 +72,22 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 						expect(stateStream._read).toHaveBeenCalled();
 					});
 					it('does not emit content that was both in the headDocument and rest of bootstrap', function () {
-						var stateEventCounts = {},
-							state,
+						var contentIdCounts = {},
+							content,
 							currentCount;
-						// We'll count how many times each state event property appears
+						// We'll count how many times each content id property appears
 						// in what's read. The mock data includes duplicates across init
 						// and the page response
-						while ( state = stateStream.read() ) {
-							var currentCount = stateEventCounts[state.event];
-							stateEventCounts[state.event] = currentCount ? currentCount + 1 : 1;
+						while ( content = stateStream.read() ) {
+							var currentCount = contentIdCounts[content.id];
+							contentIdCounts[content.id] = currentCount ? currentCount + 1 : 1;
 						}
-						for (var stateEvent in stateEventCounts) {
-							if ( ! stateEventCounts.hasOwnProperty(stateEvent)) {
+						for (var contentId in contentIdCounts) {
+							if ( ! contentIdCounts.hasOwnProperty(contentId)) {
 								return
 							}
-							// There should have been one of each state.event
-							expect(stateEventCounts[stateEvent]).toBe(1);
+							// There should have been one of each content.id
+							expect(contentIdCounts[contentId]).toBe(1);
 						}
 					});
 				});

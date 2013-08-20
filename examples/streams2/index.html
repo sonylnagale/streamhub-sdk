@@ -23,10 +23,9 @@
             'streamhub-sdk/views/list-view',
             'streamhub-sdk/streams/archive-state-stream',
             'streamhub-sdk/streams/livefyre-stream',
-            'streamhub-sdk/streams/transforms/state-to-content',
             'stream/writable',
             'inherits'
-        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream, StateToContent, Writable, inherits) {
+        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream, Writable, inherits) {
             var $el = $('#listView');
             var view = window.view = new ListView({
                 el: $el[0]
@@ -56,14 +55,13 @@
             function WritableView (view, initialCount) {
                 this._itemCountGoal = initialCount;
                 this._view = view;
-                Writable.call(this, {
-                    highWaterMark: 1
-                });
+                Writable.call(this, {});
             };
             inherits(WritableView, Writable);
 
             WritableView.prototype._write = function (content, requestMore) {
                 var self = this;
+                console.log("WritableView._write", content);
                 if ( ! this._itemCountGoal) {
                     this._requestMoreWrites = requestMore;
                     return;
@@ -82,13 +80,13 @@
                 }
             }
 
-            var writableView = window.wV = new WritableView(view, 1);
+            var writableView = window.wV = new WritableView(view, 10);
             window.showMore = function (n) {
                 writableView.showMore(n);
             }
 
-            var stateToContent = new StateToContent();
-            bss.pipe(stateToContent).pipe(writableView);
+
+            bss.pipe(writableView);
 
 
             // SHOW MORE BUTTON
