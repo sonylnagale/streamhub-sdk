@@ -1,10 +1,10 @@
 define([
     'jquery',
     'stream/readable',
-    'stream/util',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
-    'streamhub-sdk/debug'],
-function ($, Readable, util, BootstrapClient, debug) {
+    'streamhub-sdk/debug',
+    'inherits'],
+function ($, Readable, BootstrapClient, debug, inherits) {
     "use strict";
 
 
@@ -33,10 +33,11 @@ function ($, Readable, util, BootstrapClient, debug) {
         this._bootstrapClient = opts.bootstrapClient || BootstrapClient;
         this._isInitingFromBootstrap = false;
         this._finishedInitFromBootstrap = false;
+        this._stateEventsInHeadDocument = [];
 
         Readable.call(this, opts);
     }
-    util.inherits(ArchiveStateStream, Readable);
+    inherits(ArchiveStateStream, Readable);
 
 
     /**
@@ -55,10 +56,17 @@ function ($, Readable, util, BootstrapClient, debug) {
         if ( ! this._finishedInitFromBootstrap) {
             log('requesting bootstrap init');
             return this._getBootstrapInit(function (err, nPages, headDocument) {
-                var states = self._statesFromBootstrapDoc(headDocument);
+                var states = self._statesFromBootstrapDoc(headDocument),
+                    stateEvents = $.map(states, function (state) {
+                        return state.event;
+                    });
                 // Bootstrap pages are zero-based. Store the highest 
                 self._nextPage = nPages - 1;
                 self.push.apply(self, states);
+
+                // Store an identifier for each state in the head document
+                // Since we could get the same thing later from the archive pages
+                this._stateEventsInHeadDocument.push.apply(this._stateEventsInHeadDocument, stateEvents);
             });
         }
         // After that, request the latest page
@@ -67,22 +75,41 @@ function ($, Readable, util, BootstrapClient, debug) {
             return this.push(null);
         }
         if (typeof this._nextPage === 'number') {
-            bootstrapClientOpts = this._getCollectionOptions();
-            bootstrapClientOpts.page = this._nextPage;
-            this._nextPage = this._nextPage - 1;
-            if (this._nextPage < 0) {
-                // No more pages
-                this._nextPage = null;
-            }
-            this._bootstrapClient.getContent(bootstrapClientOpts, function (err, data) {
-                if (err || ! data) {
-                    self.emit('error', new Error('Error requesting Bootstrap page '+bootstrapClientOpts.page));
-                    return;
-                }
-                var states = self._statesFromBootstrapDoc(data);
-                self.push.apply(self, states);
-            });
+            this._readNextPage();
         }
+    };
+
+
+    /**
+     * Read the next Page of data from the Collection
+     * And make sure not to emit any state.events that were in the headDocument
+     * ._push will eventually be called.
+     */
+    ArchiveStateStream.prototype._readNextPage = function () {
+        var self = this,
+            bootstrapClientOpts = this._getCollectionOptions();
+        bootstrapClientOpts.page = this._nextPage;
+        this._nextPage = this._nextPage - 1;
+        if (this._nextPage < 0) {
+            // No more pages
+            this._nextPage = null;
+        }
+        this._bootstrapClient.getContent(bootstrapClientOpts, function (err, data) {
+            if (err || ! data) {
+                self.emit('error', new Error('Error requesting Bootstrap page '+bootstrapClientOpts.page));
+                return;
+            }
+            var states = self._statesFromBootstrapDoc(data);
+            var filteredStates = states.filter(function (state) {
+                return self._stateEventsInHeadDocument.indexOf(state.event) === -1;
+            });
+
+            if ( ! filteredStates.length) {
+                // Everything was a duplicate... fetch next page
+                return self._readNextPage();
+            }
+            self.push.apply(self, filteredStates);
+        });
     };
 
 

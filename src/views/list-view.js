@@ -3,8 +3,10 @@ define([
     'streamhub-sdk/view',
     'streamhub-sdk/content/content-view-factory',
     'streamhub-sdk/modal/modal',
-    'streamhub-sdk/util'],
-function($, View, ContentViewFactory, ModalView, util) {
+    'inherits',
+    'stream/writable',
+    'streamhub-sdk/content/views/content-view'],
+function($, View, ContentViewFactory, ModalView, inherits, Writable, ContentView) {
 
     /**
      * A simple View that displays Content in a list (`<ul>` by default).
@@ -16,6 +18,7 @@ function($, View, ContentViewFactory, ModalView, util) {
      */
     var ListView = function(opts) {
         opts = opts || {};
+
         this.modal = opts.modal === undefined ? new ModalView() : opts.modal;
         View.call(this, opts);
 
@@ -40,8 +43,22 @@ function($, View, ContentViewFactory, ModalView, util) {
             }
             self.modal.show(context.content, { attachment: context.attachmentToFocus });
         });
+
+        Writable.call(this, opts);
     };
-    util.inherits(ListView, View);
+
+    inherits(ListView, View);
+    inherits.parasitically(ListView, Writable);
+
+
+    /**
+     * Called automatically by the Writable base class
+     */
+    ListView.prototype._write = function (content, errback) {
+        this.add(content);
+        errback();
+    };
+
 
     /**
      * Comparator function to determine ordering of ContentViews.

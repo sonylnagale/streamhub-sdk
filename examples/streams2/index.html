@@ -22,10 +22,13 @@
             'streamhub-sdk',
             'streamhub-sdk/views/list-view',
             'streamhub-sdk/streams/archive-state-stream',
-            'streamhub-sdk/streams/livefyre-stream'
-        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream) {
+            'streamhub-sdk/streams/livefyre-stream',
+            'streamhub-sdk/streams/transforms/state-to-content',
+            'stream/writable',
+            'inherits'
+        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream, StateToContent, Writable, inherits) {
             var $el = $('#listView');
-            var view = new ListView({
+            var view = window.view = new ListView({
                 el: $el[0]
             });
 
@@ -33,78 +36,65 @@
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "labs_demo_fire",
-                "environment": "t402.livefyre.com",
-                highWaterMark: 50
+                "environment": "t402.livefyre.com"
             };
             
             var bss = new ArchiveStateStream(opts);
 
             bss.on('readable', function () {
                 console.log('bss readable');
-            })
+            });
             bss.on('error', function (err) {
                 console.log('bss error', err);
             });
-            bss.on('end', function () {
+            bss.on('end', function (err) {
                 console.log('bss end');
             });
             window.bss = bss
 
-            // SHOW MORE
 
-            var addedSoFar = 0;
-            /**
-             * Add Content to the view
-             * @param size {number} Number of things to add
-             */
-            function addToView (size) {
-                var remaining = size || 50;
-                // When the stream is readable, read some data
-                bss.on('readable', readSome);
-                // When there's no more data, we're done
-                bss.on('end', done);
-                // But readable may already have fired, so try now
-                readSome();
-                // Read data off the stream until size is reached
-                function readSome () {
-                    var state,
-                        content;
-                    // Read until .read() returns falsy
-                    // Which could be before `size` items
-                    while (state = bss.read()) {
-                        addedSoFar++;
-                        
-                        // Convert state to content
-                        content = LivefyreStream.createContent(state);
-                        // And add to view
-                        view.add(content);
+            function WritableView (view, initialCount) {
+                this._itemCountGoal = initialCount;
+                this._view = view;
+                Writable.call(this, {
+                    highWaterMark: 1
+                });
+            };
+            inherits(WritableView, Writable);
 
-                        // And now we need one less
-                        // If we need no more
-                        if ( ! --remaining) {
-                            // We're done
-                            done();
-                            console.log("Added so far: "+addedSoFar);
-                            // Stop reading
-                            break;
-                        }
-                    }
+            WritableView.prototype._write = function (content, requestMore) {
+                var self = this;
+                if ( ! this._itemCountGoal) {
+                    this._requestMoreWrites = requestMore;
+                    return;
                 }
+                this._view.add(content);
+                this._itemCountGoal--;
+                requestMore();
+            }
 
-                function done () {
-                    // We're done reading, either because we read
-                    // size items or the stream has ended.
-                    // So stop listening
-                    bss.removeListener('readable', readSome);
-                    bss.removeListener('end', done);
+            WritableView.prototype.showMore = function (numToShow) {
+                var requestMoreWrites = this._requestMoreWrites;
+                this._itemCountGoal += numToShow;
+                if (typeof requestMoreWrites === 'function') {
+                    this._requestMoreWrites = null;
+                    requestMoreWrites();
                 }
             }
-            window.add = addToView;
+
+            var writableView = window.wV = new WritableView(view, 1);
+            window.showMore = function (n) {
+                writableView.showMore(n);
+            }
+
+            var stateToContent = new StateToContent();
+            bss.pipe(stateToContent).pipe(writableView);
+
 
             // SHOW MORE BUTTON
 
             $('.show-more').on('click', function () {
-                addToView(50);
+                writableView.showMore(50);
             });
 
         });

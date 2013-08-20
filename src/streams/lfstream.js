@@ -1,9 +1,9 @@
 define([
 	'stream/readable',
-	'stream/util',
+	'inherits',
 	'streamhub-sdk/clients/livefyre-bootstrap-client',
 	'streamhub-sdk/clients/livefyre-stream-client'],
-function (Readable, util, LivefyreBootstrapClient, LivefyreStreamClient) {
+function (Readable, inherits, LivefyreBootstrapClient, LivefyreStreamClient) {
 	
 	function LivefyreStream (opts) {
 		this._opts = opts = opts || {};
@@ -19,7 +19,7 @@ function (Readable, util, LivefyreBootstrapClient, LivefyreStreamClient) {
 		}
 	}
 
-	util.inherits(LivefyreStream, Readable);
+	inherits(LivefyreStream, Readable);
 
 
 	LivefyreStream.prototype._read = function (size) {
