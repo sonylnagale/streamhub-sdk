@@ -1,9 +1,8 @@
 define([
 	'jasmine',
 	'streamhub-sdk/streams/collection-archive',
-	'streamhub-sdk/streams/lfstream',
 	'stream/readable'],
-function (jasmine, CollectionArchive, LivefyreStream, Readable) {
+function (jasmine, CollectionArchive, Readable) {
 
 	describe('streamhub-sdk/streams/collection-archive', function () {
 
