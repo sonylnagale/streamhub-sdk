@@ -93,6 +93,10 @@ function($, View, ContentViewFactory, ModalView, inherits, Writable, ContentView
         }
 
         contentView = this.createContentView(content);
+        if ( ! contentView) {
+            return;
+        }
+
         contentView.render();
 
         // Add to DOM
