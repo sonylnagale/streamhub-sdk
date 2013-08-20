@@ -21,11 +21,11 @@
             'jquery',
             'streamhub-sdk',
             'streamhub-sdk/views/list-view',
-            'streamhub-sdk/streams/archive-state-stream',
+            'streamhub-sdk/streams/collection-archive',
             'streamhub-sdk/streams/livefyre-stream',
             'stream/writable',
             'inherits'
-        ],function ($, Hub, ListView, ArchiveStateStream, LivefyreStream, Writable, inherits) {
+        ],function ($, Hub, ListView, CollectionArchive, LivefyreStream, Writable, inherits) {
             var $el = $('#listView');
             var view = window.view = new ListView({
                 el: $el[0]
@@ -38,7 +38,7 @@
                 "environment": "t402.livefyre.com"
             };
             
-            var bss = new ArchiveStateStream(opts);
+            var bss = new CollectionArchive(opts);
 
             bss.on('readable', function () {
                 console.log('bss readable');

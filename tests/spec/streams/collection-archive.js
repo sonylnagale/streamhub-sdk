@@ -1,14 +1,14 @@
 define([
 	'jasmine',
-	'streamhub-sdk/streams/archive-state-stream',
+	'streamhub-sdk/streams/collection-archive',
 	'streamhub-sdk/streams/lfstream',
 	'stream/readable'],
-function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
+function (jasmine, CollectionArchive, LivefyreStream, Readable) {
 
-	describe('streamhub-sdk/streams/archive-state-stream', function () {
+	describe('streamhub-sdk/streams/collection-archive', function () {
 
 		describe('when constructed', function () {
-			var stateStream,
+			var archive,
 				bootstrapClient,
 				mockInitResponse,
 				mockPageResponse;
@@ -20,7 +20,7 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 						errback(null, typeof opts.page !== 'undefined' ? mockPageResponse : mockInitResponse);
 					})
 				};
-				window.ss = stateStream = new ArchiveStateStream({
+				archive = new CollectionArchive({
 				    environment: "t402.livefyre.com", 
 					articleId: "sh_col_21_1373461176", 
 					siteId: 304059, 
@@ -28,22 +28,22 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 					bootstrapClient: bootstrapClient,
 				});
 			});
-			it('is instanceof ArchiveStateStream', function () {
-				expect(stateStream instanceof ArchiveStateStream).toBe(true);
+			it('is instanceof CollectionArchive', function () {
+				expect(archive instanceof CollectionArchive).toBe(true);
 			});
 			it('is instanceof Readable', function () {
-				expect(stateStream instanceof Readable).toBe(true);
-				expect(stateStream.readable).toBe(true);
+				expect(archive instanceof Readable).toBe(true);
+				expect(archive.readable).toBe(true);
 			});
 			it('can be passed opts.bootstrapClient', function () {
-				expect(stateStream._bootstrapClient).toBe(bootstrapClient);
+				expect(archive._bootstrapClient).toBe(bootstrapClient);
 			});
 
 			describe('and a .readable listener is added', function () {
 				var onReadableSpy;
 				beforeEach(function () {
-					onReadableSpy = jasmine.createSpy('ArchiveStateStream#onReadable');
-					stateStream.on('readable', onReadableSpy);
+					onReadableSpy = jasmine.createSpy('CollectionArchive#onReadable');
+					archive.on('readable', onReadableSpy);
 				});
 				it('emits readable', function () {
 					waitsFor(function () {
@@ -55,7 +55,7 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 				})
 				describe('and readable is emitted', function () {
 					beforeEach(function () {
-						spyOn(stateStream, '_read').andCallThrough();
+						spyOn(archive, '_read').andCallThrough();
 						waitsFor(function () {
 							return onReadableSpy.callCount;
 						});
@@ -65,11 +65,11 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 							states = [],
 							state;
 						while (headDocumentLength--) {
-							state = stateStream.read();
+							state = archive.read();
 							states.push(state);
 						}
 						expect(states.length).toBe(mockInitResponse.headDocument.content.length);
-						expect(stateStream._read).toHaveBeenCalled();
+						expect(archive._read).toHaveBeenCalled();
 					});
 					it('does not emit content that was both in the headDocument and rest of bootstrap', function () {
 						var contentIdCounts = {},
@@ -78,7 +78,7 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 						// We'll count how many times each content id property appears
 						// in what's read. The mock data includes duplicates across init
 						// and the page response
-						while ( content = stateStream.read() ) {
+						while ( content = archive.read() ) {
 							var currentCount = contentIdCounts[content.id];
 							contentIdCounts[content.id] = currentCount ? currentCount + 1 : 1;
 						}
@@ -95,10 +95,10 @@ function (jasmine, ArchiveStateStream, LivefyreStream, Readable) {
 
 			it('emits end when there are no more bootstrap pages', function () {
 				var onEndSpy = jasmine.createSpy();
-				stateStream.on('end', onEndSpy);
-				stateStream.on('readable', function () {
+				archive.on('end', onEndSpy);
+				archive.on('readable', function () {
 					// Read everything always
-					while (stateStream.read()) {}
+					while (archive.read()) {}
 				});
 				waitsFor(function () {
 					return onEndSpy.callCount;
