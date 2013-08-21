@@ -28,7 +28,8 @@
         ],function ($, Hub, ListView, CollectionArchive, LivefyreStream, Writable, inherits) {
             var $el = $('#listView');
             var view = window.view = new ListView({
-                el: $el[0]
+                el: $el[0],
+                initial: 2
             });
 
             var opts = {
@@ -52,47 +53,18 @@
             window.bss = bss
 
 
-            function WritableView (view, initialCount) {
-                this._itemCountGoal = initialCount;
-                this._view = view;
-                Writable.call(this, {});
-            };
-            inherits(WritableView, Writable);
-
-            WritableView.prototype._write = function (content, requestMore) {
-                var self = this;
-                console.log("WritableView._write", content);
-                if ( ! this._itemCountGoal) {
-                    this._requestMoreWrites = requestMore;
-                    return;
-                }
-                this._view.write(content);
-                this._itemCountGoal--;
-                requestMore();
-            }
-
-            WritableView.prototype.showMore = function (numToShow) {
-                var requestMoreWrites = this._requestMoreWrites;
-                this._itemCountGoal += numToShow;
-                if (typeof requestMoreWrites === 'function') {
-                    this._requestMoreWrites = null;
-                    requestMoreWrites();
-                }
-            }
-
-            var writableView = window.wV = new WritableView(view, 1);
             window.showMore = function (n) {
-                writableView.showMore(n);
+                view.showMore(n);
             }
 
 
-            bss.pipe(writableView);
+            bss.pipe(view);
 
 
             // SHOW MORE BUTTON
 
             $('.show-more').on('click', function () {
-                writableView.showMore(2);
+                view.showMore(2);
             });
 
         });

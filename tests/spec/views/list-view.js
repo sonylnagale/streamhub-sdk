@@ -6,8 +6,10 @@ define([
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/views/content-view',
     'streamhub-sdk/stream',
-    'streamhub-sdk-tests/mocks/jasmine-spy-stream'],
-function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream, JasmineSpyStream) {
+    'streamhub-sdk-tests/mocks/jasmine-spy-stream',
+    'stream/writable'],
+function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream,
+JasmineSpyStream, Writable) {
     describe('A ListView', function () {
         var fixtureId = 'sandbox',
             listView,
@@ -15,17 +17,18 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream, Jas
             $el;
 
         beforeEach(function () {
-            listView = new ListView({
-                streams: {
-                    main: new JasmineSpyStream()
-                }
-            });
+            listView = new ListView({});
         });
 
         describe("when constructed", function () {
 
             it("is instanceof ListView", function () {
                 expect(listView instanceof ListView).toBe(true);
+            });
+
+            it("is .writable", function () {
+                expect(listView.writable).toBe(true);
+                expect(listView.write).toEqual(jasmine.any(Function));
             });
 
             describe("with opts.el", function () {
@@ -36,10 +39,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream, Jas
                     el = $el[0];
 
                     listView = new ListView({
-                        el: el,
-                        streams: {
-                            main: new JasmineSpyStream()
-                        }
+                        el: el
                     });
                 });
 
@@ -83,6 +83,60 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream, Jas
                 expect(targetContentView.attachmentsView.focus).toHaveBeenCalled();
             });
         });
+
+        describe("when constructed with opts.initial", function () {
+            var initial,
+                listView;
+            beforeEach(function () {
+                initial = 2;
+                listView = new ListView({
+                    initial: initial
+                });
+            });
+            it(".add still always adds ContentViews", function () {
+                var content1 = new Content('1'),
+                    content2 = new Content('2'),
+                    content3 = new Content('3');
+                listView.add(content1);
+                listView.add(content2);
+                listView.add(content3);
+                expect(listView.contentViews.length).toBe(3);
+            });
+            it(".writing one more than initial results in only initial contentViews", function () {
+                var origInitial = initial;
+                while (--initial) {
+                    listView.write(new Content(initial.toString()));
+                }
+                listView.write(new Content(initial.toString()));
+                expect(listView.contentViews.length).toBe(origInitial);
+            });
+            it(".showMore() can be called, and increments ._newContentGoal", function () {
+                var numToAdd = 5;
+                expect(function () {
+                    listView.showMore(numToAdd);
+                }).not.toThrow();
+                expect(listView._newContentGoal).toBe(initial + numToAdd);
+            })
+            describe("and a ton of Content is added", function () {
+                var toAdd,
+                    remaining;
+                beforeEach(function () {
+                    toAdd = 50
+                    remaining = toAdd;
+                    spyOn(listView, '_write').andCallThrough();
+                    while (remaining--) {
+                        listView.write(new Content(remaining.toString()));
+                    }
+                });
+                it("calls ._write for each written content", function () {
+                    expect(listView._write.callCount).toBe(toAdd);
+                });
+                it("only results in initial # of contentViews", function () {
+                    expect(listView.contentViews.length).toBe(initial);
+                });
+            });
+        });
+
 
         describe('handles removeContentView.hub event', function() {
 
@@ -187,10 +241,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream, Jas
                 el = $el[0];
 
                 listView = new ListView({
-                    el: el,
-                    streams: {
-                        main: new JasmineSpyStream()
-                    }
+                    el: el
                 });
 
                 spyOn(listView, 'createContentView').andCallThrough();
