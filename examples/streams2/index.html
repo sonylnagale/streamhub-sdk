@@ -41,50 +41,40 @@
                 "environment": "t402.livefyre.com"
             };
             
-            //var bss = new CollectionArchive(opts);
-            var bss = new Readable({
+            //var stream = new CollectionArchive(opts);
+            var stream = new Readable({
             });
-            bss.isBss = true;
-            bss._read = function () {
+
+            stream._read = function () {
                 this.push(new Content(Math.floor(Math.random() * 9999)));
             };
-            setInterval(function () {
-                console.log('unshift bss new stuff');
-                bss.unshift(new Content('new'));
-            }, 15 * 1000);
-            bss.on('readable', (function () {
+
+            stream.on('readable', (function () {
                 var i = 0;
                 return function () {
-                    console.log('bss readable', i++);
+                    console.log('stream readable', i++);
                 };
             }()));
-            bss.on('error', function (err) {
-                console.log('bss error', err);
+            stream.on('error', function (err) {
+                console.log('stream error', err);
             });
-            bss.on('end', function (err) {
-                console.log('bss end');
+            stream.on('end', function (err) {
+                console.log('stream end');
             });
-            window.bss = bss
 
+            window.stream = stream
 
             window.showMore = function (n) {
                 view.showMore(n);
             }
 
+            stream.pipe(view.more);
 
-            bss.pipe(view);
-
-
-            var other = new Readable();
-            other._read = function () {
-                this.push(new Content('other'));
-            };
-            other.pipe(view);
 
             // SHOW MORE BUTTON
 
             $('.show-more').on('click', function () {
-                view.showMore(2);
+                view.showMore(5);
             });
 
         });
