@@ -8,7 +8,7 @@
         width:500px;
     }
     </style>
-    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+    <!-- <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> -->
 </head>
     <body>
         <div id="listView"></div>
@@ -23,9 +23,11 @@
             'streamhub-sdk/views/list-view',
             'streamhub-sdk/streams/collection-archive',
             'streamhub-sdk/streams/livefyre-stream',
+            'stream/readable',
+            'streamhub-sdk/content/content',
             'stream/writable',
             'inherits'
-        ],function ($, Hub, ListView, CollectionArchive, LivefyreStream, Writable, inherits) {
+        ],function ($, Hub, ListView, CollectionArchive, LivefyreStream, Readable, Content, Writable, inherits) {
             var $el = $('#listView');
             var view = window.view = new ListView({
                 el: $el[0],
@@ -39,11 +41,23 @@
                 "environment": "t402.livefyre.com"
             };
             
-            var bss = new CollectionArchive(opts);
-
-            bss.on('readable', function () {
-                console.log('bss readable');
+            //var bss = new CollectionArchive(opts);
+            var bss = new Readable({
             });
+            bss.isBss = true;
+            bss._read = function () {
+                this.push(new Content(Math.floor(Math.random() * 9999)));
+            };
+            setInterval(function () {
+                console.log('unshift bss new stuff');
+                bss.unshift(new Content('new'));
+            }, 15 * 1000);
+            bss.on('readable', (function () {
+                var i = 0;
+                return function () {
+                    console.log('bss readable', i++);
+                };
+            }()));
             bss.on('error', function (err) {
                 console.log('bss error', err);
             });
@@ -60,6 +74,12 @@
 
             bss.pipe(view);
 
+
+            var other = new Readable();
+            other._read = function () {
+                this.push(new Content('other'));
+            };
+            other.pipe(view);
 
             // SHOW MORE BUTTON
 
