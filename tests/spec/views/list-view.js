@@ -5,11 +5,8 @@ define([
     'streamhub-sdk/views/list-view',
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/views/content-view',
-    'streamhub-sdk/stream',
-    'streamhub-sdk-tests/mocks/jasmine-spy-stream',
     'stream/writable'],
-function (jasmine, jasminejquery, $, ListView, Content, ContentView, Stream,
-JasmineSpyStream, Writable) {
+function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
     describe('A ListView', function () {
         var fixtureId = 'sandbox',
             listView,
