@@ -46,7 +46,7 @@ function (inherits, Transform, debug) {
      * @param newGoal {number} The number of items this stream should
      *     let through before holding again.
      */
-    More.prototype.get = function (newGoal) {
+    More.prototype.setGoal = function (newGoal) {
         var requestMore = this._requestMoreWrites;
 
         this._goal = newGoal;
@@ -54,6 +54,14 @@ function (inherits, Transform, debug) {
             this._requestMoreWrites = null;
             requestMore();
         }
+    };
+
+
+    /**
+     * Get the number of objects the stream is waiting for to reach its goal
+     */
+    More.prototype.getGoal = function () {
+        return this._goal;
     };
 
 

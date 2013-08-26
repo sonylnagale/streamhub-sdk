@@ -115,7 +115,7 @@ JasmineSpyStream, Writable) {
                 expect(function () {
                     listView.showMore(numToAdd);
                 }).not.toThrow();
-                expect(listView._newContentGoal).toBe(initial + numToAdd);
+                expect(listView.more._goal).toBe(initial + numToAdd);
             })
             describe("and a ton of Content is added", function () {
                 var toAdd,
