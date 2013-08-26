@@ -107,14 +107,12 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                 listView.write(new Content(initial.toString()));
                 expect(listView.contentViews.length).toBe(origInitial);
             });
-            it(".showMore() can be called, and increments ._newContentGoal", function () {
+            it(".showMore() can be called, and sets .more's goal", function () {
                 var numToAdd = 5;
-                expect(function () {
-                    listView.showMore(numToAdd);
-                }).not.toThrow();
-                expect(listView.more._goal).toBe(initial + numToAdd);
+                listView.showMore(numToAdd);
+                expect(listView.more.getGoal()).toBe(numToAdd);
             })
-            describe("and a ton of Content is added", function () {
+            describe("and a ton of Content is written to .more", function () {
                 var toAdd,
                     remaining;
                 beforeEach(function () {
@@ -122,14 +120,15 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                     remaining = toAdd;
                     spyOn(listView, '_write').andCallThrough();
                     while (remaining--) {
-                        listView.write(new Content(remaining.toString()));
+                        listView.more.write(new Content(remaining.toString()));
                     }
                 });
-                it("calls ._write for each written content", function () {
-                    expect(listView._write.callCount).toBe(toAdd);
-                });
                 it("only results in initial # of contentViews", function () {
-                    expect(listView.contentViews.length).toBe(initial);
+                    // ContentViews may not be created until nextTick
+                    waits(1);
+                    runs(function () {
+                        expect(listView.contentViews.length).toBe(initial);
+                    });
                 });
             });
         });
