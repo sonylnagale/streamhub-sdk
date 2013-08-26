@@ -257,29 +257,5 @@ define([
         });
     };
 
-    /**
-     * Creates the correct content type given the supplied "state".
-     * @param state {Object} The livefyre content "state" as received by the client.
-     * @return {LivefyreContent} A new, correctly typed, content object. 
-     */
-    LivefyreStream.createContent = function(state) {
-        var sourceName = LivefyreContent.SOURCES[state.source];
-        if (state.type === LivefyreStream.prototype.messageTypes.OEMBED) {
-            return new LivefyreOembed(state);
-        } else if (sourceName === 'twitter') {
-            return new LivefyreTwitterContent(state);
-        } else if (sourceName === 'facebook') {
-            return new LivefyreFacebookContent(state);
-        } else if (sourceName === 'feed') {
-            var contentType = LivefyreContent;
-            if (state.content.feedEntry.transformer === 'lfcore.v2.procurement.feed.transformer.instagram') {
-                contentType = LivefyreInstagramContent;
-            }
-            return new contentType(state);
-        } else if (sourceName === 'livefyre') {
-            return new LivefyreContent(state);
-        }
-    };
-
     return LivefyreStream;
 });
