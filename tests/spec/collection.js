@@ -1,4 +1,9 @@
-define(['jasmine', 'streamhub-sdk/collection'], function (jasmine, Collection) {
+define([
+	'jasmine',
+	'streamhub-sdk/collection',
+	'streamhub-sdk/streams/collection-archive',
+	'streamhub-sdk/streams/collection-updater'
+], function (jasmine, Collection, CollectionArchive, CollectionUpdater) {
 	describe('streamhub-sdk/collection', function () {
 		it('is a function', function () {
 			expect(Collection).toEqual(jasmine.any(Function));
@@ -15,6 +20,7 @@ define(['jasmine', 'streamhub-sdk/collection'], function (jasmine, Collection) {
 				};
 				collection = new Collection(opts);
 			});
+
 			it('has .network', function () {
 				expect(collection.network).toBe(opts.network);
 			});
@@ -26,6 +32,20 @@ define(['jasmine', 'streamhub-sdk/collection'], function (jasmine, Collection) {
 			});
 			it('has .environment', function () {
 				expect(collection.environment).toBe(opts.environment);
+			});
+
+			describe('.createArchive', function () {
+				it('returns a readable CollectionArchive Stream', function () {
+					var archive = collection.createArchive();
+					expect(archive instanceof CollectionArchive).toBe(true);
+				});
+			});
+
+			describe('.createUpdater', function () {
+				it('returns a readable CollectionUpdater Stream', function () {
+					var updater = collection.createUpdater();
+					expect(updater instanceof CollectionUpdater).toBe(true);
+				});
 			});
 		});
 	});
