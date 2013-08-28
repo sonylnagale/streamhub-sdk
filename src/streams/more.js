@@ -29,14 +29,22 @@ function (inherits, Transform, debug) {
      * passes through.
      */
     More.prototype._transform = function (chunk, requestMore) {
+        var self = this;
         log('_transform', chunk);
+
         if (this._goal <= 0) {
-            this._requestMoreWrites = requestMore;
+            this._pushAndContinue = pushAndContinue;
+            this.emit('hold');
             return;
         }
-        this._goal--;
-        this.push(chunk);
-        requestMore();
+
+        pushAndContinue();
+
+        function pushAndContinue() {
+            self._goal--;
+            self.push(chunk);
+            requestMore();
+        }
     };
 
 
@@ -47,12 +55,13 @@ function (inherits, Transform, debug) {
      *     let through before holding again.
      */
     More.prototype.setGoal = function (newGoal) {
-        var requestMore = this._requestMoreWrites;
+        var pushAndContinue = this._pushAndContinue;
 
         this._goal = newGoal;
-        if (typeof requestMore === 'function') {
-            this._requestMoreWrites = null;
-            requestMore();
+
+        if (this._goal >= 0 && typeof pushAndContinue === 'function') {
+            this._pushAndContinue = null;
+            pushAndContinue();
         }
     };
 
