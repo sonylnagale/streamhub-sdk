@@ -30,6 +30,12 @@ LivefyreOembed) {
      */
 	StateToContent.transform = function (state, author) {
         var sourceName = StateToContent.enums.source[state.source];
+
+        // TODO: Non-vis states may still have childContent!
+        if (state.vis !== 1) {
+        	return;
+        }
+
 		state.author = author;
         if (state.type === 3) {
             return new LivefyreOembed(state);
