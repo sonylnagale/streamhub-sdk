@@ -34,7 +34,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
         this._bootstrapClient = opts.bootstrapClient || BootstrapClient;
         this._isInitingFromBootstrap = false;
         this._finishedInitFromBootstrap = false;
-        this._stateEventsInHeadDocument = [];
+        this._contentIdsInHeadDocument = [];
 
         Readable.call(this, opts);
     }
@@ -57,19 +57,22 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
         if ( ! this._finishedInitFromBootstrap) {
             log('requesting bootstrap init');
             return this._getBootstrapInit(function (err, nPages, headDocument) {
-                var states = self._contentsFromBootstrapDoc(headDocument, {
+                var contents = self._contentsFromBootstrapDoc(headDocument, {
                         isHead: true
                     }),
-                    stateEvents = $.map(states, function (state) {
-                        return state.event;
-                    });
+                    contentIds = [];
+                $.each(contents, function (i, content) {
+                    if (content && content.id) {
+                        contentIds.push(content.id)
+                    }
+                });
                 // Bootstrap pages are zero-based. Store the highest 
                 self._nextPage = nPages - 1;
-                self.push.apply(self, states);
+                self.push.apply(self, contents);
 
                 // Store an identifier for each state in the head document
                 // Since we could get the same thing later from the archive pages
-                this._stateEventsInHeadDocument.push.apply(this._stateEventsInHeadDocument, stateEvents);
+                this._contentIdsInHeadDocument.push.apply(this._contentIdsInHeadDocument, contentIds);
             });
         }
         // After that, request the latest page
@@ -185,14 +188,19 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
             authors = bootstrapDoc.authors || {},
             stateToContent = new StateToContent(bootstrapDoc),
             state,
+            content,
             contents = [];
         for (var i=0, statesCount=states.length; i < statesCount; i++) {
             state = states[i];
-            if (this._stateEventsInHeadDocument.indexOf(state.event) !== -1) {
+            content = stateToContent.transform(state);
+            if ( ! content) {
+                continue
+            }
+            if (this._contentIdsInHeadDocument.indexOf(content.id) !== -1) {
                 continue;
             }
-            if (opts.isHead) {
-                this._stateEventsInHeadDocument.push(state.event);
+            if (opts.isHead && content.id) {
+                this._contentIdsInHeadDocument.push(content.id);
             }
             contents.push(stateToContent.transform(state));
         }
