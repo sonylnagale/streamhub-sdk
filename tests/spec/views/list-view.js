@@ -28,6 +28,14 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                 expect(listView.write).toEqual(jasmine.any(Function));
             });
 
+            it("has a .$listEl", function () {
+                expect(listView.$listEl.length).toBe(1);
+            });
+
+            it("has a .showMoreButton", function () {
+                expect(listView.showMoreButton).toBeDefined();
+            });
+
             describe("with opts.el", function () {
 
                 beforeEach(function () {
@@ -133,6 +141,40 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
             });
         });
 
+        describe("opts.showMore", function () {
+            var showMore,
+                listView;
+            beforeEach(function () {
+                showMore = 39;
+                listView = new ListView({
+                    showMore: showMore
+                });
+            });
+            it("uses opts.showMore when .showMore() is passed no argument", function () {
+                spyOn(listView.more, 'setGoal');
+                listView.showMore();
+                expect(listView.more.setGoal).toHaveBeenCalledWith(showMore);
+            });
+            it("defaults to 50", function () {
+                listView = new ListView();
+                spyOn(listView.more, 'setGoal');
+                listView.showMore();
+                expect(listView.more.setGoal).toHaveBeenCalledWith(50);
+            });
+        });
+
+        describe(".showMore()", function () {
+            it("is called on showMore.hub event", function () {
+                spyOn(listView, 'showMore').andCallThrough();
+                listView.$el.trigger('showMore.hub');
+                expect(listView.showMore).toHaveBeenCalledWith();
+            });
+            it("is called when .showMoreButton.$el is clicked", function () {
+                spyOn(listView, 'showMore').andCallThrough();
+                listView.showMoreButton.$el.click();
+                expect(listView.showMore).toHaveBeenCalledWith();
+            });
+        });
 
         describe('handles removeContentView.hub event', function() {
 
@@ -273,7 +315,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
 
             describe("and a ContentView is inserted", function () {
                 it("the new ContentView is in the DOM", function () {
-                    expect($(listView.el)).toContain($(newContentView.el));
+                    expect(listView.$listEl).toContain($(newContentView.el));
                 });
             });
         });

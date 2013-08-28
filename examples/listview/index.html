@@ -22,8 +22,10 @@
         <script>
         require([
             'streamhub-sdk/views/list-view',
-            'streamhub-sdk/collection'
-        ],function (ListView, Collection) {
+            'streamhub-sdk/collection',
+            'stream/contrib/readable-array',
+            'streamhub-sdk/content/content'
+        ],function (ListView, Collection, ReadableArray, Content) {
             var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
@@ -39,7 +41,9 @@
 
             var collection = new Collection(opts);
 
-            collection.createArchive().pipe(listView.more);        
+
+            var archive = window.archive = collection.createArchive();
+            archive.pipe(listView.more);
         });
         </script>
     </body>

@@ -7,9 +7,11 @@ define([
     'streamhub-sdk/debug',
     'stream/writable',
     'streamhub-sdk/content/views/content-view',
-    'stream/transform',
-    'streamhub-sdk/streams/more'],
-function($, View, ContentViewFactory, ModalView, inherits, debug, Writable, ContentView, Transform, More) {
+    'streamhub-sdk/streams/more'
+    'streamhub-sdk/views/show-more-button',
+    'hgn!streamhub-sdk/views/templates/list-view'],
+function($, View, ContentViewFactory, ModalView, inherits, debug, Writable,
+ContentView, More, ShowMoreButton, ListViewTemplate) {
 
     var log = debug('streamhub-sdk/views/list-view');
 
@@ -61,12 +63,43 @@ function($, View, ContentViewFactory, ModalView, inherits, debug, Writable, Cont
 
         Writable.call(this, opts);
 
+        this._moreAmount = opts.showMore || 50;
         this.more = opts.more || this._createMoreStream(opts);
-        this.more.pipe(this);
+        this.showMoreButton = opts.showMoreButton || this._createShowMoreButton(opts);
+        this.showMoreButton.setMoreStream(this.more);
+
+        this.render();
+
+        this.more.pipe(this, { end: false });
     };
 
     inherits(ListView, View);
     inherits.parasitically(ListView, Writable);
+
+
+    ListView.prototype.template = ListViewTemplate;
+
+    ListView.prototype.listElSelector = '.content-list';
+    ListView.prototype.showMoreElSelector = '.content-list-more';
+
+
+    ListView.prototype.setElement = function () {
+        var self = this;
+        View.prototype.setElement.apply(this, arguments);
+        // .showMoreButton will trigger showMore.hub when it is clicked
+        this.$el.on('showMore.hub', function () {
+            self.showMore();
+        });
+    };
+
+
+    ListView.prototype.render = function () {
+        View.prototype.render.call(this);
+        this.$listEl = this.$el.find(this.listElSelector);
+
+        this.showMoreButton.setElement(this.$el.find(this.showMoreElSelector));
+        this.showMoreButton.render();
+    };
 
 
     /**
@@ -90,6 +123,11 @@ function($, View, ContentViewFactory, ModalView, inherits, debug, Writable, Cont
             highWaterMark: 0,
             goal: opts.initial || 50
         });
+    };
+
+
+    ListView.prototype._createShowMoreButton = function (opts) {
+        return new ShowMoreButton();
     };
 
 
@@ -148,6 +186,9 @@ function($, View, ContentViewFactory, ModalView, inherits, debug, Writable, Cont
      * @param numToShow {number} The number of items to try to add
      */
     ListView.prototype.showMore = function (numToShow) {
+        if (typeof numToShow === 'undefined') {
+            numToShow = this._moreAmount;
+        }
         this.more.setGoal(numToShow);
     }
 
@@ -188,7 +229,7 @@ function($, View, ContentViewFactory, ModalView, inherits, debug, Writable, Cont
 
         if (newContentViewIndex === 0) {
             // Beginning!
-            contentView.$el.prependTo(this.el);
+            contentView.$el.prependTo(this.$listEl);
         } else {
             // Find it's previous contentView and insert new contentView after
             $previousEl = this.contentViews[newContentViewIndex - 1].$el;

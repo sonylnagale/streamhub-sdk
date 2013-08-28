@@ -47,5 +47,20 @@ function (jasmine, More) {
 				expect(more.read()).toBe(null);
 			});
 		});
+
+		it('emits hold when content is written but goal is reached', function () {
+			var more = new More({
+					goal: 1
+				}),
+				onHold = jasmine.createSpy('onHold');
+			more.on('hold', onHold);
+			expect(onHold).not.toHaveBeenCalled();
+			more.write(1);
+			more.read();
+			expect(onHold).not.toHaveBeenCalled();
+			more.write(2);
+			more.read();
+			expect(onHold).toHaveBeenCalled();
+		});
 	});
 });
