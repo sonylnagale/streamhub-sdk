@@ -1,11 +1,12 @@
 define([
 	'inherits',
 	'stream/readable',
+	'stream/util',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
     'streamhub-sdk/clients/livefyre-stream-client',
     'streamhub-sdk/content/state-to-content',
 	'streamhub-sdk/debug'],
-function (inherits, Readable, BootstrapClient, StreamClient, StateToContent,
+function (inherits, Readable, streamUtil, BootstrapClient, StreamClient, StateToContent,
 debug) {
 
 	var log = debug('streamhub-sdk/streams/collection-updater');
@@ -46,8 +47,14 @@ debug) {
         // to know what the latest page of data
         if ( ! this._finishedInitFromBootstrap) {
             log('requesting bootstrap init');
-            return this._getLatestEvent(function (err, latestEvent) {
+            return this._getBootstrapInit(function (err, initResponse) {
+                var collectionSettings = initResponse.collectionSettings,
+                	latestEvent = collectionSettings.event,
+                	collectionId = collectionSettings.collectionId;
+
                 self._latestEvent = latestEvent;
+                self._collectionId = collectionId;
+
                 self._stream();
             });
         }
@@ -65,9 +72,17 @@ debug) {
     	// Request stream from the last Event ID we know about
     	streamClientOpts.commentId = latestEvent;
     	streamClient.getContent(streamClientOpts, function (err, data) {
-    		if (err && err !== "Timeout") {
-    			self.emit('error', err);
-    			return;
+    		if (err) {
+    			return self.emit('error', err);
+    		}
+    		if (data.timeout) {
+    			// Timed out on the long poll. This just means there
+    			// was no real-time data. So we should keep streaming
+    			// on the next event loop tick
+    			log('long poll timeout, requesting again on next tick');
+    			return streamUtil.nextTick(function () {
+    				self._stream();
+    			});
     		}
     		var contents = self._contentsFromStreamData(data);
     		// Update _latestEvent so we only get new data
@@ -108,7 +123,7 @@ debug) {
      *     of pages of content in the collection, the headDocument containing
      *     the latest data)
      */
-    CollectionUpdater.prototype._getLatestEvent = function (errback) {
+    CollectionUpdater.prototype._getBootstrapInit = function (errback) {
         var self = this,
             collectionOpts;
 
@@ -129,14 +144,10 @@ debug) {
                 self.emit('error', err);
             }
 
-            var headDocument = data.headDocument,
-                collectionSettings = data.collectionSettings,
-                latestEvent = collectionSettings.event;
-
             self._isInitingFromBootstrap = false;
             self._finishedInitFromBootstrap = true;
 
-            errback.call(self, err, latestEvent);
+            errback.call(self, err, data);
         });
     };
 
@@ -151,7 +162,8 @@ debug) {
             environment: this._environment,
             network: this._network,
             siteId: this._siteId,
-            articleId: this._articleId
+            articleId: this._articleId,
+            collectionId: this._collectionId
         };
     };
 

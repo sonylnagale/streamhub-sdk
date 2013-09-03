@@ -67,9 +67,21 @@ function (jasmine, CollectionUpdater, Readable) {
 				expect(updater._streamClient).toBe(streamClient);
 			});
 
-			it('requests bootstrap init when .read()', function () {
-				updater.read();
-				expect(updater._bootstrapClient.getContent).toHaveBeenCalled();
+			describe('when .read() for the first time', function () {
+				beforeEach(function () {
+					updater.read();
+				});
+				it('requests bootstrap init', function () {
+					expect(updater._bootstrapClient.getContent).toHaveBeenCalled();
+				});
+				it('sets ._collectionId', function () {
+					waitsFor(function () {
+						return updater._collectionId;
+					}, "updater._collectionId to be set");
+					runs(function () {
+						expect(updater._collectionId).toBe(mockInitResponse.collectionSettings.collectionId);
+					});
+				});
 			});
 
 			describe('and a .readable listener is added', function () {

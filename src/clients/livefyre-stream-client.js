@@ -36,13 +36,16 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/util'], function($, util) {
             success: function(data, status, jqXhr) {
                 // todo: (genehallman) check livefyre stream status in data.status
                 if (data.timeout) {
-                    return callback("Timeout");
+                    return callback(null, { timeout: data.timeout });
                 } else if (data.status == "error") {
                     return callback(data.msg);
                 }
                 callback(null, data.data);
             },
             error: function(jqXhr, status, err) {
+                if ( ! err) {
+                    err = "LivefyreStreamClient Error";
+                }
                 callback(err);
             }
         });
