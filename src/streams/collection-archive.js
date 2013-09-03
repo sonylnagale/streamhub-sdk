@@ -204,7 +204,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
             if (opts.isHead && content.id) {
                 this._contentIdsInHeadDocument.push(content.id);
             }
-            contents.push(stateToContent.transform(state));
+            contents.push(content);
         }
         log("created contents from bootstrapDoc", contents);
         return contents;
