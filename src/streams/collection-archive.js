@@ -38,6 +38,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
         Readable.call(this, opts);
     }
+
     inherits(CollectionArchive, Readable);
 
 
