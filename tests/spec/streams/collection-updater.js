@@ -3,10 +3,12 @@ define([
 	'streamhub-sdk/streams/collection-updater',
 	'stream/readable'],
 function (jasmine, CollectionUpdater, Readable) {
+	"use strict";
+
 	describe('streamhub-sdk/streams/collection-updater', function () {
 
 		describe('when constructed', function () {
-			var archive,
+			var updater,
 				bootstrapClient,
 				mockInitResponse,
 				mockPageResponse;
