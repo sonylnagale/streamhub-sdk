@@ -87,6 +87,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
 
     /**
+     * @private
      * Read the next Page of data from the Collection
      * And make sure not to emit any state.events that were in the headDocument
      * ._push will eventually be called.
