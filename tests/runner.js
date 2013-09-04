@@ -76,15 +76,16 @@ phantom.create(function(ph) {
                         if (numTests > 0 && numPending === 0) {
                             return true;
                         }
+                        return false;
                     }, cb);
                 }
 
                 checkDone(function handleDoneState (isDone) {
                     console.log('is done? '+isDone);
                     if ( ! isDone) {
-                        return process.nextTick(function () {
+                        return setTimeout(function () {
                             checkDone(handleDoneState);
-                        });
+                        }, 250);
                     } else {
                         console.log('checking number of fails');
                         page.evaluate(function(){
