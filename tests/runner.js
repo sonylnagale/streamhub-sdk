@@ -70,6 +70,7 @@ phantom.create(function(ph) {
                         if (typeof $ !== 'function') {
                             return false;
                         }
+                        console.log('$ is function: ', $.toString());
                         var numTests = $('.symbolSummary > li').length,
                             numPending = $('.symbolSummary > li.pending').length;
                         if (numTests > 0 && numPending === 0) {
@@ -78,11 +79,12 @@ phantom.create(function(ph) {
                     }, cb);
                 }
 
-                checkDone(function handleDoneState (err, isDone, b) {
-                    console.log('is done? '+err+' '+isDone+' '+b);
-                    console.log('handleDoneState args: '+Array.prototype.slice.call(arguments));
+                checkDone(function handleDoneState (isDone) {
+                    console.log('is done? '+isDone);
                     if ( ! isDone) {
-                        return checkDone(handleDoneState);
+                        return process.nextTick(function () {
+                            checkDone(handleDoneState);
+                        });
                     } else {
                         console.log('checking number of fails');
                         page.evaluate(function(){
