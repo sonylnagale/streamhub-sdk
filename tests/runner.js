@@ -67,7 +67,7 @@ phantom.create(function(ph) {
                     console.log('checking if done');
                     page.evaluate(function(){
                         var $ = window.$;
-                        if ( ! $) {
+                        if (typeof $ !== 'function') {
                             return false;
                         }
                         var numTests = $('.symbolSummary > li').length,
