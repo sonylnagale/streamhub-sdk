@@ -78,9 +78,9 @@ phantom.create(function(ph) {
                     }, cb);
                 }
 
-                checkDone(function handleDoneState (err, isDone) {
-                    console.log('is done? '+isDone);
-                    console.log('handleDoneState args: '+arguments);
+                checkDone(function handleDoneState (err, isDone, b) {
+                    console.log('is done? '+err+' '+isDone+' '+b);
+                    console.log('handleDoneState args: '+Array.prototype.slice.call(arguments));
                     if ( ! isDone) {
                         return checkDone(handleDoneState);
                     } else {
