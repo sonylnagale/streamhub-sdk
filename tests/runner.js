@@ -6,7 +6,9 @@ var serverProcess = child.spawn('./node_modules/http-server/bin/http-server',  [
 
 var url = 'http://localhost:64646/tests/index.html';
 
+console.log('phantom.create');
 phantom.create(function(ph) {
+    console.log('phantom created: '+ph);
 
     /**
     * Wait until the test condition is true or a timeout occurs. Useful for waiting
@@ -42,7 +44,9 @@ phantom.create(function(ph) {
             }, 100); //< repeat check every 250ms
     };
 
+    console.log('ph.createPage');
     ph.createPage(function(page) {
+        console.log('ph created page: '+page);
         page.set('onConsoleMessage', function(msg) {
             console.log(msg);
         });
@@ -52,7 +56,9 @@ phantom.create(function(ph) {
             exit(1);
         }, 60 * 1000);
 
+        console.log('page.open');
         page.open(url, function(status){
+            console.log('page opened: '+status);
             if (status !== "success") {
                 console.log("Unable to access network");
                 exit(1);
