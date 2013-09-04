@@ -64,6 +64,7 @@ phantom.create(function(ph) {
                 exit(1);
             } else {
                 function checkDone(cb) {
+                    console.log('checking if done');
                     page.evaluate(function(){
                         var $ = window.$;
                         if ( ! $) {
@@ -78,9 +79,11 @@ phantom.create(function(ph) {
                 }
 
                 checkDone(function handleDoneState (isDone) {
+                    console.log('is done? '+isDone);
                     if ( ! isDone) {
                         return checkDone(handleDoneState);
                     } else {
+                        console.log('checking number of fails');
                         page.evaluate(function(){
                             try {
                                 return $('.symbolSummary > li.failed').length;
