@@ -56,6 +56,7 @@ phantom.create(function(ph) {
             exit(1);
         }, 60 * 1000);
 
+
         console.log('page.open');
         page.open(url, function(status){
             console.log('page opened: '+status);
