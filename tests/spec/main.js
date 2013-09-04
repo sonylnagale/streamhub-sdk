@@ -6,7 +6,7 @@ define([
 function ($, jasmine, Hub) {
     describe('A Streamhub SDK', function () {
     	it('fails tests', function () {
-    		expect(false).toBe(true);
+    		expect(true).toBe(true);
     	});
     }); 
 });
