@@ -26,13 +26,18 @@
             'stream/contrib/readable-array',
             'streamhub-sdk/content/content'
         ],function (ListView, Collection, ReadableArray, Content) {
-            var opts = {
+            /*var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "labs_demo_basketball",
                 "environment": "t402.livefyre.com"
+            };*/
+            var opts = {
+                "network": "largetail-0.fyre.co",
+                "siteId": "303772",
+                "articleId": "prod0",
+                "environment": "t402.livefyre.com"
             };
-            
             var listView = window.view = new ListView({
                 initial: 1,
                 showMore: 3,
@@ -43,7 +48,9 @@
 
 
             var archive = window.archive = collection.createArchive();
+            var updater = window.updater = collection.createUpdater();
             archive.pipe(listView.more);
+            updater.pipe(listView);
         });
         </script>
     </body>
