@@ -67,18 +67,12 @@ phantom.create(function(ph) {
                 function checkDone(cb) {
                     console.log('checking if done');
                     page.evaluate(function(){
-                        console.log('grabbing window.$');
                         var $ = window.$;
-                        console.log('$: '+ $);
                         if (typeof $ !== 'function') {
                             return false;
                         }
-                        console.log('$ is a function');
-                        console.log('$ is function: '+ $.toString());
                         var numTests = $('.symbolSummary > li').length,
                             numPending = $('.symbolSummary > li.pending').length;
-                        console.log('numTests: '+numTests);
-                        console.log('numPending: '+numPending);
                         if (numTests > 0 && numPending === 0) {
                             return true;
                         }
