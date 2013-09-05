@@ -42,11 +42,6 @@ Oembed, LivefyreOembed, Storage, debug) {
             content,
             childContent = [];
 
-        // TODO: Non-vis states may still have childContent!
-        if ( ! isPublic) {
-        	return;
-        }
-
         content = StateToContent._createContent(state, author);
 
         // Store content with IDs in case we later get
@@ -82,7 +77,7 @@ Oembed, LivefyreOembed, Storage, debug) {
         
 
         // TODO: Allow for returning of replies
-        if (isReply || isAttachment) {
+        if (isReply || isAttachment || ! isPublic) {
             return;
         }
 
