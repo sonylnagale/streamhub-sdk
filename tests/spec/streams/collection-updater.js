@@ -1,8 +1,9 @@
 define([
 	'jasmine',
 	'streamhub-sdk/streams/collection-updater',
-	'stream/readable'],
-function (jasmine, CollectionUpdater, Readable) {
+	'stream/readable',
+	'streamhub-sdk/content/state-to-content'],
+function (jasmine, CollectionUpdater, Readable, StateToContent) {
 	"use strict";
 
 	describe('streamhub-sdk/streams/collection-updater', function () {
@@ -40,6 +41,7 @@ function (jasmine, CollectionUpdater, Readable) {
 						};
 					}())
 				};
+				StateToContent.Storage.cache = {};
 				updater = new CollectionUpdater({
 				    environment: "t402.livefyre.com", 
 					articleId: "sh_col_21_1373461176", 
@@ -114,7 +116,14 @@ function (jasmine, CollectionUpdater, Readable) {
 						while (content = updater.read()) {
 							contents.push(content);
 						}
-						expect(contents.length).toBe(numStreamStates);
+						// There is one attachment state and one content state in the stream,
+						// so only one content item will be emitted, but it will have an attachment
+						expect(contents.length).toBe(1);
+						expect(contents[0].attachments.length).toBe(1);
+
+						waitsFor(function () {
+							return updater._read.callCount === 2;
+						}, '_read to be called twice');
 						expect(updater._read.callCount).toBe(2);
 					});
 				});

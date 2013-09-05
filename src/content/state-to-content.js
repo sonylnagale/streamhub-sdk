@@ -49,8 +49,6 @@ Oembed, LivefyreOembed, Storage, debug) {
 
         content = StateToContent._createContent(state, author);
 
-        debugger;
-
         // Store content with IDs in case we later get
         // replies or attachments targeting it
         if (content && content.id) {
