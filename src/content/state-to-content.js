@@ -4,9 +4,12 @@ define([
     'streamhub-sdk/content/types/livefyre-facebook-content',
     'streamhub-sdk/content/types/oembed',
     'streamhub-sdk/content/types/livefyre-oembed',
-    'streamhub-sdk/storage'
+    'streamhub-sdk/storage',
+    'streamhub-sdk/debug'
 ], function (LivefyreContent, LivefyreTwitterContent, LivefyreFacebookContent,
-Oembed, LivefyreOembed, Storage) {
+Oembed, LivefyreOembed, Storage, debug) {
+
+    var log = debug('streamhub-sdk/content/state-to-content');
 
 	/**
 	 * An Object that transforms state objects from Livefyre APIs
@@ -33,11 +36,11 @@ Oembed, LivefyreOembed, Storage) {
 	StateToContent.transform = function (state, author) {
         var isPublic = (typeof state.vis === 'undefined') || (state.vis === 1),
             isReply = state.content.parentId,
+            isAttachment = state.content.targetId,
             isContent = (state.type === 0),
             childStates = state.childContent || [],
-            childContent,
             content,
-            childContent;
+            childContent = [];
 
         // TODO: Non-vis states may still have childContent!
         if ( ! isPublic) {
@@ -46,10 +49,13 @@ Oembed, LivefyreOembed, Storage) {
 
         content = StateToContent._createContent(state, author);
 
+        debugger;
+
         // Store content with IDs in case we later get
         // replies or attachments targeting it
         if (content && content.id) {
             Storage.set(content.id, content);
+            childContent = Storage.get('children_'+content.id) || [];
         }
 
         // Get child states (replies and attachments)
@@ -57,23 +63,46 @@ Oembed, LivefyreOembed, Storage) {
         // Transform child states (replies and attachments)
         // This will put them in Storage
         for (var i=0, numChildren=childStates.length; i < numChildren; i++) {
-            childContent = this.transform(childStates[i]);
+            childContent.push(this.transform(childStates[i]));
+        }
+
+        // Add any children that are awaiting the new content
+        if (childContent.length) {
+            this._addChildren(content, childContent);
         }
 
         // At this point, all content and children (recursively)
         // Are stored by ID
-
         // Attach attachments to their target, or store for later
-        
+        if (isAttachment) {
+            this._attachOrStore(content, state.content.targetId);
+        }
         // Add replies to their parent, or store for later
+        if (isReply) {
+            this._addReplyOrStore(content, state.content.parentId);
+        }
+        
 
         // TODO: Allow for returning of replies
-        if (isReply) {
+        if (isReply || isAttachment) {
             return;
         }
 
         return content;
 	}
+
+
+    StateToContent._addChildren = function (content, children) {
+        var child;
+        for (var i=0, numChildren=children.length; i < numChildren; i++) {
+            child = children[i];
+            if (child instanceof Oembed) {
+                content.addAttachment(child);
+            } else if (child instanceof LivefyreContent) {
+                content.addReply(child);
+            }
+        }
+    }
 
 
     StateToContent._createContent = function (state, author) {
@@ -90,6 +119,38 @@ Oembed, LivefyreOembed, Storage) {
         } else if (['livefyre','feed'].indexOf(sourceName) !== -1) {
             return new LivefyreContent(state);
         }
+    };
+
+
+    StateToContent._attachOrStore = function (attachment, targetId) {
+        var target = Storage.get(targetId);
+        if (target) {
+            log('attachming attatment', arguments);
+            target.addAttachment(attachment);
+        } else {
+            log('storing attatment', arguments);
+            this._storeChild(attachment, targetId);
+        }
+    }
+
+
+    StateToContent._addReplyOrStore = function (reply, parentId) {
+        var parent = Storage.get(parentId);
+        if (parent) {
+            log('adding reply', arguments);
+            parent.addReply(reply);
+        } else {
+            log('storing reply', arguments);
+            this._storeChild(reply, parentId)
+        }
+    }
+
+
+    StateToContent._storeChild = function (child, parentId) {
+        var childrenKey = 'children_' + parentId,
+            children = Storage.get(childrenKey) || [];
+        children.push(child);
+        Storage.set(childrenKey, children);
     };
 
 
@@ -114,6 +175,6 @@ Oembed, LivefyreOembed, Storage) {
         "facebook"
     ];
 
-
+    StateToContent.Storage = Storage;
 	return StateToContent;
 });
