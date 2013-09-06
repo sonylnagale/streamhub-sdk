@@ -93,19 +93,21 @@ function (jasmine, CollectionArchive, Readable) {
 			});
 
 			it('emits end when there are no more bootstrap pages', function () {
-				var onEndSpy = jasmine.createSpy();
+				var onEndSpy = jasmine.createSpy(),
+					contents = [];
 				archive.on('end', onEndSpy);
 				archive.on('readable', function () {
+					var content;
 					// Read everything always
-					while (archive.read()) {}
+					while (content = archive.read()) {
+						contents.push(content);
+					}
 				});
 				waitsFor(function () {
+					return contents.length;
 					return onEndSpy.callCount;
 				}, 'end to be emitted');
 			});
-		});
-		xdescribe('emits end event when there is no more data', function () {
-			// TODO
 		});
 	});
 });

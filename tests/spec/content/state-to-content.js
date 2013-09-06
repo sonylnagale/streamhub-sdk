@@ -36,8 +36,11 @@ function (jasmine, StateToContent, Transform) {
 				expect(stateToContent instanceof Transform).toBe(true);
 			});
 			it('uses author information passed on construction as opts.authors', function () {
-				var state = mockStreamData.states["tweet-312328006913904641@twitter.com"],
-					content = stateToContent.transform(state);
+				var state = mockStreamData.states["tweet-312328006913904641@twitter.com"];
+				
+				stateToContent.write(state);
+				var content = stateToContent.read();
+
 				expect(content.author.id).toBe(state.content.authorId);
 				expect(content.author.displayName).toBe('PlanetLA_Music');
 			});
@@ -46,19 +49,25 @@ function (jasmine, StateToContent, Transform) {
                 var reply = mockStreamData.states["tweet-111919819891818@twitter.com"];
                 var attachment = mockStreamData.states["oem-3-tweet-312328006913904641@twitter.com"];
 
-                var attachmentContent = stateToContent.transform(attachment);
-                var replyContent = stateToContent.transform(reply);
-                var parentContent = stateToContent.transform(parent);
+                stateToContent.write(attachment);
+                var attachmentContent = stateToContent.read();
 
-                expect(attachmentContent).not.toBeDefined();
-                expect(replyContent).not.toBeDefined();
+                stateToContent.write(reply);
+                var replyContent = stateToContent.read();
+
+                stateToContent.write(parent);
+                var parentContent = stateToContent.read();
+
+                expect(attachmentContent).toBe(null);
+                expect(replyContent).toBe(null);
                 expect(parentContent).toBeDefined();
 
                 expect(parentContent.replies.length).toBe(1);
                 expect(parentContent.attachments.length).toBe(1);
             });
             it("can transform a state with childContent (like from bootstrap)", function () {
-            	var bootstrapContent = stateToContent.transform(mockThreadState);
+            	stateToContent.write(mockThreadState);
+            	var bootstrapContent = stateToContent.read();
             	expect(bootstrapContent.replies.length).toBe(32);
             });
 

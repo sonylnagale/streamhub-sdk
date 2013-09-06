@@ -113,18 +113,26 @@ function (jasmine, CollectionUpdater, Readable, StateToContent) {
 						var numStreamStates = Object.keys(mockStreamResponse.states).length,
 							contents = [],
 							content;
+
 						while (content = updater.read()) {
 							contents.push(content);
 						}
-						// There is one attachment state and one content state in the stream,
-						// so only one content item will be emitted, but it will have an attachment
-						expect(contents.length).toBe(1);
-						expect(contents[0].attachments.length).toBe(1);
 
 						waitsFor(function () {
-							return updater._read.callCount === 2;
-						}, '_read to be called twice');
-						expect(updater._read.callCount).toBe(2);
+							return contents.length;
+						})
+
+						runs(function () {
+							// There is one attachment state and one content state in the stream,
+							// so only one content item will be emitted, but it will have an attachment
+							expect(contents.length).toBe(1);
+							expect(contents[0].attachments.length).toBe(1);
+
+							waitsFor(function () {
+								return updater._read.callCount === 2;
+							}, '_read to be called twice');
+							expect(updater._read.callCount).toBe(2);
+						});
 					});
 				});
 			});
