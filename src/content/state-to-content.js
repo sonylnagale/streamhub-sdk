@@ -5,9 +5,11 @@ define([
     'streamhub-sdk/content/types/oembed',
     'streamhub-sdk/content/types/livefyre-oembed',
     'streamhub-sdk/storage',
-    'streamhub-sdk/debug'
+    'streamhub-sdk/debug',
+    'stream/transform',
+    'inherits'
 ], function (LivefyreContent, LivefyreTwitterContent, LivefyreFacebookContent,
-Oembed, LivefyreOembed, Storage, debug) {
+Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
 
     var log = debug('streamhub-sdk/content/state-to-content');
 
@@ -18,13 +20,28 @@ Oembed, LivefyreOembed, Storage, debug) {
 	function StateToContent (opts) {
 		opts = opts || {};
 		this._authors = opts.authors || {};
+        Transform.call(this, opts);
 	}
 
+    inherits(StateToContent, Transform);
 
-	StateToContent.prototype.transform = function (state) {
-		var authorId = state.content && state.content.authorId;
-		return StateToContent.transform(state, this._authors[authorId]);
+
+	StateToContent.prototype._transform = function (state, done) {
+        var content = this.transform(state);
+        this.push(content);
+        done();
 	};
+
+    StateToContent.prototype.transform = function (state) {
+        try {
+            var authorId = state.content && state.content.authorId,
+                content = StateToContent.transform(state, this._authors[authorId]);
+        } catch (err) {
+            this.emit('error transforming state-to-content', err);
+            log('StateToContent.transform thew', err);
+        }
+        return content;
+    };
 
 
     /**
