@@ -27,12 +27,14 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
 
 
 	StateToContent.prototype._transform = function (state, done) {
-        var content = this.transform(state);
-        this.push(content);
+        var content = this.__transform(state);
+        if (content) {
+            this.push(content);
+        }
         done();
 	};
 
-    StateToContent.prototype.transform = function (state) {
+    StateToContent.prototype.__transform = function (state) {
         try {
             var authorId = state.content && state.content.authorId,
                 content = StateToContent.transform(state, this._authors[authorId]);

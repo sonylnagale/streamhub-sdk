@@ -87,9 +87,10 @@ debug) {
     		var contents = self._contentsFromStreamData(data);
     		// Update _latestEvent so we only get new data
     		self._latestEvent = data.maxEventId;
-    		// Push Content from this stream response
-    		// _read() will be called again to get more Content
-    		self.push.apply(self, contents);
+
+            self.push.apply(self, contents);
+
+            // _read will get called again when more data is needed
     	});
     };
 
@@ -100,17 +101,19 @@ debug) {
 			state,
 			content,
 			contents = [];
+
+        stateToContent.on('data', function (content) {
+            contents.push(content);
+        });
+
 		for (var contentId in states) {
 			if (states.hasOwnProperty(contentId)) {
 				state = states[contentId];
-	            content = stateToContent.transform(state);
-				if ( ! content) {
-					continue;
-				}
-				contents.push(content);
+	            stateToContent.write(state);
 			}
 		}
-		return contents;
+
+        return contents;
     };
 
 

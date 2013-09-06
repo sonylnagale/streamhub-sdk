@@ -60,20 +60,12 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
             return this._getBootstrapInit(function (err, nPages, headDocument) {
                 var contents = self._contentsFromBootstrapDoc(headDocument, {
                         isHead: true
-                    }),
-                    contentIds = [];
-                $.each(contents, function (i, content) {
-                    if (content && content.id) {
-                        contentIds.push(content.id)
-                    }
-                });
+                    });
+
                 // Bootstrap pages are zero-based. Store the highest 
                 self._nextPage = nPages - 1;
-                self.push.apply(self, contents);
 
-                // Store an identifier for each state in the head document
-                // Since we could get the same thing later from the archive pages
-                this._contentIdsInHeadDocument.push.apply(this._contentIdsInHeadDocument, contentIds);
+                self.push.apply(self, contents);
             });
         }
         // After that, request the latest page
@@ -186,26 +178,30 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
     CollectionArchive.prototype._contentsFromBootstrapDoc = function (bootstrapDoc, opts) {
         opts = opts || {};
         bootstrapDoc = bootstrapDoc || {};
-        var states = bootstrapDoc.content || [],
+        var self = this,
+            states = bootstrapDoc.content || [],
             authors = bootstrapDoc.authors || {},
             stateToContent = new StateToContent(bootstrapDoc),
             state,
             content,
             contents = [];
-        for (var i=0, statesCount=states.length; i < statesCount; i++) {
-            state = states[i];
-            content = stateToContent.transform(state);
-            if ( ! content) {
-                continue
-            }
-            if (this._contentIdsInHeadDocument.indexOf(content.id) !== -1) {
-                continue;
+
+        stateToContent.on('data', function (content) {
+            if (! content ||
+                self._contentIdsInHeadDocument.indexOf(content.id) !== -1) {
+                return;
             }
             if (opts.isHead && content.id) {
-                this._contentIdsInHeadDocument.push(content.id);
+                self._contentIdsInHeadDocument.push(content.id);
             }
             contents.push(content);
+        });
+
+        for (var i=0, statesCount=states.length; i < statesCount; i++) {
+            state = states[i];
+            content = stateToContent.write(state);
         }
+
         log("created contents from bootstrapDoc", contents);
         return contents;
     };
