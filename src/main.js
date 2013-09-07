@@ -53,7 +53,6 @@ define([
 ) {
     var Hub = {};
     Hub.debug = debug;
-    Hub.Auth = Auth;
     Hub.EventEmitter = EventEmitter;
     Hub.Storage = Storage;
     Hub.Util = Util;
