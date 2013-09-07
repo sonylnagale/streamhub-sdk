@@ -55,12 +55,6 @@ ContentView, More, ShowMoreButton, ListViewTemplate) {
             self.modal.show(context.content, { attachment: context.attachmentToFocus });
         });
 
-        this._showMoreBuffer = opts.ShowMoreBuffer || this._createShowMoreBuffer(opts);
-        this._showMoreBuffer.on('data', function (content) {
-            log('_showMoreBuffer on data. Adding to view', content);
-            self.add(content);
-        })
-
         Writable.call(this, opts);
 
         this._moreAmount = opts.showMore || 50;
