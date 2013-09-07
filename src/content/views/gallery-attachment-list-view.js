@@ -34,7 +34,11 @@ function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemp
         this.proportionalThumbnails = opts.proportionalThumbnails === undefined ? false : opts.proportionalThumbnails;
         this.focusedIndex = 0;
         this.oembedViews = [];
-        this.setContent(opts.content);
+
+        if (opts.content) {
+            this.setContent(opts.content);
+        }
+        
         if (opts.attachmentToFocus) {
             this.setFocusedAttachment(opts.attachmentToFocus);
         }

@@ -17,7 +17,9 @@ function($, View, OembedView, AttachmentListTemplate, util) {
     var AttachmentListView = function(opts) {
         opts = opts || {};
         this.oembedViews = [];
-        this.setContent(opts.content);
+        if (opts.content) {
+            this.setContent(opts.content);
+        }
         View.call(this, opts);
     };
     util.inherits(AttachmentListView, View);
