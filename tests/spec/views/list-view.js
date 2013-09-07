@@ -59,11 +59,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
             var content;
 
             beforeEach(function() {
-                listView = new ListView({
-                    streams: {
-                        main: new JasmineSpyStream()
-                    }
-                });
+                listView = new ListView();
 
                 content = new Content();
                 listView.add(content);
