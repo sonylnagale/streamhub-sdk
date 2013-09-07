@@ -7,7 +7,7 @@ define([
     'streamhub-sdk/debug',
     'stream/writable',
     'streamhub-sdk/content/views/content-view',
-    'streamhub-sdk/streams/more'
+    'streamhub-sdk/streams/more',
     'streamhub-sdk/views/show-more-button',
     'hgn!streamhub-sdk/views/templates/list-view'],
 function($, View, ContentViewFactory, ModalView, inherits, debug, Writable,
