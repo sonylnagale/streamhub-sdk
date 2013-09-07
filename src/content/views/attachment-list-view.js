@@ -16,11 +16,13 @@ function($, View, OembedView, AttachmentListTemplate, util) {
      */
     var AttachmentListView = function(opts) {
         opts = opts || {};
+        View.call(this, opts);
+
         this.oembedViews = [];
+        
         if (opts.content) {
             this.setContent(opts.content);
         }
-        View.call(this, opts);
     };
     util.inherits(AttachmentListView, View);
 
@@ -43,7 +45,9 @@ function($, View, OembedView, AttachmentListTemplate, util) {
             this.$el.find(this.contentAttachmentSelector).remove();
             this.oembedViews = [];
         }
+
         this.content = content;
+        
         for (var i=0; i < this.content.attachments.length; i++) {
             this._insert(this.content.attachments[i]);
         }
