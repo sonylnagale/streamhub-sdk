@@ -209,7 +209,7 @@ function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemp
             oembedView.$el.appendTo(stackedAttachmentsEl);
         }  
 
-        return TiledAttachmentListView.prototype._insert.call(this, oembedView);
+        return oembedView;
     };
 
     /**
@@ -218,6 +218,7 @@ function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemp
      * @returns {AttachmentListView} By convention, return this instance for chaining
      */
     GalleryAttachmentListView.prototype.add = function (oembed) {
+        // Gallery doesn't display non-tileable attachments (e.g. links)
         if (! this.isTileableAttachment(oembed)) {
             return this;
         }

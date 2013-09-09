@@ -4,11 +4,11 @@ define([
     'jasmine-jquery',
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/types/oembed',
-    'streamhub-sdk/modal/views/modal-gallery-attachment-list-view',
+    'streamhub-sdk/modal/views/attachment-gallery-modal',
     'streamhub-sdk/content/views/oembed-view'],
-function($, jasmine, jasminejQuery, Content, Oembed, ModalGalleryAttachmentListView, OembedView) {
+function($, jasmine, jasminejQuery, Content, Oembed, AttachmentGalleryModal, OembedView) {
 
-    describe('ModalGalleryAttachmentListView', function () {
+    describe('AttachmentGalleryModal', function () {
         var oembedAttachment = {
             provider_name: "Twimg",
             provider_url: "http://pbs.twimg.com",
@@ -18,22 +18,22 @@ function($, jasmine, jasminejQuery, Content, Oembed, ModalGalleryAttachmentListV
         var content = new Content({ body: 'what' });
 
         it('has implemented the ._createContentView method', function () {
-            expect(ModalGalleryAttachmentListView.prototype._createContentView).toBeDefined();
+            expect(AttachmentGalleryModal.prototype._createContentView).toBeDefined();
         });
 
         describe('when constructed', function () {
 
             describe('with no arguments or options', function () {
-                var modalView = new ModalGalleryAttachmentListView();
+                var modalView = new AttachmentGalleryModal();
 
-                it('is instance of ModalGalleryAttachmentListView', function() {
+                it('is instance of AttachmentGalleryModal', function() {
                     expect(modalView).toBeDefined();
-                    expect(modalView instanceof ModalGalleryAttachmentListView).toBe(true);
+                    expect(modalView instanceof AttachmentGalleryModal).toBe(true);
                 });
 
-                var modalView = new ModalGalleryAttachmentListView();
-                it('is an instance of ModalGalleryAttachmentListView', function() {
-                    expect(modalView instanceof ModalGalleryAttachmentListView).toBe(true);
+                var modalView = new AttachmentGalleryModal();
+                it('is an instance of AttachmentGalleryModal', function() {
+                    expect(modalView instanceof AttachmentGalleryModal).toBe(true);
                 });
 
                 it('has a .modalContentView', function () {
@@ -46,7 +46,7 @@ function($, jasmine, jasminejQuery, Content, Oembed, ModalGalleryAttachmentListV
             var modalView;
 
             beforeEach(function () {
-                modalView = new ModalGalleryAttachmentListView();
+                modalView = new AttachmentGalleryModal();
             });
 
             it('sets a content instance on the modal content view', function () {
@@ -78,7 +78,7 @@ function($, jasmine, jasminejQuery, Content, Oembed, ModalGalleryAttachmentListV
            
             beforeEach(function() {
                 content = new Content();
-                modalView = new ModalGalleryAttachmentListView();
+                modalView = new AttachmentGalleryModal();
                 modalView.setElement($('<div></div>'));
                 modalView.show(content, { attachment: oembedVideoAttachment });
 
@@ -114,7 +114,7 @@ function($, jasmine, jasminejQuery, Content, Oembed, ModalGalleryAttachmentListV
 
             beforeEach(function() {
                 content = new Content();
-                modalView = new ModalGalleryAttachmentListView();
+                modalView = new AttachmentGalleryModal();
                 modalView.setElement($('<div></div>'));
                 modalView.show(content, { attachment: oembedAttachment });
 

@@ -20,7 +20,6 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
     var TiledAttachmentListView = function (opts) {
         opts = opts || {};
         this.oembedViews = [];
-        this.setContent(opts.content);
         AttachmentListView.call(this, opts);
     };
     util.inherits(TiledAttachmentListView, AttachmentListView);
@@ -74,10 +73,15 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
         var self = this;
         var oembedView = AttachmentListView.prototype.add.call(this, oembed);
 
-        if (this.el) {
-            this.retile();
-        }
+        oembedView.$el.on('click', function(e) {
+            /**
+             * Focus content
+             * @event TiledAttachmentListView#focusContent.hub
+             */
+            $(e.target).trigger('focusContent.hub', { content: self.content, attachmentToFocus: oembedView.oembed });
+        });
 
+        this.retile();
         return this;
     };
 
@@ -87,13 +91,6 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
         var stackedAttachmentsEl = this.$el.find(this.stackedAttachmentsSelector);
         if (this.isTileableAttachment(oembedView.oembed)) {
             oembedView.$el.appendTo(tiledAttachmentsEl);
-            oembedView.$el.on('click', function(e) {
-                /**
-                 * Focus content
-                 * @event TiledAttachmentListView#focusContent.hub
-                 */
-                $(e.target).trigger('focusContent.hub', { content: self.content, attachmentToFocus: oembedView.oembed });
-            });
         } else {
             oembedView.$el.appendTo(stackedAttachmentsEl);
         }    
@@ -112,6 +109,9 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
      * Retiles all attachments of the content 
      */
     TiledAttachmentListView.prototype.retile = function () {
+        if ( ! this.el) {
+            return;
+        }
         var tiledAttachmentsEl = this.$el.find(this.tiledAttachmentsSelector);
 
         // Add classes to make thumbnails tile

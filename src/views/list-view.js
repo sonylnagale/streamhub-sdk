@@ -2,7 +2,7 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/view',
     'streamhub-sdk/content/content-view-factory',
-    'streamhub-sdk/modal/views/modal-gallery-attachment-list-view',
+    'streamhub-sdk/modal/views/attachment-gallery-modal',
     'inherits',
     'streamhub-sdk/debug',
     'stream/writable',
@@ -10,7 +10,7 @@ define([
     'streamhub-sdk/streams/more',
     'streamhub-sdk/views/show-more-button',
     'hgn!streamhub-sdk/views/templates/list-view'],
-function($, View, ContentViewFactory, ModalGalleryAttachmentListView, inherits,
+function($, View, ContentViewFactory, AttachmentGalleryModal, inherits,
 debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
 
     var log = debug('streamhub-sdk/views/list-view');
@@ -27,7 +27,7 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
         var self = this;
         opts = opts || {};
 
-        this.modal = opts.modal === undefined ? new ModalGalleryAttachmentListView() : opts.modal;
+        this.modal = opts.modal === undefined ? new AttachmentGalleryModal() : opts.modal;
 
         View.call(this, opts);
 

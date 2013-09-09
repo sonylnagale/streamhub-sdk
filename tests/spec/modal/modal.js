@@ -5,8 +5,8 @@ define([
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/types/oembed',
     'streamhub-sdk/modal/modal',
-    'streamhub-sdk/modal/views/modal-gallery-attachment-list-view'
-], function($, jasmine, jasmineJquery, Content, Oembed, ModalView, ModalGalleryAttachmentListView) {
+    'streamhub-sdk/content/views/gallery-attachment-list-view'
+], function($, jasmine, jasmineJquery, Content, Oembed, ModalView, GalleryAttachmentListView) {
 
     describe('ModalView', function() {
 
@@ -26,7 +26,7 @@ define([
 
             beforeEach(function () {
                 ModalView.prototype._createContentView = function () {
-                    return  new ModalGalleryAttachmentListView();
+                    return new GalleryAttachmentListView();
                 };
                 modalView = new ModalView();
             });
@@ -46,7 +46,10 @@ define([
             var modalView;
 
             beforeEach(function() {
-                modalView = new ModalGalleryAttachmentListView();
+                ModalView.prototype._createContentView = function () {
+                    return new GalleryAttachmentListView();
+                };
+                modalView = new ModalView();
                 modalView.render();
             });
 
@@ -70,7 +73,10 @@ define([
             var modalView;
 
             beforeEach(function() {
-                modalView = new ModalGalleryAttachmentListView();
+                ModalView.prototype._createContentView = function () {
+                    return new GalleryAttachmentListView();
+                };
+                modalView = new ModalView();
                 modalView.show();
             });
 
@@ -93,7 +99,10 @@ define([
             var modalView;
 
             beforeEach(function() {
-                modalView = new ModalGalleryAttachmentListView();
+                ModalView.prototype._createContentView = function () {
+                    return new GalleryAttachmentListView();
+                };
+                modalView = new ModalView();
                 modalView.render();
             });
 
@@ -115,7 +124,7 @@ define([
                 var modalView;
 
                 beforeEach(function() {
-                    modalView = new ModalGalleryAttachmentListView();
+                    modalView = new ModalView();
                 });
 
                 afterEach(function() {
@@ -134,7 +143,7 @@ define([
                 var modalView;
 
                 beforeEach(function() {
-                    modalView = new ModalGalleryAttachmentListView();
+                    modalView = new ModalView();
                 });
 
                 afterEach(function() {

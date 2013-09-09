@@ -9,14 +9,14 @@ define([
      * A view that overlays over the entire viewport to display some content
      *
      * @param opts {Object} A set of options to config the view with
-     * @fires ModalGalleryAttachmentListView#hideModal.hub
-     * @exports streamhub-sdk/modal/views/modal-gallery-attachment-list-view
+     * @fires AttachmentGalleryModal#hideModal.hub
+     * @exports streamhub-sdk/modal/views/attachment-gallery-modal
      * @constructor
      */
-    var ModalGalleryAttachmentListView = function (opts) {
+    var AttachmentGalleryModal = function (opts) {
         ModalView.call(this, opts);
     };
-    util.inherits(ModalGalleryAttachmentListView, ModalView);
+    util.inherits(AttachmentGalleryModal, ModalView);
 
 
     /**
@@ -26,7 +26,7 @@ define([
      * @param opts.attachment {Oembed} The attachment to be focused in the content view
      * @private
      */
-    ModalGalleryAttachmentListView.prototype._createContentView = function (content, opts) {
+    AttachmentGalleryModal.prototype._createContentView = function (content, opts) {
         opts = opts || {};
         var modalContentView = new GalleryAttachmentListView({
             content: content,
@@ -44,7 +44,7 @@ define([
      * @param element {HTMLElement} The element to render this View in
      * @returns this
      */
-    ModalGalleryAttachmentListView.prototype.setElement = function (element) {
+    AttachmentGalleryModal.prototype.setElement = function (element) {
         ModalView.prototype.setElement.call(this, element);
 
         var self = this;
@@ -59,7 +59,7 @@ define([
     /**
      * Resizes the focused attachment according to the viewport size
      */
-    ModalGalleryAttachmentListView.prototype.resizeFocusedAttachment = function () {
+    AttachmentGalleryModal.prototype.resizeFocusedAttachment = function () {
         var height = this.$el.height();
         var width = this.$el.width();
 
@@ -110,5 +110,5 @@ define([
     };
 
 
-    return ModalGalleryAttachmentListView;
+    return AttachmentGalleryModal;
 });
