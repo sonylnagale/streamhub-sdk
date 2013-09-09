@@ -46,7 +46,7 @@ function($, jasmine, jasminejQuery, Content, AttachmentListView, OembedView) {
 
             describe('creates an attachment view', function() {
                 var attachmentListView = new AttachmentListView({ content: content });
-                var oembedView = attachmentListView.createOembedView(oembedAttachment);
+                var oembedView = attachmentListView._createOembedView(oembedAttachment);
                 it('is instance of OembedView', function() {
                     expect(oembedView).toBeDefined();
                     expect(oembedView instanceof OembedView).toBe(true);

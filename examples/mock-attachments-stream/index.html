@@ -30,7 +30,8 @@
         ], function (Hub, ListView, MockAttachmentsStream) {
             
             var feed = window.view = new ListView({
-                el: document.getElementById("feed")
+                el: document.getElementById("feed"),
+                modal: false
             });
 
             (new MockAttachmentsStream()).pipe(feed);

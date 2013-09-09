@@ -21,10 +21,9 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
         opts = opts || {};
         this.oembedViews = [];
         this.setContent(opts.content);
-        View.call(this, opts);
+        AttachmentListView.call(this, opts);
     };
-    util.inherits(TiledAttachmentListView, View);
-    $.extend(TiledAttachmentListView.prototype, AttachmentListView.prototype);
+    util.inherits(TiledAttachmentListView, AttachmentListView);
 
     TiledAttachmentListView.prototype.template = TiledAttachmentListTemplate;
     TiledAttachmentListView.prototype.tiledAttachmentsSelector = '.content-attachments-tiled';
@@ -33,25 +32,12 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
     TiledAttachmentListView.prototype.horizontalTileClassName = 'content-attachment-horizontal-tile';
     TiledAttachmentListView.prototype.contentAttachmentSelector = '.content-attachment';
 
-    /**
-     * Set the element for the view to render in.
-     * You will probably want to call .render() after this, but not always.
-     * @param element {HTMLElement} The element to render this View in
-     * @returns this
-     */
-    TiledAttachmentListView.prototype.setElement = function (element) {
-        this.el = element;
-        this.$el = $(element);
-        return this;
-    };
 
-    /**
-     * A count of the number of attachments for this content item
-     * @returns {int} The number of attachments for this content item
-     */
-    TiledAttachmentListView.prototype.count = function () {
-        return this.oembedViews.length;
-    };
+    TiledAttachmentListView.prototype.render = function () {
+        AttachmentListView.prototype.render.call(this);
+        this.retile();
+    }
+
 
     /**
      * Checks whether attachment is tileable
@@ -86,11 +72,19 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
      */
     TiledAttachmentListView.prototype.add = function (oembed) {
         var self = this;
-        var oembedView = this._insert(oembed);
+        var oembedView = AttachmentListView.prototype.add.call(this, oembed);
 
+        if (this.el) {
+            this.retile();
+        }
+
+        return this;
+    };
+
+    TiledAttachmentListView.prototype._insert = function (oembedView) {
+        var self = this;
         var tiledAttachmentsEl = this.$el.find(this.tiledAttachmentsSelector);
         var stackedAttachmentsEl = this.$el.find(this.stackedAttachmentsSelector);
-
         if (this.isTileableAttachment(oembedView.oembed)) {
             oembedView.$el.appendTo(tiledAttachmentsEl);
             oembedView.$el.on('click', function(e) {
@@ -102,12 +96,8 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
             });
         } else {
             oembedView.$el.appendTo(stackedAttachmentsEl);
-        }
-        oembedView.render();
-        this.retile();
-
-        return this;
-    };
+        }    
+    }
 
     /**
      * Removes a Oembed attachment from the Attachments view. 

@@ -77,6 +77,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
             it('shows finds the correct ContentView instance and invokes .attachmentsView.focus when no modal is set on the ListView instance', function () {
                 listView.modal = false;
                 var targetContentView = listView.getContentView(content);
+                targetContentView.attachmentsView.focus = function () {};
                 spyOn(targetContentView.attachmentsView, 'focus');
 
                 listView.$el.trigger('focusContent.hub', { content: content });
