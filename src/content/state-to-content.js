@@ -13,26 +13,26 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
 
     var log = debug('streamhub-sdk/content/state-to-content');
 
-	/**
-	 * An Object that transforms state objects from Livefyre APIs
-	 * into streamhub-sdk Content instances
-	 */
-	function StateToContent (opts) {
-		opts = opts || {};
-		this._authors = opts.authors || {};
+    /**
+     * An Object that transforms state objects from Livefyre APIs
+     * into streamhub-sdk Content instances
+     */
+    function StateToContent (opts) {
+        opts = opts || {};
+        this._authors = opts.authors || {};
         Transform.call(this, opts);
-	}
+    }
 
     inherits(StateToContent, Transform);
 
 
-	StateToContent.prototype._transform = function (state, done) {
+    StateToContent.prototype._transform = function (state, done) {
         var content = this.__transform(state);
         if (content) {
             this.push(content);
         }
         done();
-	};
+    };
 
     StateToContent.prototype.__transform = function (state) {
         try {
@@ -52,7 +52,7 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
      *     client.
      * @return {LivefyreContent} A new, correctly typed, content object. 
      */
-	StateToContent.transform = function (state, author) {
+    StateToContent.transform = function (state, author) {
         var isPublic = (typeof state.vis === 'undefined') || (state.vis === 1),
             isReply = state.content.parentId,
             isAttachment = state.content.targetId,
@@ -101,7 +101,7 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
         }
 
         return content;
-	}
+    }
 
 
     StateToContent._addChildren = function (content, children) {
@@ -188,5 +188,5 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
     ];
 
     StateToContent.Storage = Storage;
-	return StateToContent;
+    return StateToContent;
 });
