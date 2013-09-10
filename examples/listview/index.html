@@ -32,27 +32,15 @@
                 "environment": "t402.livefyre.com"
             };
             var listView = window.view = new ListView({
-                // initial: 1,
-                // showMore: 3,
+                initial: 1,
+                showMore: 2,
                 el: document.getElementById("listView")
             });
 
             var collection = new Collection(opts);
 
+            collection.pipe(listView);
 
-            var archive = window.archive = collection.createArchive();
-            var updater = window.updater = collection.createUpdater();
-
-
-            archive.on('error', onError);
-            updater.on('error', onError);
-            function onError (err) {
-                console.log('stream error', err);
-            }
-
-
-            archive.pipe(listView.more);
-            updater.pipe(listView);
         });
         </script>
     </body>
