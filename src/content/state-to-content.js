@@ -27,14 +27,6 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
 
 
     StateToContent.prototype._transform = function (state, done) {
-        var content = this.__transform(state);
-        if (content) {
-            this.push(content);
-        }
-        done();
-    };
-
-    StateToContent.prototype.__transform = function (state) {
         try {
             var authorId = state.content && state.content.authorId,
                 content = StateToContent.transform(state, this._authors[authorId]);
@@ -42,7 +34,10 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
             this.emit('error transforming state-to-content', err);
             log('StateToContent.transform thew', err);
         }
-        return content;
+        if (content) {
+            this.push(content);
+        }
+        done();
     };
 
 
