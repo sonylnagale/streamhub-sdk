@@ -4,12 +4,14 @@ define([
     'streamhub-sdk/content/types/livefyre-facebook-content',
     'streamhub-sdk/content/types/oembed',
     'streamhub-sdk/content/types/livefyre-oembed',
+    'streamhub-sdk/content/types/livefyre-instagram-content',
     'streamhub-sdk/storage',
     'streamhub-sdk/debug',
     'stream/transform',
     'inherits'
 ], function (LivefyreContent, LivefyreTwitterContent, LivefyreFacebookContent,
-Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
+Oembed, LivefyreOembed, LivefyreInstagramContent, Storage, debug, Transform,
+inherits) {
 
     var log = debug('streamhub-sdk/content/state-to-content');
 
@@ -113,7 +115,8 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
 
 
     StateToContent._createContent = function (state, author) {
-        var sourceName = StateToContent.enums.source[state.source];
+        var sourceName = StateToContent.enums.source[state.source],
+            ContentType;
 
         state.author = author;
         if ('OEMBED' === StateToContent.enums.type[state.type]) {
@@ -122,10 +125,26 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
             return new LivefyreTwitterContent(state);
         } else if (sourceName === 'facebook') {
             return new LivefyreFacebookContent(state);
-        } else if (['livefyre','feed'].indexOf(sourceName) !== -1) {
+        } else if (sourceName === 'feed') {
+            ContentType = LivefyreContent;
+            // Use specific Content type for states from instagram RSS feeds
+            if (isInstagramState(state)) {
+                ContentType = LivefyreInstagramContent;
+            }
+            return new ContentType(state);
+        } else if (sourceName === 'livefyre') {
             return new LivefyreContent(state);
         }
     };
+
+    function isInstagramState (state) {
+        var pattern = /\/\/instagram\.com/i;
+        try {
+            return state.content.feedEntry.channelId.match(pattern);
+        } catch (err) {
+            return false;
+        }
+    }
 
 
     StateToContent._attachOrStore = function (attachment, targetId) {

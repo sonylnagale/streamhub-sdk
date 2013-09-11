@@ -1,8 +1,9 @@
 define([
 	'jasmine',
 	'streamhub-sdk/content/state-to-content',
-	'stream/transform'],
-function (jasmine, StateToContent, Transform) {
+	'stream/transform',
+	'streamhub-sdk/content/types/livefyre-instagram-content'],
+function (jasmine, StateToContent, Transform, LivefyreInstagramContent) {
 	describe('streamhub-sdk/streams/transforms/state-to-content', function () {
 		it('is a Transform', function () {
 			expect(StateToContent).toEqual(jasmine.any(Function));
@@ -69,6 +70,14 @@ function (jasmine, StateToContent, Transform) {
             	stateToContent.write(mockThreadState);
             	var bootstrapContent = stateToContent.read();
             	expect(bootstrapContent.replies.length).toBe(32);
+            });
+
+            it("transforms instagram content states into streamhub-sdk/content/types/livefyre-instagram-content", function () {
+            	var instagramState = {"childContent":[{"content":{"targetId":"32b64fb7-56b3-4e20-9455-e25c51510bfe","authorId":"-","link":"http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg","oembed":{"provider_url":"http://distilleryimage5.ak.instagram.com","url":"http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg","height":612,"width":612,"version":"1.0","link":"http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg","provider_name":"Instagram","type":"photo"},"position":0,"id":"32b64fb7-56b3-4e20-9455-e25c51510bfe.http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg"},"vis":1,"type":3,"event":1378676100460520,"source":0}],"content":{"feedEntry":{"description":"Another pic! 😉 #bioshockinfinite #bioshock #videogame #game #xbox #pc #ps3 #awesome #picture #like #tap #great #photo #elizabeth #bookerdewitt #falling #sky #clouds #buildings #scary <img src=\"http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg\" />","pubDate":1378676098,"title":"","channelId":"http://instagram.com/tags/xbox/feed/recent.rss","link":"http://distilleryimage5.ak.instagram.com/1867136018ce11e3995e22000ab5a7b8_7.jpg","type":2,"createdAt":1378676098},"bodyHtml":"Another pic!  #bioshockinfinite #bioshock #videogame #game #xbox #pc #ps3 #awesome #picture #like #tap #great #photo #elizabeth #bookerdewitt #falling #sky #clouds #buildings #scary ","id":"32b64fb7-56b3-4e20-9455-e25c51510bfe","authorId":"85761ea656ea4f47e1b4533c656edae9@instagram.com","parentId":"","updatedAt":1378676100,"annotations":{},"createdAt":1378676098},"vis":1,"source":13,"type":0,"event":1378676100460520};
+            	var instagramContent;
+            	stateToContent.write(instagramState);
+            	instagramContent = stateToContent.read();
+            	expect(instagramContent instanceof LivefyreInstagramContent).toBe(true);
             });
 
             describe('.write', function () {
