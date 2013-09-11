@@ -32,7 +32,7 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
                 content = StateToContent.transform(state, this._authors[authorId]);
         } catch (err) {
             this.emit('error transforming state-to-content', err);
-            log('StateToContent.transform thew', err);
+            log('StateToContent.transform threw', err);
         }
         if (content) {
             this.push(content);
