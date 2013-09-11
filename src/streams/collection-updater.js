@@ -12,7 +12,7 @@ debug) {
     var log = debug('streamhub-sdk/streams/collection-updater');
 
 
-    function CollectionUpdater (opts) {
+    var CollectionUpdater = function (opts) {
         opts = opts || {};
 
         this._network = opts.network;
