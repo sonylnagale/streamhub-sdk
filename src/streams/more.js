@@ -13,7 +13,7 @@ function (inherits, Transform, debug) {
      * @param opts {object}
      * @param [opts.goal=0] {number} The initial amount to let through
      */
-    function More (opts) {
+    var More = function (opts) {
         opts = opts || {};
         this._goal = opts.goal || 0;
         Transform.call(this, opts);
