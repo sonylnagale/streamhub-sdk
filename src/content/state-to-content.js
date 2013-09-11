@@ -51,7 +51,7 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
         var isPublic = (typeof state.vis === 'undefined') || (state.vis === 1),
             isReply = state.content.parentId,
             isAttachment = state.content.targetId,
-            isContent = (state.type === 0),
+            isContent = ('CONTENT' === StateToContent.enums.type[state.type]),
             childStates = state.childContent || [],
             content,
             childContent = [];
@@ -116,8 +116,7 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
         var sourceName = StateToContent.enums.source[state.source];
 
         state.author = author;
-
-        if (state.type === 3) {
+        if ('OEMBED' === StateToContent.enums.type[state.type]) {
             return new LivefyreOembed(state);
         } else if (sourceName === 'twitter') {
             return new LivefyreTwitterContent(state);
@@ -180,6 +179,25 @@ Oembed, LivefyreOembed, Storage, debug, Transform, inherits) {
         "unknown",
         "feed",
         "facebook"
+    ];
+
+
+     /**
+     * The StreamHub APIs use enumerations to define
+     * the type of message sent down the wire. All types
+     * should be in this enumeration.
+     * @enum types
+     * @property {string} types.CONTENT - The good stuff. Juicy Content
+     * like comments
+     * @property {string} types.OPINE - A user's opinion or something
+     * @property {string} types.SHARE - TODO: I don't know yet.
+     * @property {string} types.OEMBED - A new attachment
+     */
+    StateToContent.enums.type = [
+        'CONTENT',
+        'OPINE',
+        'SHARE',
+        'OEMBED'
     ];
 
     StateToContent.Storage = Storage;
