@@ -1,19 +1,19 @@
 define([
-	'inherits',
-	'stream/readable',
-	'stream/util',
+    'inherits',
+    'stream/readable',
+    'stream/util',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
     'streamhub-sdk/clients/livefyre-stream-client',
     'streamhub-sdk/content/state-to-content',
-	'streamhub-sdk/debug'],
+    'streamhub-sdk/debug'],
 function (inherits, Readable, streamUtil, BootstrapClient, StreamClient, StateToContent,
 debug) {
 
-	var log = debug('streamhub-sdk/streams/collection-updater');
+    var log = debug('streamhub-sdk/streams/collection-updater');
 
 
-	function CollectionUpdater (opts) {
-		opts = opts || {};
+    function CollectionUpdater (opts) {
+        opts = opts || {};
 
         this._network = opts.network;
         this._siteId = opts.siteId;
@@ -26,13 +26,13 @@ debug) {
         this._finishedInitFromBootstrap = false;
         this._contentIdsInHeadDocument = [];
 
-		Readable.call(this, opts);
-	}
+        Readable.call(this, opts);
+    }
 
-	inherits(CollectionUpdater, Readable);
+    inherits(CollectionUpdater, Readable);
 
 
-	/**
+    /**
      * @private
      * Called by Readable base class. Do not call directly
      * Get content from bootstrap and .push() onto the read buffer
@@ -49,8 +49,8 @@ debug) {
             log('requesting bootstrap init');
             return this._getBootstrapInit(function (err, initResponse) {
                 var collectionSettings = initResponse.collectionSettings,
-                	latestEvent = collectionSettings.event,
-                	collectionId = collectionSettings.collectionId;
+                    latestEvent = collectionSettings.event,
+                    collectionId = collectionSettings.collectionId;
 
                 self._latestEvent = latestEvent;
                 self._collectionId = collectionId;
@@ -64,54 +64,54 @@ debug) {
 
 
     CollectionUpdater.prototype._stream = function () {
-    	var self = this,
-    		streamClient = this._streamClient,
-    		latestEvent = this._latestEvent,
-    		streamClientOpts = this._getCollectionOptions();
+        var self = this,
+            streamClient = this._streamClient,
+            latestEvent = this._latestEvent,
+            streamClientOpts = this._getCollectionOptions();
 
-    	// Request stream from the last Event ID we know about
-    	streamClientOpts.commentId = latestEvent;
-    	streamClient.getContent(streamClientOpts, function (err, data) {
-    		if (err) {
-    			return self.emit('error', err);
-    		}
-    		if (data.timeout) {
-    			// Timed out on the long poll. This just means there
-    			// was no real-time data. So we should keep streaming
-    			// on the next event loop tick
-    			log('long poll timeout, requesting again on next tick');
-    			return streamUtil.nextTick(function () {
-    				self._stream();
-    			});
-    		}
-    		var contents = self._contentsFromStreamData(data);
-    		// Update _latestEvent so we only get new data
-    		self._latestEvent = data.maxEventId;
+        // Request stream from the last Event ID we know about
+        streamClientOpts.commentId = latestEvent;
+        streamClient.getContent(streamClientOpts, function (err, data) {
+            if (err) {
+                return self.emit('error', err);
+            }
+            if (data.timeout) {
+                // Timed out on the long poll. This just means there
+                // was no real-time data. So we should keep streaming
+                // on the next event loop tick
+                log('long poll timeout, requesting again on next tick');
+                return streamUtil.nextTick(function () {
+                    self._stream();
+                });
+            }
+            var contents = self._contentsFromStreamData(data);
+            // Update _latestEvent so we only get new data
+            self._latestEvent = data.maxEventId;
 
             self.push.apply(self, contents);
 
             // _read will get called again when more data is needed
-    	});
+        });
     };
 
 
     CollectionUpdater.prototype._contentsFromStreamData = function (streamData) {
-		var states = streamData.states,
-			stateToContent = new StateToContent(streamData),
-			state,
-			content,
-			contents = [];
+        var states = streamData.states,
+            stateToContent = new StateToContent(streamData),
+            state,
+            content,
+            contents = [];
 
         stateToContent.on('data', function (content) {
             contents.push(content);
         });
 
-		for (var contentId in states) {
-			if (states.hasOwnProperty(contentId)) {
-				state = states[contentId];
-	            stateToContent.write(state);
-			}
-		}
+        for (var contentId in states) {
+            if (states.hasOwnProperty(contentId)) {
+                state = states[contentId];
+                stateToContent.write(state);
+            }
+        }
 
         return contents;
     };
@@ -171,5 +171,5 @@ debug) {
     };
 
 
-	return CollectionUpdater;
+    return CollectionUpdater;
 });
