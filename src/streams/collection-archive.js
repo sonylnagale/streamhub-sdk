@@ -23,7 +23,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      * @param [opts.environment] {string} If not production, the hostname of the
      *     StreamHub environment the Collection resides on
      */
-    function CollectionArchive (opts) {
+    var CollectionArchive = function (opts) {
         opts = opts || {};
 
         this._network = opts.network;
