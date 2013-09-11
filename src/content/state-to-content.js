@@ -19,7 +19,7 @@ inherits) {
      * An Object that transforms state objects from Livefyre APIs
      * into streamhub-sdk Content instances
      */
-    function StateToContent (opts) {
+    var StateToContent = function (opts) {
         opts = opts || {};
         this._authors = opts.authors || {};
         Transform.call(this, opts);
