@@ -150,10 +150,10 @@ inherits) {
     StateToContent._attachOrStore = function (attachment, targetId) {
         var target = Storage.get(targetId);
         if (target) {
-            log('attachming attatment', arguments);
+            log('attaching attachment', arguments);
             target.addAttachment(attachment);
         } else {
-            log('storing attatment', arguments);
+            log('storing attachment', arguments);
             this._storeChild(attachment, targetId);
         }
     }
@@ -182,23 +182,7 @@ inherits) {
     StateToContent.enums = {};
 
 
-    StateToContent.enums.source = [
-        "livefyre", 
-        "twitter",
-        "twitter",
-        "facebook",
-        "livefyre",
-        "livefyre",
-        "facebook",
-        "twitter",
-        "livefyre",
-        "unknown",
-        "unknown",
-        "unknown",
-        "unknown",
-        "feed",
-        "facebook"
-    ];
+    StateToContent.enums.source = LivefyreContent.SOURCES;
 
 
      /**
@@ -218,6 +202,7 @@ inherits) {
         'SHARE',
         'OEMBED'
     ];
+
 
     StateToContent.Storage = Storage;
     return StateToContent;
