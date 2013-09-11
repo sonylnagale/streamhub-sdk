@@ -1,4 +1,8 @@
 define(['jquery'], function($) {
+    /**
+     * Cross domain requests in IE8/9 fail. Here is a patch for that.
+     * AJAX POST request on IE fails with error “No Transport”: http://stackoverflow.com/q/15418290
+     */
     if (!$.support.cors && window.XDomainRequest) {
         var httpRegEx = /^https?:\/\//i;
         var getOrPostRegEx = /^get|post$/i;
