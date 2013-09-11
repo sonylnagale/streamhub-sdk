@@ -1,5 +1,5 @@
 define([
-    'jquery',
+    'streamhub-sdk/jquery',
     'stream/readable',
     'streamhub-sdk/clients/livefyre-bootstrap-client',
     'streamhub-sdk/content/state-to-content',
