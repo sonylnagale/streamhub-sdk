@@ -31,8 +31,6 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
 
         View.call(this, opts);
 
-        $(this.el).addClass('streamhub-list-view');
-
         this.contentViewFactory = new ContentViewFactory();
 
         // Default to 50 initial items
@@ -74,6 +72,8 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
 
     ListView.prototype.template = ListViewTemplate;
 
+    ListView.prototype.elClass = 'streamhub-list-view';
+
     ListView.prototype.listElSelector = '.content-list';
     ListView.prototype.showMoreElSelector = '.content-list-more';
 
@@ -81,6 +81,9 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
     ListView.prototype.setElement = function () {
         var self = this;
         View.prototype.setElement.apply(this, arguments);
+
+        $(this.el).addClass(this.elClass);
+
         // .showMoreButton will trigger showMore.hub when it is clicked
         this.$el.on('showMore.hub', function () {
             self.showMore();
