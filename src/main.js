@@ -1,5 +1,6 @@
-define(['text!streamhub-sdk/version.txt'], function(version) {
+define(['streamhub-sdk/jquery', 'text!streamhub-sdk/version.txt'],
+function($, version) {
     return {
-        version = $.trim(version);
+        version: $.trim(version);
     };
 });
