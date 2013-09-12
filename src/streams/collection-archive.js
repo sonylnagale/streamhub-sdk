@@ -22,6 +22,8 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      * @param opts.articleId {string} The StreamHub Aritcle ID of the Collection
      * @param [opts.environment] {string} If not production, the hostname of the
      *     StreamHub environment the Collection resides on
+     * @param [opts.bootstrapClient] {LivefyreBootstrapClient} A Client object
+     *     that can request StreamHub's Bootstrap web service
      */
     var CollectionArchive = function (opts) {
         opts = opts || {};
@@ -171,9 +173,10 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
     /**
      * @private
-     * Convert a bootstrapDocument to an array of Content instances
+     * Convert a bootstrapDocument to an array of Content models
      * @param bootstrapDocument {object} an object with content and authors keys
      *     e.g. http://bootstrap.livefyre.com/bs3/livefyre.com/4/NTg0/0.json
+     * @return {Content[]} An array of Content models
      */
     CollectionArchive.prototype._contentsFromBootstrapDoc = function (bootstrapDoc, opts) {
         opts = opts || {};
