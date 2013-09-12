@@ -6,12 +6,26 @@ define([
     'streamhub-sdk/clients/livefyre-stream-client',
     'streamhub-sdk/content/state-to-content',
     'streamhub-sdk/debug'],
-function (inherits, Readable, streamUtil, BootstrapClient, StreamClient, StateToContent,
-debug) {
+function (inherits, Readable, streamUtil, BootstrapClient, StreamClient,
+StateToContent, debug) {
+
 
     var log = debug('streamhub-sdk/streams/collection-updater');
 
 
+    /**
+     * A Readable Stream to access streaming updates in a StreamHub Collection
+     * @param opts {object}
+     * @param opts.network {string} The StreamHub Network of the Collection
+     * @param opts.siteId {string} The Site ID of the Collection
+     * @param opts.articleId {string} The Article ID of the Collection
+     * @param [opts.environment] {string} Which StreamHub Cluster the Collection
+     *     resides on (e.g. t402.livefyre.com for UAT)
+     * @param [opts.streamClient] {LivefyreStreamClient} A Client object that
+     *     can request StreamHub's Stream web service
+     * @param [opts.bootstrapClient] {LivefyreBootstrapClient} A Client object
+     *     that can request StreamHub's Bootstrap web service
+     */
     var CollectionUpdater = function (opts) {
         opts = opts || {};
 
@@ -34,7 +48,7 @@ debug) {
 
     /**
      * @private
-     * Called by Readable base class. Do not call directly
+     * Called by Readable base class on .read(). Do not call directly.
      * Get content from bootstrap and .push() onto the read buffer
      */
     CollectionUpdater.prototype._read = function () {
@@ -63,6 +77,10 @@ debug) {
     };
 
 
+    /**
+     * @private
+     * Make the next stream request to get more data since the last seen event
+     */
     CollectionUpdater.prototype._stream = function () {
         var self = this,
             streamClient = this._streamClient,
@@ -95,6 +113,12 @@ debug) {
     };
 
 
+    /**
+     * @private
+     * Convert a response from the Stream service into Content models
+     * @param streamData {object} A response from the Stream service
+     * @return {Content[]} An Array of Content models
+     */
     CollectionUpdater.prototype._contentsFromStreamData = function (streamData) {
         var states = streamData.states,
             stateToContent = new StateToContent(streamData),
