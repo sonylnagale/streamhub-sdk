@@ -72,7 +72,6 @@ StateToContent, debug) {
                 self._stream();
             });
         }
-        
         self._stream();
     };
 
@@ -86,7 +85,6 @@ StateToContent, debug) {
             streamClient = this._streamClient,
             latestEvent = this._latestEvent,
             streamClientOpts = this._getCollectionOptions();
-
         // Request stream from the last Event ID we know about
         streamClientOpts.commentId = latestEvent;
         streamClient.getContent(streamClientOpts, function (err, data) {
@@ -106,9 +104,12 @@ StateToContent, debug) {
             // Update _latestEvent so we only get new data
             self._latestEvent = data.maxEventId;
 
-            self.push.apply(self, contents);
-
-            // _read will get called again when more data is needed
+            if (contents.length) {
+                self.push.apply(self, contents);
+                // _read will get called again when more data is needed
+            } else {
+                self._stream();
+            }
         });
     };
 
