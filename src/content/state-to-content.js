@@ -52,11 +52,16 @@ inherits) {
     StateToContent.transform = function (state, author) {
         var isPublic = (typeof state.vis === 'undefined') || (state.vis === 1),
             isReply = state.content.parentId,
-            isAttachment = state.content.targetId,
-            isContent = ('CONTENT' === StateToContent.enums.type[state.type]),
+            type = StateToContent.enums.type[state.type],
+            isAttachment = ('OEMBED' === type),
+            isContent = ('CONTENT' === type),
             childStates = state.childContent || [],
             content,
             childContent = [];
+
+        if ( ! (isAttachment || isContent)) {
+            return;
+        }
 
         content = StateToContent._createContent(state, author);
 

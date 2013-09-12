@@ -80,6 +80,22 @@ function (jasmine, StateToContent, Transform, LivefyreInstagramContent) {
             	expect(instagramContent instanceof LivefyreInstagramContent).toBe(true);
             });
 
+            it("can transform a state with an opine childContent", function () {
+                var stateWithOpine = {"childContent":[{"content":{"authorId":"_up20585653@livefyre.com","targetId":"99395676","id":"99395676._up20585653@livefyre.com"},"vis":1,"type":1,"event":1378823397695262,"source":0}],"content":{"parentId":"","bodyHtml":"<p>Smart news :-) Can't wait to follow the story :-)</p>","annotations":{},"authorId":"_up20946265@livefyre.com","updatedAt":1378799500,"id":"99395676","createdAt":1378799500},"vis":1,"source":0,"type":0,"event":1378823397695262};
+                var content;
+                stateToContent.write(stateWithOpine);
+                content = stateToContent.read();
+                expect(content.attachments.length).toBe(0);
+            });
+
+            it("does not tranform OPINE states into anything", function () {
+                var opineState = {"content":{"authorId":"_u2012@livefyre.com","targetId":"99395676","id":"99395676._u2012@livefyre.com"},"vis":1,"type":1,"event":1379022927282801,"source":0};
+                var content;
+                stateToContent.write(opineState);
+                content = stateToContent.read();
+                expect(content).toBe(null);
+            });
+
             describe('.write', function () {
             	var mockThreadState;
 
