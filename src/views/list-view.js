@@ -27,43 +27,20 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
         var self = this;
         opts = opts || {};
 
-        this.modal = opts.modal === undefined ? new AttachmentGalleryModal() : opts.modal;
-
         View.call(this, opts);
-
-        this.contentViewFactory = new ContentViewFactory();
-
-        // Default to 50 initial items
-        this._newContentGoal = opts.initial || 50;
+        Writable.call(this, opts);
 
         this.contentViews = [];
-
-        $(this.el).on('removeContentView.hub', function(e, content) {
-            self.remove(content);
-        });
-        $(this.el).on('focusContent.hub', function(e, context) {
-            var contentView = self.getContentView(context.content);
-            if (! self.modal) {
-                if (contentView &&
-                    contentView.attachmentsView &&
-                    typeof contentView.attachmentsView.focus === 'function') {
-                    contentView.attachmentsView.focus(context.attachmentToFocus)
-                }
-                return;
-            }
-            self.modal.show(context.content, { attachment: context.attachmentToFocus });
-        });
-
-        Writable.call(this, opts);
+        this.modal = opts.modal === undefined ? new AttachmentGalleryModal() : opts.modal;
+        this.contentViewFactory = new ContentViewFactory();
 
         this._moreAmount = opts.showMore || 50;
         this.more = opts.more || this._createMoreStream(opts);
         this.showMoreButton = opts.showMoreButton || this._createShowMoreButton(opts);
         this.showMoreButton.setMoreStream(this.more);
+        this.more.pipe(this, { end: false });
 
         this.render();
-
-        this.more.pipe(this, { end: false });
     };
 
     inherits(ListView, View);
@@ -87,6 +64,22 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
         // .showMoreButton will trigger showMore.hub when it is clicked
         this.$el.on('showMore.hub', function () {
             self.showMore();
+        });
+
+        this.$el.on('removeContentView.hub', function(e, content) {
+            self.remove(content);
+        });
+        this.$el.on('focusContent.hub', function(e, context) {
+            var contentView = self.getContentView(context.content);
+            if (! self.modal) {
+                if (contentView &&
+                    contentView.attachmentsView &&
+                    typeof contentView.attachmentsView.focus === 'function') {
+                    contentView.attachmentsView.focus(context.attachmentToFocus)
+                }
+                return;
+            }
+            self.modal.show(context.content, { attachment: context.attachmentToFocus });
         });
     };
 
