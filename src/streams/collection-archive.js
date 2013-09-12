@@ -106,7 +106,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
             if ( ! contents.length) {
                 // Everything was a duplicate... fetch next page
-                return self._readNextPage();
+                return self.read(0);
             }
             self.push.apply(self, contents);
         });
