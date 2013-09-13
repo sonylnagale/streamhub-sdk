@@ -40,5 +40,17 @@ function (jasmine, Auth, EventEmitter) {
                 expect(Auth.getToken()).toBe(token2);
             });
         });
+
+        describe('UnauthorizedError', function () {
+            it('can be constructed with new', function () {
+                var err = new Auth.UnauthorizedError();
+                expect(err instanceof Error).toBe(true);
+                expect(err instanceof Auth.UnauthorizedError).toBe(true);
+            });
+            it('can be passed a message', function () {
+                var err = new Auth.UnauthorizedError('no auth!');
+                expect(err.toString()).toBe("UnauthorizedError: no auth!");
+            });
+        });
     });
 });

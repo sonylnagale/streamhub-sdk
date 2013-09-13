@@ -1,5 +1,5 @@
-define(['event-emitter', 'streamhub-sdk/debug'],
-function (EventEmitter, debug) {
+define(['inherits', 'event-emitter', 'streamhub-sdk/debug'],
+function (inherits, EventEmitter, debug) {
 
 
 	var log = debug('streamhub-sdk/auth');
@@ -32,5 +32,18 @@ function (EventEmitter, debug) {
 	};
 
 
+	/**
+	 * An Error that represents that an operation could not be performed
+	 * because the user has not been authorized. Semantics like HTTP 401
+	 */
+	var UnauthorizedError = function (message) {
+		Error.apply(this, arguments);
+		this.message = message;
+	};
+	inherits(UnauthorizedError, Error);
+	UnauthorizedError.prototype.name = "UnauthorizedError";
+
+
+	Auth.UnauthorizedError = UnauthorizedError;
 	return Auth;
 });
