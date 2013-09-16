@@ -37,7 +37,7 @@
                 el: document.getElementById("listView")
             });
 
-            var collection = new Collection(opts);
+            var collection = window.collection =  new Collection(opts);
 
             collection.pipe(listView);
 
