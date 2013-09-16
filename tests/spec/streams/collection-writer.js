@@ -1,33 +1,37 @@
 define([
-    'jasmine',
-    'streamhub-sdk/collection',
-    'streamhub-sdk/streams/collection-archive',
-    'streamhub-sdk/streams/collection-updater',
-    'streamhub-sdk/streams/collection-writer',
-    'streamhub-sdk/views/list-view',
-    'streamhub-sdk/content/content',
-    'streamhub-sdk/auth',
-    'stream/writable',
-    'stream/readable'
-], function (jasmine, Collection, CollectionArchive, CollectionUpdater,
-CollectionWriter, ListView, Content, Auth, Writable, Readable) {
-    describe('streamhub-sdk/collection', function () {
-        it('is a function', function () {
-            expect(Collection).toEqual(jasmine.any(Function));
-        });
-        it('can be passed opts.writer on construction', function () {
-            var writer = {};
-            var collection = new Collection({
-                writer: writer
-            });
-            expect(collection._writer).toBe(writer);
-        });
-        describe('instance', function () {
-            var opts,
-                collection,
-                mockInitResponse,
-                mockPageResponse;
-            beforeEach(function () {
+	'jasmine',
+	'streamhub-sdk/collection',
+	'streamhub-sdk/content/content',
+	'streamhub-sdk/streams/collection-writer',
+	'streamhub-sdk/auth',
+	'stream/writable'],
+function (jasmine, Collection, Content, CollectionWriter, Auth, Writable) {
+	describe('streamhub-sdk/streams/collection-writer', function () {
+		it('can be passed opts.collection on construction', function () {
+			var collection = new Collection();
+			var writer = new CollectionWriter({
+				collection: collection
+			});
+			expect(writer instanceof CollectionWriter).toBe(true);
+			expect(writer._collection).toBe(collection);
+		});
+		it('can be passed opts.writeClient on construction', function () {
+			var collection = new Collection();
+			var writeClient = {};
+			var writer = new CollectionWriter({
+				collection: collection,
+				writeClient: writeClient
+			});
+			expect(writer instanceof CollectionWriter).toBe(true);
+			expect(writer._collection).toBe(collection);
+			expect(writer._writeClient).toBe(writeClient);
+		});
+		describe('instance', function () {
+			var collection,
+				writer,
+				mockInitResponse,
+				mockPageResponse;
+			beforeEach(function () {
                 opts = {
                     network: 'test.fyre.co',
                     siteId: 'testSiteId',
@@ -43,130 +47,65 @@ CollectionWriter, ListView, Content, Auth, Writable, Readable) {
                     })
                 };
                 collection = new Collection(opts);
-            });
+				writer = new CollectionWriter({
+					collection: collection
+				});
+			});
+			it('is a Writable', function () {
+				expect(writer instanceof Writable).toBe(true);
+			});
+			describe('.write()', function () {
+	            var mockWriteResponse = {"status": "ok", "code": 200, "data": {"messages": [{"content": {"replaces": null, "bodyHtml": "<p>oh hi there 2</p>", "annotations": {"moderator": true}, "source": 0, "authorId": "system@labs-t402.fyre.co", "parentId": null, "mentions": [], "shareLink": "http://t402.livefyre.com/.fyreit/w9lbch.4", "id": "26394571", "createdAt": 1363808885}, "vis": 1, "type": 0, "event": null, "source": 0}], "authors": {"system@labs-t402.fyre.co": {"displayName": "system", "tags": [], "profileUrl": "", "avatar": "http://gravatar.com/avatar/e23293c6dfc25b86762b045336233add/?s=50&d=http://d10g4z0y9q0fip.cloudfront.net/a/anon/50.jpg", "type": 1, "id": "system@labs-t402.fyre.co"}}}};
+	            var mockWriteTweetResponse = {"status": "ok", "code": 200, "data": {"messages": [{"content": {"replaces": "", "bodyHtml": "MAITRE GIMS : \" Les feat dans SUBLIMINAL ces du tres lourd j'veut pas trop m'avanc\u00e9 mais sa seras du tres lourd \"feat avec EMINEM &amp; 50 CENT?", "annotations": {}, "authorId": "471544268@twitter.com", "parentId": "", "updatedAt": 1366839025, "mentions": [], "shareLink": "http://fyre.it/QE0B9G.4", "id": "tweet-308280235000995842@twitter.com", "createdAt": 1366839025}, "vis": 1, "source": 0, "replies": [], "type": 0, "event": null}], "authors": {"471544268@twitter.com": {"displayName": "twinsley yonkou VX", "tags": [], "profileUrl": "https://twitter.com/#!/TismeyJr", "avatar": "http://a0.twimg.com/profile_images/3339939516/bde222e341d477729170a326ca31204e_normal.jpeg", "type": 3, "id": "471544268@twitter.com"}}}};
 
-            it('has .network', function () {
-                expect(collection.network).toBe(opts.network);
-            });
-            it('has .siteId', function () {
-                expect(collection.siteId).toBe(opts.siteId);
-            });
-            it('has .articleId', function () {
-                expect(collection.articleId).toBe(opts.articleId);
-            });
-            it('has .environment', function () {
-                expect(collection.environment).toBe(opts.environment);
-            });
+	            beforeEach(function () {
+	                spyOn(writer._writeClient, 'postContent').andCallFake(function (params, callback) {
+	                    if (callback) {
+	                        callback(null, mockWriteResponse);
+	                    }
+	                });
+	                spyOn(writer._writeClient, 'postTweet').andCallFake(function (params, callback) {
+	                    if (callback) {
+	                        callback(null, mockWriteTweetResponse);
+	                    }
+	                });
+	            });
 
-            describe('.createArchive', function () {
-                it('returns a readable CollectionArchive Stream', function () {
-                    var archive = collection.createArchive();
-                    expect(archive instanceof CollectionArchive).toBe(true);
-                });
-            });
+	            it('throws Auth.UnauthorizedError if a token is not set with streamhub-sdk/auth', function () {
+	                expect(function () {
+	                    writer.write(new Content('blah'));
+	                }).toThrow(new Auth.UnauthorizedError("Collection cannot write until streamhub-sdk/auth.setToken has been called"));
+	            });
 
-            describe('.createUpdater', function () {
-                it('returns a readable CollectionUpdater Stream', function () {
-                    var updater = collection.createUpdater();
-                    expect(updater instanceof CollectionUpdater).toBe(true);
-                });
-            });
+	            describe('when a token is set with streamhub-sdk/auth', function () {
+	                var token;
+	                beforeEach(function () {
+	                    token = '12345';
+	                    Auth.setToken(token);
+	                });
+	                afterEach(function () {
+	                    Auth.setToken();
+	                });
 
-            describe('.createWriter', function () {
-                it('returns a writable CollectionWriter Stream', function () {
-                    var writer = collection.createWriter();
-                    expect(writer instanceof CollectionWriter).toBe(true);
-                });
-            });
+	                it('can be called with Content', function () {
+	                    expect(function () {
+	                        writer.write(new Content('blah'));
+	                    }).not.toThrow();
+	                });
 
-            describe('.pipe(writable)', function () {
-                var writable,
-                    listView;
-                beforeEach(function () {
-                    writable = new Writable();
-                    listView = new ListView();
-                    collection.createUpdater = function () {
-                        var readable = new Readable();
-                        readable._read = function () { this.push(null); };
-                        return readable;
-                    };
-                    collection.createArchive = function () {
-                        // Use a Dummy BootstrapClient to prevent requests
-                        return Collection.prototype.createArchive.call(this, {
-                            bootstrapClient: {
-                                getContent: function (opts, errback) {
-                                    errback(null, {});
-                                }
-                            }
-                        });
-                    };
-                    writable._write = function (chunk, done) { done(); }
-                });
-                it('can be piped to a writable', function () {
-                    collection.pipe(writable);
-                });
-                describe('when piped to a ListView', function () {
-                    it('pipes an updater to ListView', function () {
-                        var onPipe = jasmine.createSpy('pipe');
-                        listView.on('pipe', onPipe);
-                        collection.pipe(listView);
-                        expect(onPipe).toHaveBeenCalled();
-                    });
-                    it('pipes an archive to ListView#more', function () {
-                        var onPipeToMore = jasmine.createSpy('pipe to more');
-                        listView.more.on('pipe', onPipeToMore);
-                        collection.pipe(listView);
-                        expect(onPipeToMore).toHaveBeenCalledWith(jasmine.any(CollectionArchive));
-                    });
-                });
-            });
+	                it('posts Content to the Collection via ._writer._writeClient.postContent', function () {
+	                    writer.write(new Content('blah'));
+	                    expect(writer._writeClient.postContent).toHaveBeenCalled();
+	                });
 
-            describe('.write()', function () {
-                var mockWriteResponse = {"status": "ok", "code": 200, "data": {"messages": [{"content": {"replaces": null, "bodyHtml": "<p>oh hi there 2</p>", "annotations": {"moderator": true}, "source": 0, "authorId": "system@labs-t402.fyre.co", "parentId": null, "mentions": [], "shareLink": "http://t402.livefyre.com/.fyreit/w9lbch.4", "id": "26394571", "createdAt": 1363808885}, "vis": 1, "type": 0, "event": null, "source": 0}], "authors": {"system@labs-t402.fyre.co": {"displayName": "system", "tags": [], "profileUrl": "", "avatar": "http://gravatar.com/avatar/e23293c6dfc25b86762b045336233add/?s=50&d=http://d10g4z0y9q0fip.cloudfront.net/a/anon/50.jpg", "type": 1, "id": "system@labs-t402.fyre.co"}}}};
-                var mockWriteTweetResponse = {"status": "ok", "code": 200, "data": {"messages": [{"content": {"replaces": "", "bodyHtml": "MAITRE GIMS : \" Les feat dans SUBLIMINAL ces du tres lourd j'veut pas trop m'avanc\u00e9 mais sa seras du tres lourd \"feat avec EMINEM &amp; 50 CENT?", "annotations": {}, "authorId": "471544268@twitter.com", "parentId": "", "updatedAt": 1366839025, "mentions": [], "shareLink": "http://fyre.it/QE0B9G.4", "id": "tweet-308280235000995842@twitter.com", "createdAt": 1366839025}, "vis": 1, "source": 0, "replies": [], "type": 0, "event": null}], "authors": {"471544268@twitter.com": {"displayName": "twinsley yonkou VX", "tags": [], "profileUrl": "https://twitter.com/#!/TismeyJr", "avatar": "http://a0.twimg.com/profile_images/3339939516/bde222e341d477729170a326ca31204e_normal.jpeg", "type": 3, "id": "471544268@twitter.com"}}}};
-            
-                beforeEach(function () {
-                    spyOn(collection._writer._writeClient, 'postContent').andCallFake(function (params, callback) {
-                        if (callback) {
-                            callback(null, mockWriteResponse);
-                        }
-                    });
-                    spyOn(collection._writer._writeClient, 'postTweet').andCallFake(function (params, callback) {
-                        if (callback) {
-                            callback(null, mockWriteTweetResponse);
-                        }
-                    });
-                });
-
-                it('throws Auth.UnauthorizedError if a token is not set with streamhub-sdk/auth', function () {
-                    expect(function () {
-                        collection.write(new Content('blah'));
-                    }).toThrow(new Auth.UnauthorizedError("Collection cannot write until streamhub-sdk/auth.setToken has been called"));
-                });
-
-                describe('when a token is set with streamhub-sdk/auth', function () {
-                    var token;
-                    beforeEach(function () {
-                        token = '12345';
-                        Auth.setToken(token);
-                    });
-                    afterEach(function () {
-                        Auth.setToken();
-                    });
-
-                    it('can be called with Content', function () {
-                        expect(function () {
-                            collection.write(new Content('blah'));
-                        }).not.toThrow();
-                    });
-
-                    it('writes into collection._writer', function () {
-                        spyOn(collection._writer, 'write').andCallThrough();
-                        collection.write(new Content('k'));
-                        expect(collection._writer.write).toHaveBeenCalled();
-                    });
-                });
-            });
-        });
-    });
+	                it('posts Content with .tweetId via ._writer._writeClient.postTweet', function () {
+	                    var content = new Content('ima tweet');
+	                    content.tweetId = '377647689821077505';
+	                    writer.write(content);
+	                    expect(writer._writeClient.postTweet).toHaveBeenCalled();
+	                });
+	            });
+			});
+		});
+	});
 });
