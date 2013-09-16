@@ -70,9 +70,11 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
     };
 
 
-    Collection.prototype.createWriter = function () {
+    Collection.prototype.createWriter = function (opts) {
+        opts = opts || {};
         return new CollectionWriter({
-            collection: this
+            collection: this,
+            writeClient: opts.writeClient
         });
     };
 
