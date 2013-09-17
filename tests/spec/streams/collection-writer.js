@@ -32,8 +32,7 @@ MockLivefyreWriteClient, Auth, Writable) {
 		});
 		describe('instance', function () {
 			var collection,
-				writer,
-				opts;
+				writer;
 			beforeEach(function () {
                 var opts = {
                     network: 'test.fyre.co',

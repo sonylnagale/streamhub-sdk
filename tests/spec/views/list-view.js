@@ -4,9 +4,8 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/views/list-view',
     'streamhub-sdk/content/content',
-    'streamhub-sdk/content/views/content-view',
-    'stream/writable'],
-function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
+    'streamhub-sdk/content/views/content-view'],
+function (jasmine, jasminejquery, $, ListView, Content, ContentView) {
     'use strict';
 
     describe('A ListView', function () {
@@ -131,12 +130,12 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                 var numToAdd = 5;
                 listView.showMore(numToAdd);
                 expect(listView.more.getGoal()).toBe(numToAdd);
-            })
+            });
             describe("and a ton of Content is written to .more", function () {
                 var toAdd,
                     remaining;
                 beforeEach(function () {
-                    toAdd = 50
+                    toAdd = 50;
                     remaining = toAdd;
                     spyOn(listView, '_write').andCallThrough();
                     while (remaining--) {
@@ -207,7 +206,7 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
             earlierDate.setFullYear(2012);
             baseDate.setFullYear(2013);
             laterDate.setFullYear(2014);
-            
+
             describe("and a, b both have .content.createdAt", function () {
                 var earlyContent = new Content({ body: 'early' }),
                     lateContent = new Content({ body: 'later' }),
@@ -222,10 +221,10 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                 });
                 it("returns > 0 if a.content was created before b.content", function () {
                     expect(listView.comparator(earlyContentView, lateContentView)).toBeGreaterThan(0);
-                }); 
+                });
                 it("returns 0 if a.content was created at the same time as b.content", function () {
                     expect(listView.comparator(earlyContentView, earlyContentView)).toBe(0);
-                }); 
+                });
             });
 
             describe("and neither a nor b have .content.createdAt", function () {
@@ -278,7 +277,6 @@ function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
                     expect(listView.comparator(a, b)).toBeGreaterThan(0);
                 });
             });
-            
         });
 
         describe("when adding Content", function () {
