@@ -1,5 +1,7 @@
 define(['jasmine', 'streamhub-sdk/views/show-more-button', 'streamhub-sdk/streams/more'],
 function (jasmine, ShowMoreButton, More) {
+	'use strict';
+
 	describe('streamhub-sdk/views/show-more-button', function () {
 		it('is a constructor', function () {
 			expect(ShowMoreButton).toEqual(jasmine.any(Function));

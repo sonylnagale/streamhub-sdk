@@ -2,6 +2,8 @@ define([
     'jasmine',
     'streamhub-sdk/streams/more'],
 function (jasmine, More) {
+    'use strict';
+
     describe('streamhub-sdk/streams/more', function () {
         it('is a function', function () {
             expect(More).toEqual(jasmine.any(Function));

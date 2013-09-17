@@ -8,6 +8,7 @@ define([
     'streamhub-sdk/util'
 ],
 function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, OembedRichTemplate, util) {
+    'use strict';
 
     /**
      * A view that renders oembed attachments

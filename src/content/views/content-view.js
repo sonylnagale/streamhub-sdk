@@ -3,7 +3,8 @@ define([
     'hgn!streamhub-sdk/content/templates/content',
     'streamhub-sdk/util'
 ], function ($, ContentTemplate, Util) {
-    
+    'use strict';
+
     /**
      * Defines the base class for all content-views. Handles updates to attachments
      * and loading of images.

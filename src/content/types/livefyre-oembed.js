@@ -4,6 +4,7 @@ define([
     'streamhub-sdk/content/types/livefyre-content',
     'streamhub-sdk/util'],
 function($, Oembed, LivefyreContent, util) {
+    'use strict';
 
     /**
      * An Oembed constructed from a StreamHub state of oEmbed type

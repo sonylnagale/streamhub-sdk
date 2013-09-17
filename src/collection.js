@@ -10,6 +10,7 @@ define([
     'streamhub-sdk/debug'],
 function (CollectionArchive, CollectionUpdater, CollectionWriter, Duplex,
 LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
+    'use strict';
 
 
     var log = debug('streamhub-sdk/collection');

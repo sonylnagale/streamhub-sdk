@@ -4,6 +4,7 @@ define([
     'streamhub-sdk/util',
     'streamhub-sdk/jquery'],
 function (ContentView, TwitterContentTemplate, util, $) {
+    'use strict';
     
     /**
      * A view for rendering twitter content into an element.

@@ -8,6 +8,7 @@ define([
     'hgn!streamhub-sdk/content/templates/oembed-link',
     'hgn!streamhub-sdk/content/templates/oembed-rich'],
 function($, jasmine, jasminejQuery, OembedView, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, OembedRichTemplate) {
+    'use strict';
 
     describe('OembedView', function () {
         var oembedAttachment = {

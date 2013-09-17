@@ -4,6 +4,8 @@ define([
     'stream/transform',
     'streamhub-sdk/content/types/livefyre-instagram-content'],
 function (jasmine, StateToContent, Transform, LivefyreInstagramContent) {
+    'use strict';
+
     describe('streamhub-sdk/streams/transforms/state-to-content', function () {
         it('is a Transform', function () {
             expect(StateToContent).toEqual(jasmine.any(Function));
@@ -79,6 +81,7 @@ function (jasmine, StateToContent, Transform, LivefyreInstagramContent) {
         describe('instance', function () {
             var stateToContent,
                 mockStreamData,
+                mockThreadState,
                 mockState;
             beforeEach(function () {
                 StateToContent.Storage.cache = {};
@@ -192,6 +195,7 @@ function (jasmine, StateToContent, Transform, LivefyreInstagramContent) {
         describe("when constructed with opts.replies = true", function () {
             var stateToContent,
                 mockStreamData,
+                mockThreadState,
                 mockState;
             beforeEach(function () {
                 StateToContent.Storage.cache = {};

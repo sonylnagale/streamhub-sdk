@@ -3,6 +3,7 @@ define([
     'hgn!streamhub-sdk/content/templates/instagram',
     'streamhub-sdk/util'],
 function (ContentView, InstagramContentTemplate, util) {
+    'use strict';
     
     /**
      * A view for rendering instagram content into an element.

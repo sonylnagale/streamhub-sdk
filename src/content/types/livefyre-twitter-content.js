@@ -4,6 +4,7 @@ define([
     'streamhub-sdk/content/types/livefyre-content',
     'streamhub-sdk/util'
 ], function($, TwitterContent, LivefyreContent, util) {
+    'use strict';
 
     /**
      * A tweet constructed from a StreamHub state response from a twitter source

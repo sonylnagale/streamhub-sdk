@@ -1,4 +1,6 @@
 define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
+    'use strict';
+
     var log = debug('util');
 
     /** 
@@ -65,7 +67,8 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
 
     exports.formatDate = function (date, relativeTo) {
         relativeTo = relativeTo || new Date();
-        var diffMs = date.getTime() - relativeTo.getTime();
+        var diffMs = date.getTime() - relativeTo.getTime(),
+            dateString;
         // Future
         if (diffMs > 0) {
             return '';

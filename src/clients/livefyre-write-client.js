@@ -1,4 +1,5 @@
 define(['streamhub-sdk/jquery', 'base64'], function($) {
+    'use strict';
 
     /**
      * A Client for requesting Livefyre's Quill/Write Service

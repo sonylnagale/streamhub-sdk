@@ -8,6 +8,8 @@ define([
     'streamhub-sdk/content/views/content-view',
     'streamhub-sdk/content/views/tiled-attachment-list-view'],
 function ($, jasmine, jasmineJquery, util, Content, LivefyreContent, ContentView, TiledAttachmentListView) {
+    'use strict';
+
     describe('Default ContentView', function () {
         
         describe('when constructed', function () {

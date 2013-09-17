@@ -8,6 +8,7 @@ define([
     'streamhub-sdk/debug'],
 function (inherits, Readable, streamUtil, BootstrapClient, StreamClient,
 StateToContent, debug) {
+    'use strict';
 
 
     var log = debug('streamhub-sdk/streams/collection-updater');

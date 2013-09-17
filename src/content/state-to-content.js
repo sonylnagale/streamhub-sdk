@@ -12,8 +12,11 @@ define([
 ], function (LivefyreContent, LivefyreTwitterContent, LivefyreFacebookContent,
 Oembed, LivefyreOembed, LivefyreInstagramContent, Storage, debug, Transform,
 inherits) {
+    'use strict';
+
 
     var log = debug('streamhub-sdk/content/state-to-content');
+
 
     /**
      * An Object that transforms state objects from Livefyre APIs

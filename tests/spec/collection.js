@@ -11,6 +11,8 @@ define([
     'stream/readable'
 ], function (jasmine, Collection, CollectionArchive, CollectionUpdater,
 CollectionWriter, ListView, Content, Auth, Writable, Readable) {
+    'use strict';
+
     describe('streamhub-sdk/collection', function () {
         it('is a function', function () {
             expect(Collection).toEqual(jasmine.any(Function));

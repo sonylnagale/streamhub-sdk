@@ -7,6 +7,7 @@ define([
     'streamhub-sdk/modal/modal',
     'streamhub-sdk/content/views/gallery-attachment-list-view'
 ], function($, jasmine, jasmineJquery, Content, Oembed, ModalView, GalleryAttachmentListView) {
+    'use strict';
 
     describe('ModalView', function() {
 

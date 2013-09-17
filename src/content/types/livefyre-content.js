@@ -1,4 +1,5 @@
 define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/util'], function($, Content, util) {
+    'use strict';
 
     /**
      * Base class for any piece of Livefyre content. Extracts the details of the content

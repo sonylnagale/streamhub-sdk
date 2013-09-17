@@ -7,6 +7,7 @@ define([
     'streamhub-sdk/modal/views/attachment-gallery-modal',
     'streamhub-sdk/content/views/oembed-view'],
 function($, jasmine, jasminejQuery, Content, Oembed, AttachmentGalleryModal, OembedView) {
+    'use strict';
 
     describe('AttachmentGalleryModal', function () {
         var oembedAttachment = {

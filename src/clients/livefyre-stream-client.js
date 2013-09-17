@@ -1,4 +1,6 @@
 define(['streamhub-sdk/jquery', 'streamhub-sdk/util'], function($, util) {
+    'use strict';
+
 
     /**
      * A Client for requesting Livefyre's Stream Service

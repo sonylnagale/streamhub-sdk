@@ -4,7 +4,7 @@ define([
 	'streamhub-sdk/content/views/gallery-attachment-list-view',
 	'streamhub-sdk/content/views/attachment-list-view'
 ], function (util, View, GalleryAttachmentListView, AttachmentListView) {
-
+    'use strict';
 
 	/**
 	 * A View that initially renders the passed view, but on focusContent.hub,

@@ -12,6 +12,7 @@ define([
     'hgn!streamhub-sdk/views/templates/list-view'],
 function($, View, ContentViewFactory, AttachmentGalleryModal, inherits,
 debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
+    'use strict';
 
     var log = debug('streamhub-sdk/views/list-view');
 

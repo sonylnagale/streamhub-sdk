@@ -7,6 +7,7 @@ define([
     'hgn!streamhub-sdk/content/templates/content-byline',
     'streamhub-sdk/util'],
 function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemplate, ContentBylineTemplate, util) {
+    'use strict';
 
     /**
      * A view that displays a content's attachments as a gallery
@@ -248,7 +249,7 @@ function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemp
         var focusedAttachmentsEl = this.$el.find(this.focusedAttachmentsSelector);
         focusedAttachmentsEl.empty();
 
-        oembedView = new OembedView({ oembed: oembed });
+        var oembedView = new OembedView({ oembed: oembed });
         oembedView.render();
         var focusedEl = oembedView.$el.clone();
         focusedEl.appendTo(focusedAttachmentsEl);

@@ -1,5 +1,6 @@
 define(['inherits', 'streamhub-sdk/view'],
 function (inherits, View) {
+    'use strict';
 
     /**
      * A View that provides a button that can control a More stream

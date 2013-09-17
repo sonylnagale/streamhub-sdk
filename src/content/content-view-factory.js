@@ -25,6 +25,7 @@ define([
     InstagramContentView,
     GalleryOnFocusView
 ) {
+    'use strict';
 
     /**
      * A module to create instances of ContentView for a given Content instance.

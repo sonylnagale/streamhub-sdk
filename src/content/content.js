@@ -3,6 +3,8 @@ define([
     'event-emitter',
     'streamhub-sdk/util'
 ], function($, EventEmitter, util) {
+    'use strict';
+
     /**
      * A piece of Web Content
      * @param body {String|Object} A string of HTML, the Content body.

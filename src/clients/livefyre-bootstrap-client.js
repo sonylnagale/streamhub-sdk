@@ -1,4 +1,5 @@
 define(['streamhub-sdk/util', 'streamhub-sdk/jquery', 'base64'], function(util, $) {
+    'use strict';
 
     /**
      * A Client for requesting Livefyre's Bootstrap Service

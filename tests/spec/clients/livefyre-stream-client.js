@@ -4,6 +4,8 @@ define([
     'streamhub-sdk/clients/livefyre-stream-client',
     'jasmine-jquery'],
 function ($, jasmine, LivefyreStreamClient) {
+    'use strict';
+
     describe('A LivefyreStreamClient', function () {
         var spy, mockData, callback, opts;
         

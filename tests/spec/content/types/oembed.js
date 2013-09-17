@@ -1,5 +1,6 @@
 define(['streamhub-sdk/jquery', 'jasmine', 'jasmine-jquery', 'streamhub-sdk/content/types/oembed'],
 function ($, jasmine, jasminejquery, Oembed) {
+    'use strict';
 
     // From "Quick Example" in spec http://oembed.com/
     var mockOembed = {

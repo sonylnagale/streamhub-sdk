@@ -1,5 +1,6 @@
 define(['inherits', 'event-emitter', 'streamhub-sdk/debug'],
 function (inherits, EventEmitter, debug) {
+    'use strict';
 
 
 	var log = debug('streamhub-sdk/auth');

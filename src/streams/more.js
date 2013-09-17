@@ -3,6 +3,9 @@ define([
     'stream/transform',
     'streamhub-sdk/debug'],
 function (inherits, Transform, debug) {
+    'use strict';
+
+
     var log = debug('streamhub-sdk/streams/more');
 
 

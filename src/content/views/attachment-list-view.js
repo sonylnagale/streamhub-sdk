@@ -5,7 +5,8 @@ define([
     'hgn!streamhub-sdk/content/templates/attachment-list',
     'streamhub-sdk/util'],
 function($, View, OembedView, AttachmentListTemplate, util) {
-    
+    'use strict';
+   
     /**
      * A simple View that displays Content in a list (`<ul>` by default).
      * @param opts {Object} A set of options to config the view with

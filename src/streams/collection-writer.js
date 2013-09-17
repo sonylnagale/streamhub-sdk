@@ -4,6 +4,9 @@ define([
     'streamhub-sdk/auth',
     'inherits'],
 function (Writable, LivefyreWriteClient, Auth, inherits) {
+    'use strict';
+
+
     var CollectionWriter = function (opts) {
         this._collection = opts.collection;
         this._writeClient = opts.writeClient || LivefyreWriteClient;

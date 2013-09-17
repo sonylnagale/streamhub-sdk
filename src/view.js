@@ -7,6 +7,7 @@ define([
     EventEmitter,
     util
 ) {
+    'use strict';
 
     /**
      * Defines a base view object that can be bound to any number of stream-managers. Content is

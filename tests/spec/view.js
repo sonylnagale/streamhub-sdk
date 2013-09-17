@@ -3,6 +3,8 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/view'],
 function (jasmine, $, View) {
+    'use strict';
+
     describe('streamhub-sdk/view', function () {
         var view;
         beforeEach(function () {

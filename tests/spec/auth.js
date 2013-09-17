@@ -3,6 +3,8 @@ define([
     'streamhub-sdk/auth',
     'event-emitter'],
 function (jasmine, Auth, EventEmitter) {
+    'use strict';
+
     describe('streamhub-sdk/auth', function () {
         afterEach(function () {
             Auth.setToken();

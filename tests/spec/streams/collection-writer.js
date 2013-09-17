@@ -8,6 +8,8 @@ define([
 	'stream/writable'],
 function (jasmine, Content, CollectionWriter, MockCollection,
 MockLivefyreWriteClient, Auth, Writable) {
+    'use strict';
+
 	describe('streamhub-sdk/streams/collection-writer', function () {
 		it('can be passed opts.collection on construction', function () {
 			var collection = new MockCollection();
@@ -31,10 +33,9 @@ MockLivefyreWriteClient, Auth, Writable) {
 		describe('instance', function () {
 			var collection,
 				writer,
-				mockInitResponse,
-				mockPageResponse;
+				opts;
 			beforeEach(function () {
-                opts = {
+                var opts = {
                     network: 'test.fyre.co',
                     siteId: 'testSiteId',
                     articleId: 'testArticleId',

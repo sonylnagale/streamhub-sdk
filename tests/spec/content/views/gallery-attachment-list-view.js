@@ -6,6 +6,7 @@ define([
     'streamhub-sdk/content/views/gallery-attachment-list-view',
     'streamhub-sdk/content/views/oembed-view'],
 function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedView) {
+    'use strict';
 
     describe('GalleryAttachmentListView', function () {
         var oembedAttachment = {
@@ -115,7 +116,7 @@ function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedVi
                     attachment.id = i;
                     content.addAttachment(attachment);
                 }
-                thumbnailAttachmentEl = galleryAttachmentListView.$el.find('.content-attachments-gallery-thumbnails .content-attachment:first');
+                var thumbnailAttachmentEl = galleryAttachmentListView.$el.find('.content-attachments-gallery-thumbnails .content-attachment:first');
 
                 var spyFocusAttachmentEvent = spyOnEvent(thumbnailAttachmentEl[0], 'focusContent.hub');
                 var tileClicked = false;

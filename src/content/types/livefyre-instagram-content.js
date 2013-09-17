@@ -1,6 +1,7 @@
 define([
     'streamhub-sdk/content/types/livefyre-content', 'streamhub-sdk/util'],
 function(LivefyreContent, util) {
+    'use strict';
 
     /**
      * An instagram Content constructed from a StreamHub state of of 'feed' type

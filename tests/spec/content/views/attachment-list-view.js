@@ -6,6 +6,7 @@ define([
     'streamhub-sdk/content/views/attachment-list-view',
     'streamhub-sdk/content/views/oembed-view'],
 function($, jasmine, jasminejQuery, Content, AttachmentListView, OembedView) {
+    'use strict';
 
     describe('AttachmentListView', function () {
         var oembedAttachment = {

@@ -7,6 +7,8 @@ define([
     'streamhub-sdk/content/views/content-view',
     'stream/writable'],
 function (jasmine, jasminejquery, $, ListView, Content, ContentView, Writable) {
+    'use strict';
+
     describe('A ListView', function () {
         var fixtureId = 'sandbox',
             listView,

@@ -1,4 +1,5 @@
 define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/util'], function($, Content, util) {
+    'use strict';
 
     /**
      * An Oembed Object. As specified by http://oembed.com/

@@ -6,6 +6,8 @@ define([
     'hgn!streamhub-sdk/content/templates/tiled-attachment-list',
     'streamhub-sdk/util'],
 function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, util) {
+    'use strict';
+
     
     /**
      * A simple View that displays Content in a list (`<ul>` by default).

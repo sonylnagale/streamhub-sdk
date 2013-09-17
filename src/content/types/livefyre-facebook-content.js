@@ -3,6 +3,7 @@ define([
     'streamhub-sdk/content/types/livefyre-content',
     'streamhub-sdk/util'
 ], function($, LivefyreContent, util) {
+    'use strict';
 
     /**
      * Represents a piece of Livefyre's content curated from Facebook.

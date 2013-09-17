@@ -4,6 +4,7 @@ define([
     'streamhub-sdk/util',
     'streamhub-sdk/jquery'],
 function (ContentView, FacebookContentTemplate, util, $) {
+    'use strict';
 
     /**
      * A view for rendering facebook content into an element.

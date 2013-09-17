@@ -1,4 +1,5 @@
 define(['streamhub-sdk/content/content', 'streamhub-sdk/util'], function(Content, util) {
+    'use strict';
     
     /**
      * A base class that represents any piece of twitter content. This constructor saves the

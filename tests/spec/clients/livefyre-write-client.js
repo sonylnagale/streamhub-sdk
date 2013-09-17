@@ -4,6 +4,8 @@ define([
     'streamhub-sdk/clients/livefyre-write-client',
     'jasmine-jquery'],
 function ($, jasmine, LivefyreWriteClient) {
+    'use strict';
+
     describe('A LivefyreWriteClient', function () {
         var spy, mockData, callback, opts;
         

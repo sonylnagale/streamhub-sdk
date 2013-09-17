@@ -1,4 +1,6 @@
 define(['jquery'], function($) {
+    'use strict';
+
     /**
      * Cross domain requests in IE8/9 fail. Here is a patch for that.
      * AJAX POST request on IE fails with error “No Transport”: http://stackoverflow.com/q/15418290
