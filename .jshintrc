@@ -12,6 +12,7 @@
         "waitsFor": true,
         "sandbox": true
     },
+    "forin": true,
     "curly": true,
     "eqeqeq": true,
     "immed": true,
