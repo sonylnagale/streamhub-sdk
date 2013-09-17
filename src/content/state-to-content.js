@@ -18,10 +18,13 @@ inherits) {
     /**
      * An Object that transforms state objects from Livefyre APIs
      * into streamhub-sdk Content instances
+     * @param authors {object} A mapping of authorIds to author information
+     * @param [replies=false] {boolean} Whether to read out reply Content
      */
     var StateToContent = function (opts) {
         opts = opts || {};
         this._authors = opts.authors || {};
+        this._replies = opts.replies;
         Transform.call(this, opts);
     }
 
@@ -30,14 +33,15 @@ inherits) {
 
     StateToContent.prototype._transform = function (state, done) {
         try {
-            var authorId = state.content && state.content.authorId,
-                content = StateToContent.transform(state, this._authors[authorId]);
+            var contents = StateToContent.transform(state, this._authors, {
+                    replies: this._replies
+                });
         } catch (err) {
             this.emit('error transforming state-to-content', err);
             log('StateToContent.transform threw', err);
         }
-        if (content) {
-            this.push(content);
+        if (contents && contents.length) {
+            this.push.apply(this, contents);
         }
         done();
     };
@@ -47,9 +51,13 @@ inherits) {
      * Creates the correct content type given the supplied "state".
      * @param state {Object} The livefyre content "state" as received by the
      *     client.
-     * @return {LivefyreContent} A new, correctly typed, content object. 
+     * @return {LivefyreContent[]} An Array containing a Content that represents
+     *     the passed state, if it was top-level. If opts.replies, then any
+     *     reply Content that was transformed will be returned
+     *     (including potentially many descendants)
      */
-    StateToContent.transform = function (state, author) {
+    StateToContent.transform = function (state, authors, opts) {
+        opts = opts || {};
         var isPublic = (typeof state.vis === 'undefined') || (state.vis === 1),
             isReply = state.content.parentId,
             type = StateToContent.enums.type[state.type],
@@ -57,13 +65,14 @@ inherits) {
             isContent = ('CONTENT' === type),
             childStates = state.childContent || [],
             content,
-            childContent = [];
+            childContent = [],
+            descendantContent = [];
 
         if ( ! (isAttachment || isContent)) {
             return;
         }
 
-        content = StateToContent._createContent(state, author);
+        content = StateToContent._createContent(state, authors);
 
         // Store content with IDs in case we later get
         // replies or attachments targeting it
@@ -77,7 +86,8 @@ inherits) {
         // Transform child states (replies and attachments)
         // This will put them in Storage
         for (var i=0, numChildren=childStates.length; i < numChildren; i++) {
-            childContent.push(this.transform(childStates[i]));
+            var thisReplyAndDescendants = this.transform(childStates[i], authors, opts);
+            descendantContent.push.apply(descendantContent, thisReplyAndDescendants || []);
         }
 
         // Add any children that are awaiting the new content
@@ -95,14 +105,23 @@ inherits) {
         if (isReply) {
             this._addReplyOrStore(content, state.content.parentId);
         }
-        
 
-        // TODO: Allow for returning of replies
-        if (isReply || isAttachment || ! isPublic) {
+        // Never return non-Content items or non-public items
+        // But note, this is at the end of the recursive function,
+        // so these items are still walked/processed, just not returned
+        if ( ! isContent || ! isPublic) {
             return;
         }
 
-        return content;
+        // Don't return replies if not explicitly specified
+        if (isReply && ! opts.replies) {
+            return;
+        }
+
+        if (opts.replies) {
+            return [content].concat(descendantContent)
+        }
+        return [content];
     }
 
 
@@ -119,11 +138,12 @@ inherits) {
     }
 
 
-    StateToContent._createContent = function (state, author) {
+    StateToContent._createContent = function (state, authors) {
         var sourceName = StateToContent.enums.source[state.source],
             ContentType;
 
-        state.author = author;
+        state.author = authors && authors[state.content.authorId];
+
         if ('OEMBED' === StateToContent.enums.type[state.type]) {
             return new LivefyreOembed(state);
         } else if (sourceName === 'twitter') {
