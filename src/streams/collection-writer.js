@@ -1,21 +1,21 @@
 define([
-	'stream/writable',
-	'streamhub-sdk/clients/livefyre-write-client',
-	'streamhub-sdk/auth',
-	'inherits'],
+    'stream/writable',
+    'streamhub-sdk/clients/livefyre-write-client',
+    'streamhub-sdk/auth',
+    'inherits'],
 function (Writable, LivefyreWriteClient, Auth, inherits) {
-	var CollectionWriter = function (opts) {
-		this._collection = opts.collection;
-		this._writeClient = opts.writeClient || LivefyreWriteClient;
-		Writable.call(this, opts);
-	};
+    var CollectionWriter = function (opts) {
+        this._collection = opts.collection;
+        this._writeClient = opts.writeClient || LivefyreWriteClient;
+        Writable.call(this, opts);
+    };
 
-	inherits(CollectionWriter, Writable);
+    inherits(CollectionWriter, Writable);
 
 
-	CollectionWriter.prototype._write = function _write(content, done) {
+    CollectionWriter.prototype._write = function _write(content, done) {
         var self = this,
-        	collection = this._collection,
+            collection = this._collection,
             token = Auth.getToken(),
             post = this._writeClient.postContent,
             numAttachments = content.attachments && content.attachments.length;
@@ -55,8 +55,8 @@ function (Writable, LivefyreWriteClient, Auth, inherits) {
         }
 
         post(postParams, done);
-	};
+    };
 
 
-	return CollectionWriter;
+    return CollectionWriter;
 });
