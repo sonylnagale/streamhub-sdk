@@ -47,11 +47,8 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
     Collection.prototype.createArchive = function (opts) {
         opts = opts || {};
         return new CollectionArchive({
-            network: this.network,
-            siteId: this.siteId,
-            articleId: this.articleId,
-            environment: this.environment,
-            bootstrapClient: opts.bootstrapClient || this._bootstrapClient
+            collection: this,
+            bootstrapClient: opts.bootstrapClient
         });
     };
 
@@ -60,9 +57,11 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
      * Create a Readable Stream that will stream any new updates to the
      * collection like additions, removals, edits, etc.
      */
-    Collection.prototype.createUpdater = function () {
+    Collection.prototype.createUpdater = function (opts) {
+        opts = opts || {};
         return new CollectionUpdater({
-            collection: this
+            collection: this,
+            streamClient: opts.streamClient
         });
     };
 
@@ -136,7 +135,7 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
 
     Collection.prototype.initFromBootstrap = function (errback) {
         var self = this;
-        this.once('_initFromBootstrap', errback)
+        this.once('_initFromBootstrap', errback);
         if (this._isInitingFromBootstrap) {
             return;
         }

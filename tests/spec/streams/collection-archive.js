@@ -1,8 +1,9 @@
 define([
     'jasmine',
     'streamhub-sdk/streams/collection-archive',
+    'streamhub-sdk-tests/mocks/mock-collection',
     'stream/readable'],
-function (jasmine, CollectionArchive, Readable) {
+function (jasmine, CollectionArchive, MockCollection, Readable) {
 
     describe('streamhub-sdk/streams/collection-archive', function () {
 
@@ -20,10 +21,7 @@ function (jasmine, CollectionArchive, Readable) {
                     })
                 };
                 archive = new CollectionArchive({
-                    environment: "t402.livefyre.com", 
-                    articleId: "sh_col_21_1373461176", 
-                    siteId: 304059, 
-                    network: "client-solutions-uat.fyre.co",
+                    collection: new MockCollection(),
                     bootstrapClient: bootstrapClient,
                 });
             });
@@ -104,7 +102,6 @@ function (jasmine, CollectionArchive, Readable) {
                     }
                 });
                 waitsFor(function () {
-                    return contents.length;
                     return onEndSpy.callCount;
                 }, 'end to be emitted');
             });

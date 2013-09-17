@@ -28,18 +28,13 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
     var CollectionArchive = function (opts) {
         opts = opts || {};
 
-        this._network = opts.network;
-        this._siteId = opts.siteId;
-        this._articleId = opts.articleId;
-        this._environment = opts.environment;
+        this._collection = opts.collection;
 
         this._bootstrapClient = opts.bootstrapClient || BootstrapClient;
-        this._isInitingFromBootstrap = false;
-        this._finishedInitFromBootstrap = false;
         this._contentIdsInHeadDocument = [];
 
         Readable.call(this, opts);
-    }
+    };
 
     inherits(CollectionArchive, Readable);
 
@@ -57,15 +52,19 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
         // The first time this is called, we first need to get Bootstrap init
         // to know what the latest page of data
-        if ( ! this._finishedInitFromBootstrap) {
-            log('requesting bootstrap init');
-            return this._getBootstrapInit(function (err, nPages, headDocument) {
+        if (typeof this._nextPage === 'undefined') {
+            return this._collection.initFromBootstrap(function (err, initData) {
+                var headDocument = initData.headDocument,
+                    collectionSettings = initData.collectionSettings,
+                    archiveInfo = collectionSettings && collectionSettings.archiveInfo,
+                    numPages = archiveInfo && archiveInfo.nPages;
+
                 var contents = self._contentsFromBootstrapDoc(headDocument, {
-                        isHead: true
-                    });
+                    isHead: true
+                });
 
                 // Bootstrap pages are zero-based. Store the highest 
-                self._nextPage = nPages - 1;
+                self._nextPage = numPages - 1;
 
                 self.push.apply(self, contents);
             });
@@ -89,8 +88,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      */
     CollectionArchive.prototype._readNextPage = function () {
         var self = this,
-            bootstrapClientOpts = this._getCollectionOptions();
-        bootstrapClientOpts.page = this._nextPage;
+            bootstrapClientOpts = this._getBootstrapClientOptions();
         this._nextPage = this._nextPage - 1;
         if (this._nextPage < 0) {
             // No more pages
@@ -106,7 +104,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
             if ( ! contents.length) {
                 // Everything was a duplicate... fetch next page
-                return self.read(0);
+                return self._read();
             }
             self.push.apply(self, contents);
         });
@@ -118,56 +116,14 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      * Get options to pass to this._bootstrapClient methods to specify
      * which Collection we care about
      */
-    CollectionArchive.prototype._getCollectionOptions = function () {
+    CollectionArchive.prototype._getBootstrapClientOptions = function () {
         return {
-            environment: this._environment,
-            network: this._network,
-            siteId: this._siteId,
-            articleId: this._articleId
+            environment: this._collection.environment,
+            network: this._collection.network,
+            siteId: this._collection.siteId,
+            articleId: this._collection.articleId,
+            page: this._nextPage
         };
-    };
-
-
-    /**
-     * @private
-     * Request the Bootstrap init endpoint for the Collection to learn about
-     * what pages of Content there are. This gets called the first time Stream
-     * base calls _read().
-     * @param errback {function} A callback to be passed (err|null, the number
-     *     of pages of content in the collection, the headDocument containing
-     *     the latest data)
-     */
-    CollectionArchive.prototype._getBootstrapInit = function (errback) {
-        var self = this,
-            collectionOpts;
-
-        if (this._isInitingFromBootstrap) {
-            log("_getBootstrapInit was called, but I'm already requesting " +
-                "init and haven't gotten a response. This probably shouldn't " +
-                "happen.");
-            return;
-        }
-        this._isInitingFromBootstrap = true;
-
-        // Use this._bootstrapClient to request init (init is default when
-        // no opts.page is specified)
-        collectionOpts = this._getCollectionOptions();
-        this._bootstrapClient.getContent(collectionOpts, function (err, data) {
-            if (err) {
-                log("Error requesting Bootstrap init", err, data);
-                self.emit('error', err);
-            }
-
-            var headDocument = data.headDocument,
-                collectionSettings = data.collectionSettings,
-                archiveInfo = collectionSettings && collectionSettings.archiveInfo,
-                numPages = archiveInfo && archiveInfo.nPages;
-
-            self._isInitingFromBootstrap = false;
-            self._finishedInitFromBootstrap = true;
-
-            errback.call(self, err, numPages, headDocument);
-        });
     };
 
 
