@@ -1,0 +1,27 @@
+{
+    "browser": true,
+    "globals": {
+        "define": true,
+        "expect": true,
+        "describe": true,
+        "it": true,
+        "spyOn": true,
+        "beforeEach": true,
+        "afterEach": true,
+        "waits": true,
+        "waitsFor": true,
+        "sandbox": true
+    },
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "indent": 4,
+    "smarttabs": true,
+    "latedef": "nofunc",
+    "newcap": true,
+    "noarg": true,
+    "undef": true,
+    "unused": true,
+    "strict": true,
+    "trailing": true
+}
