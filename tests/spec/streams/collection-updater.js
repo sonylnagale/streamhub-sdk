@@ -3,31 +3,24 @@ define([
     'streamhub-sdk/streams/collection-updater',
     'stream/readable',
     'streamhub-sdk/content/state-to-content',
+    'streamhub-sdk-tests/mocks/mock-collection',
     'streamhub-sdk-tests/mocks/clients/livefyre-bootstrap-client',
     'streamhub-sdk-tests/mocks/clients/livefyre-stream-client'],
-function (jasmine, CollectionUpdater, Readable, StateToContent, MockLivefyreBootstrapClient,
-MockLivefyreStreamClient) {
+function (jasmine, CollectionUpdater, Readable, StateToContent, MockCollection,
+MockLivefyreBootstrapClient, MockLivefyreStreamClient) {
     "use strict";
 
     describe('streamhub-sdk/streams/collection-updater', function () {
 
         describe('when constructed', function () {
-            var updater,
-                bootstrapClient,
-                streamClient,
-                mockInitResponse,
-                mockStreamResponse;
+            var updater;
             beforeEach(function () {
                 StateToContent.Storage.cache = {};
                 updater = new CollectionUpdater({
-                    environment: "t402.livefyre.com", 
-                    articleId: "sh_col_21_1373461176", 
-                    siteId: 304059, 
-                    network: "client-solutions-uat.fyre.co",
-                    bootstrapClient: MockLivefyreBootstrapClient,
+                    collection: new MockCollection(),
                     streamClient: MockLivefyreStreamClient
                 });
-                spyOn(updater._bootstrapClient, 'getContent').andCallThrough();
+                spyOn(updater._collection._bootstrapClient, 'getContent').andCallThrough();
                 spyOn(updater._streamClient, 'getContent').andCallThrough();
             });
 
@@ -38,10 +31,6 @@ MockLivefyreStreamClient) {
             it('is instanceof Readable', function () {
                 expect(updater instanceof Readable).toBe(true);
                 expect(updater.readable).toBe(true);
-            });
-
-            it('can be passed opts.bootstrapClient', function () {
-                expect(updater._bootstrapClient).toBe(MockLivefyreBootstrapClient);
             });
 
             it('can be passed opts.streamClient', function () {
@@ -55,21 +44,13 @@ MockLivefyreStreamClient) {
                 });
                 it('requests bootstrap init', function () {
                     expect(
-                        updater._bootstrapClient.getContent.callCount).toBe(1);
-                    expect(updater._bootstrapClient.getContent)
+                        updater._collection._bootstrapClient.getContent.callCount).toBe(1);
+                    expect(updater._collection._bootstrapClient.getContent)
                         .toHaveBeenCalledWith(jasmine.any(Object),
                                               jasmine.any(Function));
                 });
                 it('requests from .streamClient after init', function () {
                     expect(updater._streamClient.getContent.callCount).toBe(1);
-                });
-                it('sets ._collectionId', function () {
-                    waitsFor(function () {
-                        return updater._collectionId;
-                    }, "updater._collectionId to be set");
-                    runs(function () {
-                        expect(updater._collectionId).toBe(MockLivefyreBootstrapClient.mockInitResponse.collectionSettings.collectionId);
-                    });
                 });
                 it('emits Content with an .author', function () {
                     waitsFor(function () {

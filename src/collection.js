@@ -62,10 +62,7 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
      */
     Collection.prototype.createUpdater = function () {
         return new CollectionUpdater({
-            network: this.network,
-            siteId: this.siteId,
-            articleId: this.articleId,
-            environment: this.environment,
+            collection: this
         });
     };
 
@@ -141,7 +138,7 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
         var self = this;
         this.once('_initFromBootstrap', errback)
         if (this._isInitingFromBootstrap) {
-            return ;
+            return;
         }
         this._isInitingFromBootstrap = true;
         this._getBootstrapInit(function (err, initData) {
