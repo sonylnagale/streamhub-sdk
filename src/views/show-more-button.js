@@ -17,6 +17,12 @@ function (inherits, View) {
     inherits(ShowMoreButton, View);
 
 
+    ShowMoreButton.prototype.render = function () {
+        View.prototype.render.call(this);
+        this.$el.hide();
+    };
+
+
     /**
      * The template to render in the Button
      * @return {string}
