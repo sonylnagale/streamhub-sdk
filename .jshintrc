@@ -6,11 +6,14 @@
         "describe": true,
         "it": true,
         "spyOn": true,
+        "spyOnEvent": true,
         "beforeEach": true,
         "afterEach": true,
         "waits": true,
         "waitsFor": true,
-        "sandbox": true
+        "runs": true,
+        "sandbox": true,
+        "setFixtures": true
     },
     "forin": true,
     "curly": true,
