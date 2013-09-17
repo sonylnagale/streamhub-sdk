@@ -23,7 +23,7 @@ function (jasmine, CollectionArchive, MockCollection, Readable) {
                 };
                 archive = new CollectionArchive({
                     collection: new MockCollection(),
-                    bootstrapClient: bootstrapClient,
+                    bootstrapClient: bootstrapClient
                 });
             });
             it('is instanceof CollectionArchive', function () {
@@ -50,7 +50,7 @@ function (jasmine, CollectionArchive, MockCollection, Readable) {
                     runs(function () {
                         expect(onReadableSpy).toHaveBeenCalled();
                     });
-                })
+                });
                 describe('and readable is emitted', function () {
                     beforeEach(function () {
                         spyOn(archive, '_read').andCallThrough();
@@ -77,15 +77,17 @@ function (jasmine, CollectionArchive, MockCollection, Readable) {
                         // in what's read. The mock data includes duplicates across init
                         // and the page response
                         while ( content = archive.read() ) {
-                            var currentCount = contentIdCounts[content.id];
+                            currentCount = contentIdCounts[content.id];
                             contentIdCounts[content.id] = currentCount ? currentCount + 1 : 1;
                         }
                         for (var contentId in contentIdCounts) {
-                            if ( ! contentIdCounts.hasOwnProperty(contentId)) {
-                                return
+                            if (contentIdCounts.hasOwnProperty(contentId)) {
+                                if ( ! contentIdCounts.hasOwnProperty(contentId)) {
+                                    return;
+                                }
+                                // There should have been one of each content.id
+                                expect(contentIdCounts[contentId]).toBe(1);
                             }
-                            // There should have been one of each content.id
-                            expect(contentIdCounts[contentId]).toBe(1);
                         }
                     });
                 });
