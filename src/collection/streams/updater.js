@@ -30,7 +30,7 @@ StateToContent, debug) {
     var CollectionUpdater = function (opts) {
         opts = opts || {};
         this._collection = opts.collection;
-        this._streamClient = opts.streamClient || StreamClient;
+        this._streamClient = opts.streamClient || new StreamClient();
         Readable.call(this, opts);
     };
 

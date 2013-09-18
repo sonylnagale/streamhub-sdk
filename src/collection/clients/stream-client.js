@@ -6,7 +6,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/util'], function($, util) {
      * A Client for requesting Livefyre's Stream Service
      * @exports streamhub-sdk/collection/clients/stream-client
      */
-    var LivefyreStreamClient = {};
+    var LivefyreStreamClient = function () {};
 
 
     // Keep track of whether the page is unloading, so we don't throw exceptions
@@ -26,7 +26,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/util'], function($, util) {
      * @param callback {function} A callback that is called upon success/failure of the
      * stream request. Callback signature is "function(error, data)".
      */
-    LivefyreStreamClient.getContent = function(opts, callback) {
+    LivefyreStreamClient.prototype.getContent = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
 

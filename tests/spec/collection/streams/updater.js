@@ -13,12 +13,15 @@ MockLivefyreBootstrapClient, MockLivefyreStreamClient) {
     describe('streamhub-sdk/collection/streams/updater', function () {
 
         describe('when constructed', function () {
-            var updater;
+            var updater,
+                streamClient;
+
             beforeEach(function () {
+                streamClient = new MockLivefyreStreamClient();
                 StateToContent.Storage.cache = {};
                 updater = new CollectionUpdater({
                     collection: new MockCollection(),
-                    streamClient: MockLivefyreStreamClient
+                    streamClient: streamClient
                 });
                 spyOn(updater._collection._bootstrapClient, 'getContent').andCallThrough();
                 spyOn(updater._streamClient, 'getContent').andCallThrough();
@@ -34,7 +37,7 @@ MockLivefyreBootstrapClient, MockLivefyreStreamClient) {
             });
 
             it('can be passed opts.streamClient', function () {
-                expect(updater._streamClient).toBe(MockLivefyreStreamClient);
+                expect(updater._streamClient).toBe(streamClient);
             });
 
             describe('when .read() for the first time', function () {
