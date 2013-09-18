@@ -7,7 +7,7 @@ define([
     'streamhub-sdk/debug',
     'stream/writable',
     'streamhub-sdk/content/views/content-view',
-    'streamhub-sdk/streams/more',
+    'streamhub-sdk/views/streams/more',
     'streamhub-sdk/views/show-more-button',
     'hgn!streamhub-sdk/views/templates/list-view'],
 function($, View, ContentViewFactory, AttachmentGalleryModal, inherits,
@@ -126,7 +126,7 @@ debug, Writable, ContentView, More, ShowMoreButton, ListViewTemplate) {
      * @private
      * Create a Stream that extra content can be written into.
      * This will be used if an opts.moreBuffer is not provided on construction.
-     * By default, this creates a streamhub-sdk/streams/more
+     * By default, this creates a streamhub-sdk/views/streams/more
      */
     ListView.prototype._createMoreStream = function (opts) {
         opts = opts || {};

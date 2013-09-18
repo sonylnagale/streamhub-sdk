@@ -6,7 +6,7 @@ function (inherits, Transform, debug) {
     'use strict';
 
 
-    var log = debug('streamhub-sdk/streams/more');
+    var log = debug('streamhub-sdk/views/streams/more');
 
 
     /**
