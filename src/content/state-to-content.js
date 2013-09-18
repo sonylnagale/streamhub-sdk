@@ -29,16 +29,17 @@ inherits) {
         this._authors = opts.authors || {};
         this._replies = opts.replies;
         Transform.call(this, opts);
-    }
+    };
 
     inherits(StateToContent, Transform);
 
 
     StateToContent.prototype._transform = function (state, done) {
+        var contents;
         try {
-            var contents = StateToContent.transform(state, this._authors, {
-                    replies: this._replies
-                });
+            contents = StateToContent.transform(state, this._authors, {
+                replies: this._replies
+            });
         } catch (err) {
             this.emit('error transforming state-to-content', err);
             log('StateToContent.transform threw', err);
@@ -122,10 +123,10 @@ inherits) {
         }
 
         if (opts.replies) {
-            return [content].concat(descendantContent)
+            return [content].concat(descendantContent);
         }
         return [content];
-    }
+    };
 
 
     StateToContent._addChildren = function (content, children) {
@@ -138,7 +139,7 @@ inherits) {
                 content.addReply(child);
             }
         }
-    }
+    };
 
 
     StateToContent._createContent = function (state, authors) {
@@ -165,6 +166,7 @@ inherits) {
         }
     };
 
+
     function isInstagramState (state) {
         var pattern = /\/\/instagram\.com/i;
         try {
@@ -184,7 +186,7 @@ inherits) {
             log('storing attachment', arguments);
             this._storeChild(attachment, targetId);
         }
-    }
+    };
 
 
     StateToContent._addReplyOrStore = function (reply, parentId) {
@@ -194,9 +196,9 @@ inherits) {
             parent.addReply(reply);
         } else {
             log('storing reply', arguments);
-            this._storeChild(reply, parentId)
+            this._storeChild(reply, parentId);
         }
-    }
+    };
 
 
     StateToContent._storeChild = function (child, parentId) {

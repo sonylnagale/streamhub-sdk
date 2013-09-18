@@ -105,9 +105,7 @@ function($, jasmine, jasminejQuery, Content, Oembed, AttachmentGalleryModal) {
 
         describe('when attachment is focused', function() {
             var modalView,
-                tiledAttachmentEl,
-                content,
-                attachmentListViewOpts;
+                content;
 
             beforeEach(function() {
                 content = new Content();

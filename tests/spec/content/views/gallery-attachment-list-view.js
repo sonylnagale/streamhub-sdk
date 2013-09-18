@@ -5,7 +5,7 @@ define([
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/views/gallery-attachment-list-view',
     'streamhub-sdk/content/views/oembed-view'],
-function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedView) {
+function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView) {
     'use strict';
 
     describe('GalleryAttachmentListView', function () {
@@ -100,9 +100,7 @@ function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedVi
         });
 
         describe('when clicking a thumbnail', function() {
-            
             var galleryAttachmentListView,
-                tiledAttachmentEl,
                 content = new Content(),
                 attachmentListViewOpts = { content: content, attachmentToFocus: oembedAttachment};
 
@@ -141,7 +139,7 @@ function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedVi
             galleryAttachmentListView,
             tiledAttachmentEl,
             content;
-           
+
             beforeEach(function() {
                 content = new Content();
                 galleryAttachmentListView = new GalleryAttachmentListView({ content: content, attachmentToFocus: oembedVideoAttachment });
@@ -167,11 +165,9 @@ function($, jasmine, jasminejQuery, Content, GalleryAttachmentListView, OembedVi
                 expect(focusedVideoAttachmentEl).toHaveCss({ display: 'block' });
             });
         });
-        
+
         describe('when attachment is focused', function() {
-            
             var galleryAttachmentListView,
-                tiledAttachmentEl,
                 content,
                 attachmentListViewOpts;
 

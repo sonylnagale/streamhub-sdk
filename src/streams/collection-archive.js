@@ -45,9 +45,8 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
      * Get content from bootstrap and .push() onto the read buffer
      */
     CollectionArchive.prototype._read = function () {
-        var self = this,
-            bootstrapClientOpts,
-            stateToPush;
+        var self = this;
+
         log('_read', 'Buffer length is ' + this._readableState.buffer.length);
 
         // The first time this is called, we first need to get Bootstrap init
@@ -99,8 +98,8 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
                 self.emit('error', new Error('Error requesting Bootstrap page '+bootstrapClientOpts.page));
                 return;
             }
-            var states = data.content,
-                contents = self._contentsFromBootstrapDoc(data);
+
+            var contents = self._contentsFromBootstrapDoc(data);
 
             if ( ! contents.length) {
                 // Everything was a duplicate... fetch next page
@@ -139,7 +138,6 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
         bootstrapDoc = bootstrapDoc || {};
         var self = this,
             states = bootstrapDoc.content || [],
-            authors = bootstrapDoc.authors || {},
             stateToContent = new StateToContent(bootstrapDoc),
             state,
             content,

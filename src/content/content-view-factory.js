@@ -83,7 +83,7 @@ define([
             } else if (current.viewFunction) {
                 currentType = current.viewFunction(content);
             }
-            return currentType
+            return currentType;
         }
     };
 

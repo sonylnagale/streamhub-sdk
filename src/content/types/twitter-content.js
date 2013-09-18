@@ -8,7 +8,7 @@ define(['streamhub-sdk/content/content', 'streamhub-sdk/util'], function(Content
      *        state of the content.
      * @exports streamhub-sdk/content/types/twitter-content
      * @constructor
-     */ 
+     */
     var TwitterContent = function (json) {
         Content.call(this);
         json = json || {};
@@ -17,4 +17,4 @@ define(['streamhub-sdk/content/content', 'streamhub-sdk/util'], function(Content
     util.inherits(TwitterContent, Content);
 
     return TwitterContent;
- });
+});

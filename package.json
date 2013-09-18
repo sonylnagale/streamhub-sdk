@@ -28,7 +28,7 @@
     "jsdoc": "rm -rf docs/api && ./node_modules/jsdoc/jsdoc -c tools/jsdoc.conf.json"
   },
   "devDependencies": {
-    "jshint": "~1.1.0",
+    "jshint": "~2.1.0",
     "jsdoc": "git://github.com/jsdoc3/jsdoc.git"
   }
 }

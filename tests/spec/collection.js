@@ -102,7 +102,7 @@ CollectionWriter, ListView, Content, Auth, Writable, Readable) {
                             }
                         });
                     };
-                    writable._write = function (chunk, done) { done(); }
+                    writable._write = function (chunk, done) { done(); };
                 });
                 it('can be piped to a writable', function () {
                     collection.pipe(writable);

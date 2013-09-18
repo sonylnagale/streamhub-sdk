@@ -36,7 +36,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/
         if (obj.id) {
             for (var i in this.attachments) {
                 if (this.attachments[i].id === obj.id) {
-                   found = true;
+                    found = true;
                 }
             }
         }
@@ -56,7 +56,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/
         if (obj.id) {
             for (var i in this.replies) {
                 if (this.replies[i].id === obj.id) {
-                   found = true;
+                    found = true;
                 }
             }
         }
@@ -65,12 +65,12 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/
             this.emit('reply', obj);
         }
     };
-    
+
     /**
      * The set of sources as defined by Livefyre's Stream API
      */
     LivefyreContent.SOURCES = [
-        "livefyre", 
+        "livefyre",
         "twitter",
         "twitter",
         "facebook",
@@ -88,4 +88,4 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/
     ];
 
     return LivefyreContent;
- });
+});

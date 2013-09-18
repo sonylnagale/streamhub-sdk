@@ -34,7 +34,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
             body: opts.body,
             lftoken: opts.lftoken
         };
-        
+
         if (opts.parent_id) {
             postData.parent_id = opts.parent_id;
         }
@@ -93,7 +93,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
             }
         });
     };
-    
+
     LivefyreWriteClient.follow = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};

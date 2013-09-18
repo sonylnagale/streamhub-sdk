@@ -15,7 +15,7 @@ Oembed) {
         describe('when constructed', function() {
             var contentViewFactory;
             beforeEach(function() {
-                contentViewFactory = new ContentViewFactory()
+                contentViewFactory = new ContentViewFactory();
             });
 
             it('takes no arguments', function() {
@@ -36,9 +36,11 @@ Oembed) {
                 var content = new ContentViewFactory.prototype.contentRegistry[i].type(state);
                 contentView = contentViewFactory.createContentView(content);
 
-                it('returns an instance of ContentView', function() {
-                    expect(contentView instanceof ContentView).toBe(true);
-                });
+                it('returns an instance of ContentView', isInstanceOfContentView(contentView));
+            }
+
+            function isInstanceOfContentView(contentView) {
+                expect(contentView instanceof ContentView).toBe(true);
             }
         });
 
@@ -46,7 +48,7 @@ Oembed) {
             var contentViewFactory,
                 content;
             beforeEach(function () {
-                content = new Content('WOAH')
+                content = new Content('WOAH');
                 content.addAttachment(new Oembed({
                     "provider_url": "http://distilleryimage11.ak.instagram.com",
                     "version": "1.0",
@@ -78,7 +80,7 @@ Oembed) {
                     "type": "photo",
                     "thumbnail_height": 0,
                     "author_url": ""
-                }))
+                }));
                 contentViewFactory = new ContentViewFactory();
             });
 
@@ -92,6 +94,6 @@ Oembed) {
                 var contentView = contentViewFactory.createContentView(content);
                 expect(contentView.attachmentsView.count()).toBe(2);
             });
-        })
+        });
     });
 });

@@ -13,9 +13,9 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
      * Prototype inheritance utility
      */
     exports.inherits = function(a, b){
-        var fn = function(){};
-        fn.prototype = b.prototype;
-        a.prototype = new fn;
+        var Fn = function(){};
+        Fn.prototype = b.prototype;
+        a.prototype = new Fn();
         a.prototype.constructor = a;
     };
 
@@ -63,7 +63,8 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
     var MONTH_STRINGS = [
         'Jan', 'Feb', 'Mar', 'Apr',
         'May', 'Jun','Jul', 'Aug',
-        'Sep', 'Oct', 'Nov', 'Dec'];
+        'Sep', 'Oct', 'Nov', 'Dec'
+    ];
 
     exports.formatDate = function (date, relativeTo) {
         relativeTo = relativeTo || new Date();
@@ -109,19 +110,22 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
             DontEnumsLength = DontEnums.length;
 
         return function (o) {
-            if (typeof o != "object" && typeof o != "function" || o === null)
+            if (typeof o !== "object" && typeof o !== "function" || o === null) {
                 throw new TypeError("Object.keys called on a non-object");
+            }
 
             var result = [];
             for (var name in o) {
-                if (hasOwnProperty.call(o, name))
+                if (hasOwnProperty.call(o, name)) {
                     result.push(name);
+                }
             }
 
             if (hasDontEnumBug) {
                 for (var i = 0; i < DontEnumsLength; i++) {
-                    if (hasOwnProperty.call(o, DontEnums[i]))
+                    if (hasOwnProperty.call(o, DontEnums[i])) {
                         result.push(DontEnums[i]);
+                    }
                 }
             }
 

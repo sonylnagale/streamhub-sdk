@@ -37,7 +37,7 @@ function ($, jasmine, LivefyreStreamClient) {
                 expect(callback.mostRecentCall.args[0]).toBeNull();
                 expect(callback.mostRecentCall.args[1]).toBeDefined();
                 expect(callback.mostRecentCall.args[1]).toBe(mockData);
-            });                            
+            });
         });
-    }); 
+    });
 });

@@ -21,7 +21,7 @@ define([
 	GalleryOnFocusView.prototype.setContent = function (content) {
 		this._initialView.setContent(content);
 		AttachmentListView.prototype.setContent.call(this, content);
-	}
+	};
 
 	GalleryOnFocusView.prototype.add = function (attachment) {
 		AttachmentListView.prototype.add.call(this, attachment);
@@ -29,13 +29,13 @@ define([
 		if (this._focusedView) {
 			this._focusedView.add(attachment);
 		}
-	}
+	};
 
 	GalleryOnFocusView.prototype.render = function () {
 		AttachmentListView.prototype.render.call(this);
 		this._initialView.$el.appendTo(this.$el);
 		this._initialView.render();
-	}
+	};
 
 
 	GalleryOnFocusView.prototype._insert = function (oembedView) {

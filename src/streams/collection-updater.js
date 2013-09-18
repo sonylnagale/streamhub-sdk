@@ -32,7 +32,7 @@ StateToContent, debug) {
         this._collection = opts.collection;
         this._streamClient = opts.streamClient || StreamClient;
         Readable.call(this, opts);
-    }
+    };
 
     inherits(CollectionUpdater, Readable);
 
@@ -43,11 +43,9 @@ StateToContent, debug) {
      * Get content from bootstrap and .push() onto the read buffer
      */
     CollectionUpdater.prototype._read = function () {
-        var self = this,
-            bootstrapClientOpts,
-            stateToPush;
-        log('_read', 'Buffer length is ' + this._readableState.buffer.length);
+        var self = this;
 
+        log('_read', 'Buffer length is ' + this._readableState.buffer.length);
 
         if ( ! this._latestEvent || ! this._collection.id) {
             // Get the latest event and/or collection ID by initing
@@ -77,7 +75,6 @@ StateToContent, debug) {
     CollectionUpdater.prototype._stream = function () {
         var self = this,
             streamClient = this._streamClient,
-            latestEvent = this._latestEvent,
             streamClientOpts = this._getStreamClientOptions();
         streamClient.getContent(streamClientOpts, function (err, data) {
             if (err) {
@@ -116,7 +113,6 @@ StateToContent, debug) {
         var states = streamData.states,
             stateToContent = new StateToContent(streamData),
             state,
-            content,
             contents = [];
 
         stateToContent.on('data', function (content) {

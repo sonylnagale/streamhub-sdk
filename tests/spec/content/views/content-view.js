@@ -11,7 +11,7 @@ function ($, jasmine, jasmineJquery, util, Content, LivefyreContent, ContentView
     'use strict';
 
     describe('Default ContentView', function () {
-        
+
         describe('when constructed', function () {
             var contentView = new ContentView({ content: new Content('blah') });
             it('has a .createdAt Date', function () {
@@ -91,8 +91,8 @@ function ($, jasmine, jasmineJquery, util, Content, LivefyreContent, ContentView
                     imageError;
 
                 beforeEach(function() {
-                    content = new Content({ body: 'what' }),
-                    attachmentListView = new TiledAttachmentListView({ content: content }),
+                    content = new Content({ body: 'what' });
+                    attachmentListView = new TiledAttachmentListView({ content: content });
                     contentView = new ContentView({ content: content, attachmentsView: attachmentListView });
                     imageError = false;
                     contentView.$el.on('imageError.hub', function() {

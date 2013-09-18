@@ -23,12 +23,12 @@ function ($, jasmine, jasminejquery, Oembed) {
         });
         it("throws when constructed without a type", function () {
             expect(function () {
-                var oembed = new Oembed({});
+                new Oembed({});
             }).toThrow();
         });
         it("throws when constructed without an invalid type", function () {
             expect(function () {
-                var oembed = new Oembed({ type: 'none' });
+                new Oembed({ type: 'none' });
             }).toThrow();
         });
         it(".toJSON returns a valid oEmbed JSON Object", function () {
@@ -36,7 +36,9 @@ function ($, jasmine, jasminejquery, Oembed) {
             oembed.omg = 'bbq';
             var oembedJson = oembed.toJSON();
             for (var property in oembedJson) {
-                expect(Oembed.properties.indexOf(property)).toBeGreaterThan(-1);
+                if (oembedJson.hasOwnProperty(property)) {
+                    expect(Oembed.properties.indexOf(property)).toBeGreaterThan(-1);
+                }
             }
         });
     });

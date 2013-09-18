@@ -8,7 +8,7 @@ function ($, jasmine, LivefyreWriteClient) {
 
     describe('A LivefyreWriteClient', function () {
         var spy, mockData, callback, opts;
-        
+
         beforeEach(function() {
             mockData = {"status": "ok", "code": 200, "data": {"messages": [{"content": {"replaces": null, "bodyHtml": "<p>oh hi there 2</p>", "annotations": {"moderator": true}, "source": 0, "authorId": "system@labs-t402.fyre.co", "parentId": null, "mentions": [], "shareLink": "http://t402.livefyre.com/.fyreit/w9lbch.4", "id": "26394571", "createdAt": 1363808885}, "vis": 1, "type": 0, "event": null, "source": 0}], "authors": {"system@labs-t402.fyre.co": {"displayName": "system", "tags": [], "profileUrl": "", "avatar": "http://gravatar.com/avatar/e23293c6dfc25b86762b045336233add/?s=50&d=http://d10g4z0y9q0fip.cloudfront.net/a/anon/50.jpg", "type": 1, "id": "system@labs-t402.fyre.co"}}}};
 
@@ -28,7 +28,7 @@ function ($, jasmine, LivefyreWriteClient) {
             };
         });
         
-        it ("should post data when postContent is called", function () {            
+        it ("should post data when postContent is called", function () {
             LivefyreWriteClient.postContent(opts, callback);
     
             waitsFor(function() {
@@ -40,7 +40,7 @@ function ($, jasmine, LivefyreWriteClient) {
                 expect(callback.mostRecentCall.args[0]).toBeNull();
                 expect(callback.mostRecentCall.args[1]).toBeDefined();
                 expect(callback.mostRecentCall.args[1]).toBe(mockData);
-            });                            
+            });
         });
 
         it ("should post media attachments", function () {
@@ -64,7 +64,7 @@ function ($, jasmine, LivefyreWriteClient) {
                 expect(callback.mostRecentCall.args[0]).toBeNull();
                 expect(callback.mostRecentCall.args[1]).toBeDefined();
                 expect(callback.mostRecentCall.args[1]).toBe(mockData);
-            });                            
+            });
         });
-    }); 
+    });
 });

@@ -20,7 +20,7 @@ define(['streamhub-sdk/util', 'streamhub-sdk/jquery', 'base64'], function(util, 
     LivefyreAuthClient.getAuthData = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
-        
+
         var url = [
             'http://admin.',
             (opts.network === 'livefyre.com') ? opts.environment || 'livefyre.com' : opts.network,

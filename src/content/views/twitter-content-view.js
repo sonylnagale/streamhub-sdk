@@ -16,7 +16,7 @@ function (ContentView, TwitterContentTemplate, util, $) {
     var TwitterContentView = function (opts) {
         ContentView.call(this, opts);
     };
-    util.inherits(TwitterContentView, ContentView); 
+    util.inherits(TwitterContentView, ContentView);
     
     TwitterContentView.prototype.elClass += ' content-tweet ';
     TwitterContentView.prototype.template = TwitterContentTemplate;
@@ -24,7 +24,7 @@ function (ContentView, TwitterContentTemplate, util, $) {
     /**
      * Gets the template rendering context. By default, returns "this.content".
      * @return {Content} The content object this view was instantiated with.
-     */  
+     */
     TwitterContentView.prototype.getTemplateContext = function () {
         var context = ContentView.prototype.getTemplateContext.call(this);
         context.author.twitterUsername = context.author.profileUrl.split('/').pop();

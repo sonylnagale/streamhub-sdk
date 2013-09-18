@@ -85,8 +85,7 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
      *     This is helpful when piping to a ListView
      */
     Collection.prototype.pipe = function (writable, opts) {
-        var self = this,
-            archive;
+        var archive;
         opts = opts || {};
         if (typeof opts.pipeArchiveToMore === 'undefined') {
             opts.pipeArchiveToMore = true;
@@ -97,7 +96,7 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
         // If piped to a ListView (or something with a .more),
         // pipe an archive to .more
         if (opts.pipeArchiveToMore && writable.more && writable.more.writable) {
-            archive = this.createArchive()
+            archive = this.createArchive();
             archive.pipe(writable.more);
             this._pipedArchives.push(archive);
         }

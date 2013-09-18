@@ -26,4 +26,4 @@ function($, Oembed, LivefyreContent, util) {
     $.extend(LivefyreOembed.prototype, LivefyreContent.prototype);
 
     return LivefyreOembed;
- });
+});

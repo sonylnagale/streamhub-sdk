@@ -22,7 +22,6 @@ define([
         });
 
         describe('when DOM ready', function () {
-            
             var modalView;
 
             beforeEach(function () {

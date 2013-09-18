@@ -20,7 +20,7 @@ function (inherits, Transform, debug) {
         opts = opts || {};
         this._goal = opts.goal || 0;
         Transform.call(this, opts);
-    }
+    };
 
     inherits(More, Transform);
 
@@ -77,5 +77,5 @@ function (inherits, Transform, debug) {
     };
 
 
-    return More
+    return More;
 });

@@ -13,7 +13,7 @@ function (inherits, View) {
         if (opts.more) {
             this.setMoreStream(opts.more);
         }
-    }
+    };
 
     inherits(ShowMoreButton, View);
 
@@ -61,7 +61,7 @@ function (inherits, View) {
         // When more content is held to be shown, show the button
         this._more.on('hold', function () {
             self.$el.show();
-        });     
+        });
     };
 
 

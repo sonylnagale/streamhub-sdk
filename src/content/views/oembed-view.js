@@ -51,7 +51,7 @@ function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, 
         // YouTube oembed thumbnails (hqdefault.jpg) include a letterbox for 16:9 aspect ratio
         // videos. Use mqdefault.jpg instead as it does not have letterboxing.
         // http://kb.oboxsites.com/knowledgebase/how-to-remove-black-bars-on-youtube-oembed-thumbnails/
-        if (this.oembed.provider_name == 'YouTube') {
+        if (this.oembed.provider_name === 'YouTube') {
             var re = /(hqdefault.jpg)$/;
             if (re.test(this.oembed.thumbnail_url)) {
                 this.oembed.thumbnail_url = this.oembed.thumbnail_url.replace(re, 'mqdefault.jpg');
