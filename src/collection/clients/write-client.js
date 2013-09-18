@@ -5,7 +5,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
      * A Client for requesting Livefyre's Quill/Write Service
      * @exports streamhub-sdk/collection/clients/write-client
      */
-    var LivefyreWriteClient = {};
+    var LivefyreWriteClient = function () {};
 
     /**
      * Posts a piece of content to a Livefyre collection.
@@ -19,7 +19,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
      * @param callback {function} A callback that is called upon success/failure of the
      *     write request. Callback signature is "function(error, data)".
      */
-    LivefyreWriteClient.postContent = function(opts, callback) {
+    LivefyreWriteClient.prototype.postContent = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
         var url = [
@@ -67,7 +67,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
      * @param callback {function} A callback that is called upon success/failure of the
      *     write request. Callback signature is "function(error, data)".
      */
-    LivefyreWriteClient.postTweet = function(opts, callback) {
+    LivefyreWriteClient.prototype.postTweet = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
         var url = [
@@ -94,7 +94,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
         });
     };
 
-    LivefyreWriteClient.follow = function(opts, callback) {
+    LivefyreWriteClient.prototype.follow = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
         var url = [
@@ -120,7 +120,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
         });
     };
 
-    LivefyreWriteClient.unfollow = function(opts, callback) {
+    LivefyreWriteClient.prototype.unfollow = function(opts, callback) {
         opts = opts || {};
         callback = callback || function() {};
         var url = [

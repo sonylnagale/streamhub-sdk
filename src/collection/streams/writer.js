@@ -9,7 +9,7 @@ function (Writable, LivefyreWriteClient, Auth, inherits) {
 
     var CollectionWriter = function (opts) {
         this._collection = opts.collection;
-        this._writeClient = opts.writeClient || LivefyreWriteClient;
+        this._writeClient = opts.writeClient || new LivefyreWriteClient();
         Writable.call(this, opts);
     };
 

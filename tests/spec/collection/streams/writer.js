@@ -43,7 +43,7 @@ MockLivefyreWriteClient, Auth, Writable) {
                 collection = new MockCollection(opts);
 				writer = new CollectionWriter({
 					collection: collection,
-					writeClient: MockLivefyreWriteClient
+					writeClient: new MockLivefyreWriteClient()
 				});
 			});
 			it('is a Writable', function () {

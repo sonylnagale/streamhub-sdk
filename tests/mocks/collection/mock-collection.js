@@ -19,7 +19,7 @@ Collection) {
 
 	MockCollection.prototype.createWriter = function () {
 		return Collection.prototype.createWriter({
-			writeClient: MockLivefyreWriteClient
+			writeClient: new MockLivefyreWriteClient()
 		});
 	};
 
