@@ -6,7 +6,11 @@
   },
   baseUrl: '.',
   name: "streamhub-sdk",
-  include: ['almond', 'streamhub-sdk/collection'],
+  include: [
+    'almond',
+    'streamhub-sdk/collection',
+    'streamhub-sdk/views/list-view'
+  ],
   stubModules: ['text', 'hgn', 'json'],
   out: "streamhub-sdk.min.js",
   namespace: 'Livefyre',
