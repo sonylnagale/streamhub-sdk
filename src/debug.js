@@ -42,6 +42,8 @@ define(function(require, exports, module) {
                 fmt +
                 ' +' + debug.humanize(ms);
 
+            arguments[0] = fmt;
+
             // This hackery is required for IE8
             // where `console.log` doesn't have 'apply'
             var console = window.console;

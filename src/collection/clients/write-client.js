@@ -3,7 +3,7 @@ define(['streamhub-sdk/jquery', 'base64'], function($) {
 
     /**
      * A Client for requesting Livefyre's Quill/Write Service
-     * @exports streamhub-sdk/clients/livefyre-write-client
+     * @exports streamhub-sdk/collection/clients/write-client
      */
     var LivefyreWriteClient = {};
 

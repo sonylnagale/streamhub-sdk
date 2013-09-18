@@ -1,9 +1,9 @@
 define([
     'jasmine',
     'streamhub-sdk/collection',
-    'streamhub-sdk/streams/collection-archive',
-    'streamhub-sdk/streams/collection-updater',
-    'streamhub-sdk/streams/collection-writer',
+    'streamhub-sdk/collection/streams/archive',
+    'streamhub-sdk/collection/streams/updater',
+    'streamhub-sdk/collection/streams/writer',
     'streamhub-sdk/views/list-view',
     'streamhub-sdk/content/content',
     'streamhub-sdk/auth',

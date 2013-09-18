@@ -3,7 +3,7 @@ define(['streamhub-sdk/util', 'streamhub-sdk/jquery', 'base64'], function(util, 
 
     /**
      * A Client for requesting Livefyre's Bootstrap Service
-     * @exports streamhub-sdk/clients/livefyre-bootstrap-client
+     * @exports streamhub-sdk/collection/clients/bootstrap-client
      */
     var LivefyreBootstrapClient = {};
 

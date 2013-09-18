@@ -4,7 +4,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/util'], function($, util) {
 
     /**
      * A Client for requesting Livefyre's Stream Service
-     * @exports streamhub-sdk/clients/livefyre-stream-client
+     * @exports streamhub-sdk/collection/clients/stream-client
      */
     var LivefyreStreamClient = {};
 

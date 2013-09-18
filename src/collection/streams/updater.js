@@ -2,8 +2,8 @@ define([
     'inherits',
     'stream/readable',
     'stream/util',
-    'streamhub-sdk/clients/livefyre-bootstrap-client',
-    'streamhub-sdk/clients/livefyre-stream-client',
+    'streamhub-sdk/collection/clients/bootstrap-client',
+    'streamhub-sdk/collection/clients/stream-client',
     'streamhub-sdk/content/state-to-content',
     'streamhub-sdk/debug'],
 function (inherits, Readable, streamUtil, BootstrapClient, StreamClient,
@@ -11,7 +11,7 @@ StateToContent, debug) {
     'use strict';
 
 
-    var log = debug('streamhub-sdk/streams/collection-updater');
+    var log = debug('streamhub-sdk/collection/streams/updater');
 
 
     /**

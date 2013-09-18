@@ -1,16 +1,16 @@
 define([
 	'jasmine',
 	'streamhub-sdk/content/content',
-	'streamhub-sdk/streams/collection-writer',
-	'streamhub-sdk-tests/mocks/mock-collection',
-	'streamhub-sdk-tests/mocks/clients/livefyre-write-client',
+	'streamhub-sdk/collection/streams/writer',
+	'streamhub-sdk-tests/mocks/collection/mock-collection',
+	'streamhub-sdk-tests/mocks/collection/clients/mock-write-client',
 	'streamhub-sdk/auth',
 	'stream/writable'],
 function (jasmine, Content, CollectionWriter, MockCollection,
 MockLivefyreWriteClient, Auth, Writable) {
     'use strict';
 
-	describe('streamhub-sdk/streams/collection-writer', function () {
+	describe('streamhub-sdk/collection/streams/writer', function () {
 		it('can be passed opts.collection on construction', function () {
 			var collection = new MockCollection();
 			var writer = new CollectionWriter({

@@ -1,4 +1,4 @@
-define(['streamhub-sdk/clients/livefyre-write-client'],
+define(['streamhub-sdk/collection/clients/write-client'],
 function (LivefyreWriteClient) {
     'use strict';
 

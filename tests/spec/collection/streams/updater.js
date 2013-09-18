@@ -1,16 +1,16 @@
 define([
     'jasmine',
-    'streamhub-sdk/streams/collection-updater',
+    'streamhub-sdk/collection/streams/updater',
     'stream/readable',
     'streamhub-sdk/content/state-to-content',
-    'streamhub-sdk-tests/mocks/mock-collection',
-    'streamhub-sdk-tests/mocks/clients/livefyre-bootstrap-client',
-    'streamhub-sdk-tests/mocks/clients/livefyre-stream-client'],
+    'streamhub-sdk-tests/mocks/collection/mock-collection',
+    'streamhub-sdk-tests/mocks/collection/clients/mock-bootstrap-client',
+    'streamhub-sdk-tests/mocks/collection/clients/mock-stream-client'],
 function (jasmine, CollectionUpdater, Readable, StateToContent, MockCollection,
 MockLivefyreBootstrapClient, MockLivefyreStreamClient) {
     "use strict";
 
-    describe('streamhub-sdk/streams/collection-updater', function () {
+    describe('streamhub-sdk/collection/streams/updater', function () {
 
         describe('when constructed', function () {
             var updater;

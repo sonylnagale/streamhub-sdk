@@ -1,7 +1,7 @@
 define([
 	'inherits',
-	'streamhub-sdk-tests/mocks/clients/livefyre-bootstrap-client',
-	'streamhub-sdk-tests/mocks/clients/livefyre-write-client',
+	'streamhub-sdk-tests/mocks/collection/clients/mock-bootstrap-client',
+	'streamhub-sdk-tests/mocks/collection/clients/mock-write-client',
 	'streamhub-sdk/collection'],
 function (inherits, MockLivefyreBootstrapClient, MockLivefyreWriteClient,
 Collection) {

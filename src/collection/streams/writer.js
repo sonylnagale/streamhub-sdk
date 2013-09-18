@@ -1,6 +1,6 @@
 define([
     'stream/writable',
-    'streamhub-sdk/clients/livefyre-write-client',
+    'streamhub-sdk/collection/clients/write-client',
     'streamhub-sdk/auth',
     'inherits'],
 function (Writable, LivefyreWriteClient, Auth, inherits) {
