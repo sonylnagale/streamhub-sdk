@@ -14,14 +14,17 @@ require.config({
     inherits: 'lib/inherits/inherits'
   },
   packages: [{
-     name: "streamhub-sdk",
-     location: "src/"
+    name: "streamhub-sdk",
+    location: "src/"
   },{
-     name: "streamhub-sdk-tests",
-     location: "tests/"
+    name: "streamhub-sdk/auth",
+    location: "src/auth"
   },{
-     name: "stream",
-     location: "lib/stream/src"
+    name: "streamhub-sdk-tests",
+    location: "tests/"
+  },{
+    name: "stream",
+    location: "lib/stream/src"
   }],
   shim: {
     jquery: {

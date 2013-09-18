@@ -9,7 +9,8 @@
   include: [
     'almond',
     'streamhub-sdk/collection',
-    'streamhub-sdk/views/list-view'
+    'streamhub-sdk/views/list-view',
+    'streamhub-sdk/auth'
   ],
   stubModules: ['text', 'hgn', 'json'],
   out: "streamhub-sdk.min.js",
