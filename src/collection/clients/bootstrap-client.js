@@ -5,7 +5,7 @@ define(['streamhub-sdk/util', 'streamhub-sdk/jquery', 'base64'], function(util, 
      * A Client for requesting Livefyre's Bootstrap Service
      * @exports streamhub-sdk/collection/clients/bootstrap-client
      */
-    var LivefyreBootstrapClient = {};
+    var LivefyreBootstrapClient = function () {};
 
     /**
      * Fetches data from the livefyre bootstrap service with the arguments given.
@@ -19,7 +19,7 @@ define(['streamhub-sdk/util', 'streamhub-sdk/jquery', 'base64'], function(util, 
      * @param callback {function} A callback that is called upon success/failure of the
      *     bootstrap request. Callback signature is "function(error, data)".
      */
-    LivefyreBootstrapClient.getContent = function(opts, callback) {
+    LivefyreBootstrapClient.prototype.getContent = function(opts, callback) {
         var isLocaldev;
         opts = opts || {};
         callback = callback || function() {};

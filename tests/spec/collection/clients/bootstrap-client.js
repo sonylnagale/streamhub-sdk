@@ -7,7 +7,11 @@ function ($, jasmine, LivefyreBootstrapClient) {
     'use strict';
 
     describe('A LivefyreBootstrapClient', function () {
-        var spy, mockData, callback, opts;
+        var spy, mockData, callback, opts, bootstrapClient;
+
+        beforeEach(function () {
+            bootstrapClient = new LivefyreBootstrapClient();
+        });
         
         describe("when constructed with normal opts", function () {
             beforeEach(function() {
@@ -26,8 +30,12 @@ function ($, jasmine, LivefyreBootstrapClient) {
                 };
             });
 
+            it("is instanceof LivefyreBootstrapClient", function () {
+                expect(bootstrapClient instanceof LivefyreBootstrapClient).toBe(true);
+            });
+
             it ("should return data when getContent is called", function () {            
-                LivefyreBootstrapClient.getContent(opts, callback);
+                bootstrapClient.getContent(opts, callback);
         
                 waitsFor(function() {
                     return callback.callCount > 0;
@@ -43,7 +51,7 @@ function ($, jasmine, LivefyreBootstrapClient) {
 
             it("requests page 0 when opts.page === 0", function () {
                 opts.page = 0;
-                LivefyreBootstrapClient.getContent(opts, callback);
+                bootstrapClient.getContent(opts, callback);
                 waitsFor(function() {
                     return callback.callCount;
                 }, '.getContent to respond');
@@ -69,7 +77,7 @@ function ($, jasmine, LivefyreBootstrapClient) {
                 });
             });
             it("requests the correct bootstrap URL for localdev", function () {
-                LivefyreBootstrapClient.getContent(opts, callback);
+                bootstrapClient.getContent(opts, callback);
                 var requestedUrl = $.ajax.mostRecentCall.args[0].url;
                 expect(requestedUrl).toBe('http://bootstrap.fyre/bs3/livefyre.com/286472/NTA5Mzg4YzAtYTI3Mi00MTcwLTk4YjktNzE0OTczYjM3NTM4/init');
             });

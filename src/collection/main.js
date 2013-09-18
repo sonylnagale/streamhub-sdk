@@ -19,14 +19,14 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
     /**
      * An Object that represents a hosted StreamHub Collection
      */
-    function Collection (opts) {
+    var Collection = function (opts) {
         opts = opts || {};
         this.network = opts.network;
         this.siteId = opts.siteId;
         this.articleId = opts.articleId;
         this.environment = opts.environment;
 
-        this._bootstrapClient = opts.bootstrapClient || LivefyreBootstrapClient;
+        this._bootstrapClient = opts.bootstrapClient || new LivefyreBootstrapClient();
 
         // Internal streams
         this._writer = opts.writer || this.createWriter();
@@ -34,8 +34,10 @@ LivefyreBootstrapClient, LivefyreWriteClient, Auth, inherits, debug) {
         this._pipedArchives = [];
 
         Duplex.call(this, opts);
-    }
+    };
+
     inherits(Collection, Duplex);
+
 
     /**
      * Create a readable stream that will read through the Collection Archive

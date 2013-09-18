@@ -30,7 +30,7 @@ function ($, Readable, BootstrapClient, StateToContent, debug, inherits) {
 
         this._collection = opts.collection;
 
-        this._bootstrapClient = opts.bootstrapClient || BootstrapClient;
+        this._bootstrapClient = opts.bootstrapClient || new BootstrapClient();
         this._contentIdsInHeadDocument = [];
 
         Readable.call(this, opts);

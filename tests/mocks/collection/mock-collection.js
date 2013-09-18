@@ -5,12 +5,15 @@ define([
 	'streamhub-sdk/collection'],
 function (inherits, MockLivefyreBootstrapClient, MockLivefyreWriteClient,
 Collection) {
+	'use strict';
+
 
 	var MockCollection = function (opts) {
 		opts = opts || {};
-        opts.bootstrapClient = MockLivefyreBootstrapClient;
+        opts.bootstrapClient = new MockLivefyreBootstrapClient();
 		Collection.call(this, opts);
 	};
+
 	inherits(MockCollection, Collection);
 
 
