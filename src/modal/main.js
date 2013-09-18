@@ -13,7 +13,7 @@ define([
      * @param opts {Object} A set of options to config the view with
      * @fires GalleryAttachmentListView#hideModal.hub
      * @fires GalleryAttachmentListView#error
-     * @exports streamhub-sdk/modal/modal
+     * @exports streamhub-sdk/modal
      * @constructor
      */
     var ModalView = function (opts) {

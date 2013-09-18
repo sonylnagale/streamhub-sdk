@@ -4,7 +4,7 @@ define([
     'jasmine-jquery',
     'streamhub-sdk/content/content',
     'streamhub-sdk/content/types/oembed',
-    'streamhub-sdk/modal/modal',
+    'streamhub-sdk/modal',
     'streamhub-sdk/content/views/gallery-attachment-list-view'
 ], function($, jasmine, jasmineJquery, Content, Oembed, ModalView, GalleryAttachmentListView) {
     'use strict';

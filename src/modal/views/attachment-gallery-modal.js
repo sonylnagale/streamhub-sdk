@@ -1,5 +1,5 @@
 define([
-    'streamhub-sdk/modal/modal',
+    'streamhub-sdk/modal',
     'streamhub-sdk/content/views/gallery-attachment-list-view',
     'streamhub-sdk/util'
 ], function(ModalView, GalleryAttachmentListView, util) {

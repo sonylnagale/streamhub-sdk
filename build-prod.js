@@ -10,7 +10,8 @@
     'almond',
     'streamhub-sdk/collection',
     'streamhub-sdk/views/list-view',
-    'streamhub-sdk/auth'
+    'streamhub-sdk/auth',
+    'streamhub-sdk/modal'
   ],
   stubModules: ['text', 'hgn', 'json'],
   out: "streamhub-sdk.min.js",

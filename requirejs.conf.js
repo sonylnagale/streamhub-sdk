@@ -23,6 +23,9 @@ require.config({
     name: "streamhub-sdk/collection",
     location: "src/collection"
   },{
+    name: "streamhub-sdk/modal",
+    location: "src/modal"
+  },{
     name: "streamhub-sdk-tests",
     location: "tests/"
   },{
