@@ -5,8 +5,8 @@ define([
     'streamhub-sdk/content/views/oembed-view',
     'hgn!streamhub-sdk/content/templates/gallery-attachment-list',
     'hgn!streamhub-sdk/content/templates/content-byline',
-    'streamhub-sdk/util'],
-function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemplate, contentBylineTemplate, util) {
+    'inherits'],
+function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemplate, contentBylineTemplate, inherits) {
     'use strict';
 
     /**
@@ -64,7 +64,7 @@ function($, View, TiledAttachmentListView, OembedView, GalleryAttachmentListTemp
             }
         });
     };
-    util.inherits(GalleryAttachmentListView, View);
+    inherits(GalleryAttachmentListView, View);
     $.extend(GalleryAttachmentListView.prototype, TiledAttachmentListView.prototype);
 
     GalleryAttachmentListView.prototype.template = GalleryAttachmentListTemplate;

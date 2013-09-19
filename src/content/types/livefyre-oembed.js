@@ -2,8 +2,8 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/content/types/oembed',
     'streamhub-sdk/content/types/livefyre-content',
-    'streamhub-sdk/util'],
-function($, Oembed, LivefyreContent, util) {
+    'inherits'],
+function($, Oembed, LivefyreContent, inherits) {
     'use strict';
 
     /**
@@ -22,7 +22,7 @@ function($, Oembed, LivefyreContent, util) {
             this.html = "<a href='"+this.url+"' target='_blank'/><img src='"+this.thumbnail_url+"'/></a>";
         }
     };
-    util.inherits(LivefyreOembed, Oembed);
+    inherits(LivefyreOembed, Oembed);
     $.extend(LivefyreOembed.prototype, LivefyreContent.prototype);
 
     return LivefyreOembed;

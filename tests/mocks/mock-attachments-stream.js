@@ -3,8 +3,9 @@ define([
     'streamhub-sdk/content/state-to-content',
     'json!tests/mocks/bootstrap-data.json',
     'stream/readable',
-    'streamhub-sdk/util'
-], function ($, StateToContent, fixture, Readable, util) {
+    'inherits'
+], function ($, StateToContent, fixture, Readable, inherits) {
+    'use strict';
 
     for (var provider in fixture.content) {
         var state = fixture.content[provider];
@@ -28,7 +29,7 @@ define([
         }
     };
 
-    util.inherits(MockAttachmentsStream, Readable);
+    inherits(MockAttachmentsStream, Readable);
 
 
     MockAttachmentsStream.prototype._read = function() {

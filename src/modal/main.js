@@ -3,8 +3,8 @@ define([
     'streamhub-sdk/view',
     'streamhub-sdk/content/views/gallery-attachment-list-view',
     'hgn!streamhub-sdk/modal/templates/modal',
-    'streamhub-sdk/util'
-], function($, View, GalleryAttachmentListView, ModalTemplate, util) {
+    'inherits'
+], function($, View, GalleryAttachmentListView, ModalTemplate, inherits) {
     'use strict';
 
     /**
@@ -42,7 +42,7 @@ define([
 
         ModalView.instances.push(this);
     };
-    util.inherits(ModalView, View);
+    inherits(ModalView, View);
 
 
     // Store all instances of modal to ensure that only one is visible

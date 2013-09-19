@@ -1,9 +1,9 @@
 define([
-	'streamhub-sdk/util',
+	'inherits',
 	'streamhub-sdk/view',
 	'streamhub-sdk/content/views/gallery-attachment-list-view',
 	'streamhub-sdk/content/views/attachment-list-view'
-], function (util, View, GalleryAttachmentListView, AttachmentListView) {
+], function (inherits, View, GalleryAttachmentListView, AttachmentListView) {
     'use strict';
 
 	/**
@@ -16,7 +16,7 @@ define([
 		this._initialView = initialView;
 		AttachmentListView.call(this, opts);
 	};
-	util.inherits(GalleryOnFocusView, AttachmentListView);
+	inherits(GalleryOnFocusView, AttachmentListView);
 
 	GalleryOnFocusView.prototype.setContent = function (content) {
 		this._initialView.setContent(content);

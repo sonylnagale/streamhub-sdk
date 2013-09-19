@@ -5,9 +5,9 @@ define([
     'hgn!streamhub-sdk/content/templates/oembed-video',
     'hgn!streamhub-sdk/content/templates/oembed-link',
     'hgn!streamhub-sdk/content/templates/oembed-rich',
-    'streamhub-sdk/util'
+    'inherits'
 ],
-function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, OembedRichTemplate, util) {
+function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, OembedRichTemplate, inherits) {
     'use strict';
 
     /**
@@ -29,7 +29,7 @@ function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, 
         }
         this.template = this.OEMBED_TEMPLATES[this.oembed.type];
     };
-    util.inherits(OembedView, View);
+    inherits(OembedView, View);
 
     /**
      * A mapping of oembed type to its mustache template for rendering 

@@ -1,8 +1,8 @@
 define([
     'streamhub-sdk/jquery',
     'event-emitter',
-    'streamhub-sdk/util'
-], function($, EventEmitter, util) {
+    'inherits'
+], function($, EventEmitter, inherits) {
     'use strict';
 
     /**
@@ -26,7 +26,7 @@ define([
         this.attachments = obj.attachments || [];
         this.replies = obj.replies || [];
     };
-    util.inherits(Content, EventEmitter);
+    inherits(Content, EventEmitter);
 
     /**
      * Attach an Oembed to the Content

@@ -4,8 +4,8 @@ define([
     'streamhub-sdk/content/views/attachment-list-view',
     'streamhub-sdk/content/views/oembed-view',
     'hgn!streamhub-sdk/content/templates/tiled-attachment-list',
-    'streamhub-sdk/util'],
-function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, util) {
+    'inherits'],
+function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, inherits) {
     'use strict';
 
     
@@ -24,7 +24,7 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
         this.oembedViews = [];
         AttachmentListView.call(this, opts);
     };
-    util.inherits(TiledAttachmentListView, AttachmentListView);
+    inherits(TiledAttachmentListView, AttachmentListView);
 
     TiledAttachmentListView.prototype.template = TiledAttachmentListTemplate;
     TiledAttachmentListView.prototype.tiledAttachmentsSelector = '.content-attachments-tiled';

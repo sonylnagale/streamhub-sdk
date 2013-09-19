@@ -3,8 +3,8 @@ define([
     'streamhub-sdk/view',
     'streamhub-sdk/content/views/oembed-view',
     'hgn!streamhub-sdk/content/templates/attachment-list',
-    'streamhub-sdk/util'],
-function($, View, OembedView, AttachmentListTemplate, util) {
+    'inherits'],
+function($, View, OembedView, AttachmentListTemplate, inherits) {
     'use strict';
    
     /**
@@ -25,7 +25,7 @@ function($, View, OembedView, AttachmentListTemplate, util) {
             this.setContent(opts.content);
         }
     };
-    util.inherits(AttachmentListView, View);
+    inherits(AttachmentListView, View);
 
     AttachmentListView.prototype.template = AttachmentListTemplate;
     AttachmentListView.prototype.stackedAttachmentsSelector = '.content-attachments-stacked';

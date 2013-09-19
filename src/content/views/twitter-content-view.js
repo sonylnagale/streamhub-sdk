@@ -1,9 +1,9 @@
 define([
     'streamhub-sdk/content/views/content-view',
     'hgn!streamhub-sdk/content/templates/twitter',
-    'streamhub-sdk/util',
+    'inherits',
     'streamhub-sdk/jquery'],
-function (ContentView, TwitterContentTemplate, util, $) {
+function (ContentView, TwitterContentTemplate, inherits, $) {
     'use strict';
     
     /**
@@ -16,7 +16,7 @@ function (ContentView, TwitterContentTemplate, util, $) {
     var TwitterContentView = function (opts) {
         ContentView.call(this, opts);
     };
-    util.inherits(TwitterContentView, ContentView);
+    inherits(TwitterContentView, ContentView);
     
     TwitterContentView.prototype.elClass += ' content-tweet ';
     TwitterContentView.prototype.template = TwitterContentTemplate;

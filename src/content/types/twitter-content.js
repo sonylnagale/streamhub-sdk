@@ -1,4 +1,4 @@
-define(['streamhub-sdk/content/content', 'streamhub-sdk/util'], function(Content, util) {
+define(['streamhub-sdk/content/content', 'inherits'], function(Content, inherits) {
     'use strict';
     
     /**
@@ -14,7 +14,7 @@ define(['streamhub-sdk/content/content', 'streamhub-sdk/util'], function(Content
         json = json || {};
         this.tweetId = json.tweetId;
     };
-    util.inherits(TwitterContent, Content);
+    inherits(TwitterContent, Content);
 
     return TwitterContent;
 });

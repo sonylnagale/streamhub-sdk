@@ -10,16 +10,6 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
     var exports = {};
 
     /**
-     * Prototype inheritance utility
-     */
-    exports.inherits = function(a, b){
-        var Fn = function(){};
-        Fn.prototype = b.prototype;
-        a.prototype = new Fn();
-        a.prototype.constructor = a;
-    };
-
-    /**
      * Get outerWidth (jquery-style) of element
      * @deprecated
      */

@@ -1,4 +1,4 @@
-define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/util'], function($, Content, util) {
+define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'inherits'], function($, Content, inherits) {
     'use strict';
 
     /**
@@ -24,7 +24,7 @@ define(['streamhub-sdk/jquery', 'streamhub-sdk/content/content', 'streamhub-sdk/
         this.parentId = json.content.parentId;
         this.meta = json;
     };
-    util.inherits(LivefyreContent, Content);
+    inherits(LivefyreContent, Content);
 
     /**
      * Attach an Oembed to the Content while first checking for an existing attachment.

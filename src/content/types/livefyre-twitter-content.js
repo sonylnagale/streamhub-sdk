@@ -2,8 +2,8 @@ define([
     'streamhub-sdk/jquery',
     'streamhub-sdk/content/types/twitter-content',
     'streamhub-sdk/content/types/livefyre-content',
-    'streamhub-sdk/util'
-], function($, TwitterContent, LivefyreContent, util) {
+    'inherits'
+], function($, TwitterContent, LivefyreContent, inherits) {
     'use strict';
 
     /**
@@ -22,7 +22,7 @@ define([
             this.author.twitterUserId = LivefyreTwitterContent.twitterUserIdFromLivefyreAuthorId(this.author.id);
         }
     };
-    util.inherits(LivefyreTwitterContent, LivefyreContent);
+    inherits(LivefyreTwitterContent, LivefyreContent);
     $.extend(LivefyreTwitterContent.prototype, TwitterContent.prototype);
 
     /**

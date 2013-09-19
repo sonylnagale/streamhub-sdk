@@ -1,8 +1,8 @@
 define([
     'streamhub-sdk/modal',
     'streamhub-sdk/content/views/gallery-attachment-list-view',
-    'streamhub-sdk/util'
-], function(ModalView, GalleryAttachmentListView, util) {
+    'inherits'
+], function(ModalView, GalleryAttachmentListView, inherits) {
     'use strict';
 
     /**
@@ -16,7 +16,7 @@ define([
     var AttachmentGalleryModal = function (opts) {
         ModalView.call(this, opts);
     };
-    util.inherits(AttachmentGalleryModal, ModalView);
+    inherits(AttachmentGalleryModal, ModalView);
 
 
     /**

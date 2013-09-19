@@ -1,11 +1,11 @@
 define([
     'streamhub-sdk/jquery',
     'event-emitter',
-    'streamhub-sdk/util'
+    'inherits'
 ], function(
     $,
     EventEmitter,
-    util
+    inherits
 ) {
     'use strict';
 
@@ -27,7 +27,7 @@ define([
 
         this.setElement(opts.el || document.createElement(this.elTag));
     };
-    util.inherits(View, EventEmitter);
+    inherits(View, EventEmitter);
 
     /** The HTMLElement tag to use if this View creates its own element */
     View.prototype.elTag = 'div';
