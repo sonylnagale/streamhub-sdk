@@ -82,6 +82,7 @@
 .sunlight-menu {
 	background-color: #FFFFCC;
 	color: #000000;
+  display: none;
 }
 .sunlight-menu ul {
 	margin: 0 !important;

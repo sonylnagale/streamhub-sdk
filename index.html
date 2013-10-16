@@ -221,7 +221,7 @@
 <p>SDK to stream Content from Livefyre's StreamHub platform, create Views to render Streams and Content, and build amazing real-time social web applications.</p>
 <h2>Quick Example</h2>
 <p>To render Content from a StreamHub Collection as a list</p>
-<pre><code>require([
+<pre class="sunlight-highlight-javascript linenums">require([
     'streamhub-sdk/collection',
     'streamhub-sdk/content/views/content-list-view'],
 function (Collection, ListView) {
@@ -239,35 +239,35 @@ function (Collection, ListView) {
 
     collection.pipe(listView);
 
-});</code></pre>
+});</pre>
 <h2>Getting Started</h2>
 <p>You can use streamhub-sdk either by including a built version from a CDN or using this repository locally.</p>
 <h3>CDN</h3>
 <p>To include it in your page from the CDN, add a script tag to your HTML file.</p>
-<pre><code>&lt;script src=&quot;http://cdn.livefyre.com/libs/sdk/v2.0.0/builds/253/streamhub-sdk.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre>&lt;script src=&quot;http://cdn.livefyre.com/libs/sdk/v2.0.0/builds/253/streamhub-sdk.min.js&quot;&gt;&lt;/script&gt;</pre>
 <p>You can also include the default stylesheet</p>
-<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;http://cdn.livefyre.com/libs/sdk/v2.0.0/builds/253/streamhub-sdk.min.css&quot; /&gt;</code></pre>
+<pre>&lt;link rel=&quot;stylesheet&quot; href=&quot;http://cdn.livefyre.com/libs/sdk/v2.0.0/builds/253/streamhub-sdk.min.css&quot; /&gt;</pre>
 <p>See this in action in this jsfiddle: <a href="http://jsfiddle.net/K9qH3/13/">http://jsfiddle.net/K9qH3/13/</a></p>
 <h3>Local Development</h3>
 <p>To run locally, make sure you have NPM. It is bundled with <a href="http://nodejs.org/">node.js</a></p>
-<pre><code>npm install</code></pre>
+<pre>npm install</pre>
 <p>This will install devDependencies and then use <a href="https://github.com/twitter/bower">Bower</a> to download client-side dependencies to <code>lib/</code>.</p>
 <p>Run a web server for the project</p>
-<pre><code>npm start</code></pre>
+<pre>npm start</pre>
 <p>Then check out <a href="http://localhost:8080/examples/listview"><a href="http://localhost:8080/examples/listview">http://localhost:8080/examples/listview</a></a> for an example of <code>streamhub-sdk/views/list-view</code></p>
 <h2>API Documentation</h2>
 <p>The full jsdoc documentation can be found at <a href="http://livefyre.github.io/streamhub-sdk">http://livefyre.github.io/streamhub-sdk</a></p>
 <h2>Streams</h2>
 <p>Streams provide a standard interface to remote sources of Content, and behave like <a href="http://nodejs.org/api/stream.html#stream_compatibility">node.js streams3</a>.</p>
 <p>The browser-compatible Stream interface is provided by <a href="https://github.com/livefyre/stream">Livefyre/stream</a></p>
-<pre><code>// ad-hoc reading from a stream/readable
+<pre class="sunlight-highlight-javascript linenums">// ad-hoc reading from a stream/readable
 stream.on('readable', function () {
     var content = stream.read();
     content instanceof require('streamhub-sdk/content'); //true
 });
 
 // Or if sending to a stream/writable
-stream.pipe(writable);</code></pre>
+stream.pipe(writable);</pre>
 <h2>Collections</h2>
 <p>Livefyre StreamHub Collections are a great source of Content, so this SDK includes Stream subclasses for reading historical Content from Collections and accessing any new Live Updates</p>
 <ul>
@@ -280,52 +280,52 @@ stream.pipe(writable);</code></pre>
 <li><code>streamhub-sdk/collection/streams/writer</code>: Writable, written Content will be posted to the Collection</li>
 </ul>
 <p>Create a Collection</p>
-<pre><code>var collection = new Collection({
+<pre class="sunlight-highlight-javascript linenums">var collection = new Collection({
     &quot;network&quot;: &quot;labs-t402.fyre.co&quot;,
     &quot;siteId&quot;: &quot;303827&quot;,
     &quot;articleId&quot;: &quot;xbox-0&quot;,
     &quot;environment&quot;: &quot;t402.livefyre.com&quot;
-});</code></pre>
+});</pre>
 <p>Send real-time updates</p>
-<pre><code>collection.pipe(writable);</code></pre>
+<pre class="sunlight-highlight-javascript linenums">collection.pipe(writable);</pre>
 <p>Create a new real-time updater manually</p>
-<pre><code>var updater = collection.createUpdater();
-updater.pipe(writable);</code></pre>
+<pre class="sunlight-highlight-javascript linenums">var updater = collection.createUpdater();
+updater.pipe(writable);</pre>
 <p>Create a new archive Stream (historic Content)</p>
-<pre><code>var archive = collection.createArchive();
-archive.pipe(writable);</code></pre>
+<pre class="sunlight-highlight-javascript linenums">var archive = collection.createArchive();
+archive.pipe(writable);</pre>
 <p>Post Content</p>
-<pre><code>require('streamhub-sdk/auth').setToken('lftoken');
-collection.write(new Content('Foo!'))</code></pre>
+<pre class="sunlight-highlight-javascript linenums">require('streamhub-sdk/auth').setToken('lftoken');
+collection.write(new Content('Foo!'))</pre>
 <p>Create a new writer manually</p>
-<pre><code>var writer = collection.createWriter();
-writer.write(new Content('Foo!'));</code></pre>
+<pre class="sunlight-highlight-javascript linenums">var writer = collection.createWriter();
+writer.write(new Content('Foo!'));</pre>
 <h2>ListViews</h2>
 <p>ListViews can render a Stream of Content into ContentViews to create real-time social Content experiences.</p>
 <p><code>streamhub-sdk/views/list-view</code> provides a basic view that will render a Stream of Content as an unordered list. ListViews are subclasses of <code>stream/writable</code>, so they can be written and piped to.</p>
-<pre><code>var view = new ListView({
+<pre class="sunlight-highlight-javascript linenums">var view = new ListView({
     el: document.getElementById('example')
 });
 
-view.write(new Content('&lt;p&gt;Hello&lt;/p&gt;'));</code></pre>
+view.write(new Content('&lt;p&gt;Hello&lt;/p&gt;'));</pre>
 <p>ListViews also have a <code>.more</code> property that is a <code>stream/transform</code>, and any streams piped to it will be throttled behind a &quot;Show More&quot; button. Piping a <code>streamhub-sdk/collection</code> to a ListView automatically pipes an archive to <code>.more</code>.</p>
 <p>Thus this:</p>
-<pre><code>collection.pipe(view);</code></pre>
+<pre class="sunlight-highlight-javascript linenums">collection.pipe(view);</pre>
 <p>Is equivalent to:</p>
-<pre><code>collection.createUpdater().pipe(view);
-collection.createArhcive().pipe(view.more);</code></pre>
+<pre class="sunlight-highlight-javascript linenums">collection.createUpdater().pipe(view);
+collection.createArhcive().pipe(view.more);</pre>
 <p>You can configure the &quot;Show More&quot; behavior of ListViews:</p>
-<pre><code>var view = new ListView({
+<pre class="sunlight-highlight-javascript linenums">var view = new ListView({
     // Number of initial items to display
     initial: 50,
     // Number of items to load when the
     // 'Show More' button is clicked
     showMore: 50
-});</code></pre>
+});</pre>
 <h2>Content</h2>
 <p><code>streamhub-sdk/content/content</code> provides a structured base class to represent any Content on the web. Content must only have a <code>.body</code>, which is an HTML string.</p>
-<pre><code>var content = new Content('&lt;p&gt;Hello, world!&lt;/p&gt;');
-c.body; // '&lt;p&gt;Hello, world!&lt;/p&gt;';</code></pre>
+<pre class="sunlight-highlight-javascript linenums">var content = new Content('&lt;p&gt;Hello, world!&lt;/p&gt;');
+c.body; // '&lt;p&gt;Hello, world!&lt;/p&gt;';</pre>
 <p>Content can also have the following properties:</p>
 <ul>
 <li>more Content instances in its Array of <code>.replies</code></li>
@@ -341,10 +341,10 @@ c.body; // '&lt;p&gt;Hello, world!&lt;/p&gt;';</code></pre>
 </ul>
 <h3>ContentViews</h3>
 <p>Usually you will want to render Content in a DOMElement using a <code>streamhub-sdk/content/views/content-view</code>.</p>
-<pre><code>var contentView = new ContentView({
+<pre class="sunlight-highlight-javascript linenums">var contentView = new ContentView({
     content: new Content('&lt;p&gt;Hello, world!&lt;/p&gt;'),
     el: document.getElementById('example')
-});</code></pre>
+});</pre>
 <p>By default, this will render Content using the included <code>hgn!streamhub-sdk/content/templates/content.mustache</code> template to show the author's avatar and name with the content <code>.body</code> and any <code>.attachments</code>.</p>
 <p>These other ContentViews are also included:</p>
 <ul>
@@ -408,7 +408,7 @@ c.body; // '&lt;p&gt;Hello, world!&lt;/p&gt;';</code></pre>
 	<script src="scripts/toc.js"></script>
 
 
-	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: true, enableDoclinks :true}); </script>
+	<script>  Sunlight.highlightAll({lineNumbers:false,  showMenu: true, enableDoclinks :true}); </script>
 
 	<script>
 		$( function () {
