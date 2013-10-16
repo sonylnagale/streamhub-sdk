@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>streamhub-sdk Source: util.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top ">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">streamhub-sdk</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="livefyre-auth-client.html">streamhub-sdk/clients/livefyre-auth-client</a>
+						</li>
+						
+						<li>
+							<a href="bootstrap-client.html">streamhub-sdk/collection/clients/bootstrap-client</a>
+						</li>
+						
+						<li>
+							<a href="stream-client.html">streamhub-sdk/collection/clients/stream-client</a>
+						</li>
+						
+						<li>
+							<a href="write-client.html">streamhub-sdk/collection/clients/write-client</a>
+						</li>
+						
+						<li>
+							<a href="storage.html">streamhub-sdk/storage</a>
+						</li>
+						
+						<li>
+							<a href="util.html">streamhub-sdk/util</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="content.html">streamhub-sdk/content</a>
+						</li>
+						
+						<li>
+							<a href="content-view-factory.html">streamhub-sdk/content-view-factory</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-content.html">streamhub-sdk/content/types/livefyre-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-facebook-content.html">streamhub-sdk/content/types/livefyre-facebook-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-instagram-content.html">streamhub-sdk/content/types/livefyre-instagram-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-oembed.html">streamhub-sdk/content/types/livefyre-oembed</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-twitter-content.html">streamhub-sdk/content/types/livefyre-twitter-content</a>
+						</li>
+						
+						<li>
+							<a href="oembed.html">streamhub-sdk/content/types/oembed</a>
+						</li>
+						
+						<li>
+							<a href="twitter-content.html">streamhub-sdk/content/types/twitter-content</a>
+						</li>
+						
+						<li>
+							<a href="content-view.html">streamhub-sdk/content/views/content-view</a>
+						</li>
+						
+						<li>
+							<a href="facebook-content-view.html">streamhub-sdk/content/views/facebook-content-view</a>
+						</li>
+						
+						<li>
+							<a href="instagram-content-view.html">streamhub-sdk/content/views/instagram-content-view</a>
+						</li>
+						
+						<li>
+							<a href="oembed-view.html">streamhub-sdk/content/views/oembed-view</a>
+						</li>
+						
+						<li>
+							<a href="twitter-content-view.html">streamhub-sdk/content/views/twitter-content-view</a>
+						</li>
+						
+						<li>
+							<a href="modal.html">streamhub-sdk/modal</a>
+						</li>
+						
+						<li>
+							<a href="attachment-gallery-modal.html">streamhub-sdk/modal/views/attachment-gallery-modal</a>
+						</li>
+						
+						<li>
+							<a href="view.html">streamhub-sdk/view</a>
+						</li>
+						
+						<li>
+							<a href="attachment-list-view.html">streamhub-sdk/views/attachment-list-view</a>
+						</li>
+						
+						<li>
+							<a href="gallery-attachment-list-view.html">streamhub-sdk/views/gallery-attachment-list-view</a>
+						</li>
+						
+						<li>
+							<a href="list-view.html">streamhub-sdk/views/list-view</a>
+						</li>
+						
+						<li>
+							<a href="tiled-attachment-list-view.html">streamhub-sdk/views/tiled-attachment-list-view</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="ContentView_removeContentView.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="GalleryAttachmentListView_hideModal.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="OembedView_imageError.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="OembedView_imageLoaded.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="TiledAttachmentListView_focusContent.html#event:hub">hub</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: util.js</h1>
+    
+    <section>
+        <article>
+            <pre class="sunlight-highlight-javascript linenums">define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
+    'use strict';
+
+    var log = debug('util');
+
+    /** 
+     * A module containing utility methods.
+     * @module streamhub-sdk/util
+     */
+    var exports = {};
+
+    /**
+     * Get outerWidth (jquery-style) of element
+     * @deprecated
+     */
+    exports.outerWidth = function(el) {
+        log('Deprecated: util.outerWidth');
+        return $(el).outerWidth(true);
+    };
+
+    /**
+     * Get outerHeight (jquery-style) of element
+     * @deprecated
+     */
+    exports.outerHeight = function(el) {
+        log('Deprecated: util.outerHeight');
+        return $(el).outerHeight(true);
+    };
+
+    /**
+     * Get innerWidth (jquery-style) of element
+     * @deprecated
+     */
+    exports.innerWidth = function(el) {
+        log('Deprecated: util.innerWidth');
+        return $(el).innerWidth();
+    };
+
+    /**
+     * Get innerHeight (jquery-style) of element
+     * @deprecated
+     */
+    exports.innerHeight = function(el) {
+        log('Deprecated: util.innerHeight');
+        return $(el).innerHeight();
+    };
+
+    /**
+     * Format a date object to be displayed to humans
+     * @param date {Date} A JavaScript Date object
+     * @return {string} A formatted timestamp like "5/27//06 • 3:26 AM"
+     */
+    var MONTH_STRINGS = [
+        'Jan', 'Feb', 'Mar', 'Apr',
+        'May', 'Jun','Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    exports.formatDate = function (date, relativeTo) {
+        relativeTo = relativeTo || new Date();
+        var diffMs = date.getTime() - relativeTo.getTime(),
+            dateString;
+        // Future
+        if (diffMs > 0) {
+            return '';
+        }
+        // Less than 60s ago -> 5s
+        if (diffMs > -60 * 1000) {
+            return Math.round( -1 * diffMs / 1000) + 's';
+        }
+        // Less than 1h ago -> 5m
+        if (diffMs > -60 * 60 * 1000) {
+            return Math.round( -1 * diffMs / (1000 * 60)) + 'm';
+        }
+        // Less than 24h ago -> 5h
+        if (diffMs > -60 * 60 * 24 * 1000) {
+            return Math.round( -1 * diffMs / (1000 * 60 * 60)) + 'h';
+        }
+        // >= 24h ago -> 6 Jul
+        dateString = date.getDate() + ' ' + MONTH_STRINGS[date.getMonth()];
+        // or like 6 Jul 2012 if the year if its different than the relativeTo year
+        if (date.getFullYear() !== relativeTo.getFullYear()) {
+            dateString += ' ' + date.getFullYear();
+        }
+        return dateString;
+    };
+
+    Object.keys = Object.keys || (function () {
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !{toString:null}.propertyIsEnumerable("toString"),
+            DontEnums = [
+                'toString',
+                'toLocaleString',
+                'valueOf',
+                'hasOwnProperty',
+                'isPrototypeOf',
+                'propertyIsEnumerable',
+                'constructor'
+            ],
+            DontEnumsLength = DontEnums.length;
+
+        return function (o) {
+            if (typeof o !== "object" && typeof o !== "function" || o === null) {
+                throw new TypeError("Object.keys called on a non-object");
+            }
+
+            var result = [];
+            for (var name in o) {
+                if (hasOwnProperty.call(o, name)) {
+                    result.push(name);
+                }
+            }
+
+            if (hasDontEnumBug) {
+                for (var i = 0; i &lt; DontEnumsLength; i++) {
+                    if (hasOwnProperty.call(o, DontEnums[i])) {
+                        result.push(DontEnums[i]);
+                    }
+                }
+            }
+
+            return result;
+        };
+    })();
+
+    Array.prototype.indexOf = Array.prototype.indexOf || function(val) {
+        return $.inArray(val, this);
+    };
+
+    return exports;
+});
+</pre>
+        </article>
+    </section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					<style>pre { color: black; } .nav-pills > li > a { background-color: white; } #toc .toc-active { background-color: black; } .navbar .dropdown-menu { width: auto; } #toc { border: 0; } </style> <script>(function () { document.addEventListener('DOMContentLoaded', function(event) {    var $pageTitle = $('.page-title');    if ($pageTitle.html() === 'Index') {        $pageTitle.hide();    }}); }());</script><script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');  ga('create', 'UA-38120262-13', 'livefyre.github.io'); ga('send', 'pageview');</script>
+					<br />
+					
+					
+		<span class="copyright">
+		© 2013, streamhub-sdk contributors.
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Wed Oct 16 2013 02:14:07 GMT-0700 (PDT) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: true, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>

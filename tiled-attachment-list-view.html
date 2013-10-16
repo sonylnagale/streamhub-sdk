@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>streamhub-sdk Class: streamhub-sdk/views/tiled-attachment-list-view</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top ">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">streamhub-sdk</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="livefyre-auth-client.html">streamhub-sdk/clients/livefyre-auth-client</a>
+						</li>
+						
+						<li>
+							<a href="bootstrap-client.html">streamhub-sdk/collection/clients/bootstrap-client</a>
+						</li>
+						
+						<li>
+							<a href="stream-client.html">streamhub-sdk/collection/clients/stream-client</a>
+						</li>
+						
+						<li>
+							<a href="write-client.html">streamhub-sdk/collection/clients/write-client</a>
+						</li>
+						
+						<li>
+							<a href="storage.html">streamhub-sdk/storage</a>
+						</li>
+						
+						<li>
+							<a href="util.html">streamhub-sdk/util</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="content.html">streamhub-sdk/content</a>
+						</li>
+						
+						<li>
+							<a href="content-view-factory.html">streamhub-sdk/content-view-factory</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-content.html">streamhub-sdk/content/types/livefyre-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-facebook-content.html">streamhub-sdk/content/types/livefyre-facebook-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-instagram-content.html">streamhub-sdk/content/types/livefyre-instagram-content</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-oembed.html">streamhub-sdk/content/types/livefyre-oembed</a>
+						</li>
+						
+						<li>
+							<a href="livefyre-twitter-content.html">streamhub-sdk/content/types/livefyre-twitter-content</a>
+						</li>
+						
+						<li>
+							<a href="oembed.html">streamhub-sdk/content/types/oembed</a>
+						</li>
+						
+						<li>
+							<a href="twitter-content.html">streamhub-sdk/content/types/twitter-content</a>
+						</li>
+						
+						<li>
+							<a href="content-view.html">streamhub-sdk/content/views/content-view</a>
+						</li>
+						
+						<li>
+							<a href="facebook-content-view.html">streamhub-sdk/content/views/facebook-content-view</a>
+						</li>
+						
+						<li>
+							<a href="instagram-content-view.html">streamhub-sdk/content/views/instagram-content-view</a>
+						</li>
+						
+						<li>
+							<a href="oembed-view.html">streamhub-sdk/content/views/oembed-view</a>
+						</li>
+						
+						<li>
+							<a href="twitter-content-view.html">streamhub-sdk/content/views/twitter-content-view</a>
+						</li>
+						
+						<li>
+							<a href="modal.html">streamhub-sdk/modal</a>
+						</li>
+						
+						<li>
+							<a href="attachment-gallery-modal.html">streamhub-sdk/modal/views/attachment-gallery-modal</a>
+						</li>
+						
+						<li>
+							<a href="view.html">streamhub-sdk/view</a>
+						</li>
+						
+						<li>
+							<a href="attachment-list-view.html">streamhub-sdk/views/attachment-list-view</a>
+						</li>
+						
+						<li>
+							<a href="gallery-attachment-list-view.html">streamhub-sdk/views/gallery-attachment-list-view</a>
+						</li>
+						
+						<li>
+							<a href="list-view.html">streamhub-sdk/views/list-view</a>
+						</li>
+						
+						<li>
+							<a href="tiled-attachment-list-view.html">streamhub-sdk/views/tiled-attachment-list-view</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="ContentView_removeContentView.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="GalleryAttachmentListView_hideModal.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="OembedView_imageError.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="OembedView_imageLoaded.html#event:hub">hub</a>
+						</li>
+						
+						<li>
+							<a href="TiledAttachmentListView_focusContent.html#event:hub">hub</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	<h1 class="page-title">Class: streamhub-sdk/views/tiled-attachment-list-view</h1>
+<section>
+
+<header>
+    <h2>
+    streamhub-sdk/views/tiled-attachment-list-view
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+<dt>
+    <h4 class="name" id="streamhub-sdk/views/tiled-attachment-list-view"><span class="type-signature"></span>new streamhub-sdk/views/tiled-attachment-list-view<span class="signature">(opts)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A simple View that displays Content in a list (<code>&lt;ul&gt;</code> by default).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A set of options to config the view with</p>
+                <h6>Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>el</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The element in which to render the streamed content</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Content</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The content instance with which to display its attachments</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="TiledAttachmentListView_focusContent.html#event:hub">TiledAttachmentListView#focusContent.event:hub</a></li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="add"><span class="type-signature"></span>add<span class="signature">(oembed)</span><span class="type-signature"> &rarr; {AttachmentListView}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Add a Oembed attachment to the Attachments view.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>oembed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Oembed</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A Oembed instance to render in the View</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>By convention, return this instance for chaining</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">AttachmentListView</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isTileableAttachment"><span class="type-signature"></span>isTileableAttachment<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Checks whether attachment is tileable</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Whether an attachment is tileable</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="remove"><span class="type-signature"></span>remove<span class="signature">(oembed)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Removes a Oembed attachment from the Attachments view.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>oembed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Oembed</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A Oembed instance to remove</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-104">line 104</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="retile"><span class="type-signature"></span>retile<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Retiles all attachments of the content</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="tileableCount"><span class="type-signature"></span>tileableCount<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A count of the number of tileable attachments for this content item</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tiled-attachment-list-view.js.html">content/views/tiled-attachment-list-view.js</a>, <a href="tiled-attachment-list-view.js.html#sunlight-1-line-58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The number of tileable attachments for this content item</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					<style>pre { color: black; } .nav-pills > li > a { background-color: white; } #toc .toc-active { background-color: black; } .navbar .dropdown-menu { width: auto; } #toc { border: 0; } </style> <script>(function () { document.addEventListener('DOMContentLoaded', function(event) {    var $pageTitle = $('.page-title');    if ($pageTitle.html() === 'Index') {        $pageTitle.hide();    }}); }());</script><script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');  ga('create', 'UA-38120262-13', 'livefyre.github.io'); ga('send', 'pageview');</script>
+					<br />
+					
+					
+		<span class="copyright">
+		© 2013, streamhub-sdk contributors.
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Wed Oct 16 2013 02:14:10 GMT-0700 (PDT) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: true, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>
