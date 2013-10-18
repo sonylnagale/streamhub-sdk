@@ -160,9 +160,7 @@ CollectionWriter, ContentListView, Content, Auth, Writable, Readable) {
                 
                 it('throws error when services are failing, without making more calls than necessary', function () {
                     spyOn(collection._bootstrapClient, "getContent").andCallFake(fnServerError);
-                    spyOn(collection._createClient, "createCollection").andCallFake(function (opts, errback) {
-                        return;
-                    });
+                    spyOn(collection._createClient, "createCollection");
                     
                     expect(function () {
                         collection.initFromBootstrap(fnCallback);
