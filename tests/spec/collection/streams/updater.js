@@ -82,7 +82,7 @@ MockLivefyreBootstrapClient, MockLivefyreStreamClient) {
                     });
                 });
                 expect(function () {
-                    var content = updater.read();
+                    updater.read();
                 }).not.toThrow();
             });
 

@@ -17,6 +17,28 @@ function ($, jasmine, jasmineJquery, util, Content, LivefyreContent, ContentView
             it('has a .createdAt Date', function () {
                 expect(contentView.createdAt instanceof Date).toBe(true);
             });
+            
+            it('listens to its content for emissions', function () {
+                throw 'TODO (joao)'
+            });
+        });
+        
+        describe('.remove', function () {
+            beforeEach(function () {
+                
+            });
+            
+            it('can remove its elements from the dom', function () {
+                throw 'TODO (joao)'
+            });
+            
+            it('can remove its listeners', function () {
+                throw 'TODO (joao)'
+            });
+            
+            it('emits \'removed\'', function () {
+                throw 'TODO (joao)'
+            });
         });
 
         describe('when viewing LivefyreContent', function () {

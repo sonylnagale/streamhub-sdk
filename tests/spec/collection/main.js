@@ -159,7 +159,9 @@ CollectionWriter, ContentListView, Content, Auth, Writable, Readable) {
                     spyOn(collection._createClient, "createCollection").andCallFake(function (opts, errback) {
                         return;
                     });
-                    expect(function () {collection.initFromBootstrap(fnCallback)}).toThrow('Fatal collection connection error');
+                    expect(function () {
+                        collection.initFromBootstrap(fnCallback);
+                    }).toThrow('Fatal collection connection error');
                     expect(collection._bootstrapClient.getContent.calls.length).toEqual(1);
                     expect(collection._createClient.createCollection).not.toHaveBeenCalled();
                 });
