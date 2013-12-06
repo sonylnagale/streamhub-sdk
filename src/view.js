@@ -1,9 +1,11 @@
 define([
     'streamhub-sdk/jquery',
+    'streamhub-sdk/util',
     'event-emitter',
     'inherits'
 ], function(
     $,
+    Util,
     EventEmitter,
     inherits
 ) {
@@ -24,10 +26,19 @@ define([
         EventEmitter.call(this);
         opts = opts || {};
         this.opts = opts;
+        this.uid = Util.uniqueId();
 
         this.setElement(opts.el || document.createElement(this.elTag));
+        this.delegateEvents();
     };
     inherits(View, EventEmitter);
+
+    // Cached regex to split keys for `delegate`.
+    var delegateEventSplitter = /^(\S+)\s*(.*)$/;
+
+    View.prototype.$ = function(selector) {
+        return this.$el.find(selector);
+    };
 
     /** The HTMLElement tag to use if this View creates its own element */
     View.prototype.elTag = 'div';
@@ -51,6 +62,41 @@ define([
             this.$el.addClass(this.elClass);
         }
 
+        return this;
+    };
+
+    /**
+     * Attatch the declared events
+     * @param eventMap {Object.<string, (string|function)>} Mapping of event/selectors to a function
+     * or the name of
+     */
+    View.prototype.delegateEvents = function (eventMap) {
+        if (!eventMap) {
+            eventMap = this.events;
+        }
+        this.detatchHandlers();
+        for (var key in eventMap) {
+            method = eventMap[key];
+            if (typeof method === 'string') {
+                method = this[method];
+            }
+            if (!method) throw 'Event "' + key + '" has no corresponding callback';
+            method = $.proxy(method, this);
+
+            var match = key.match(delegateEventSplitter);
+            var eventName = match[1], selector = match[2];
+            eventName += '.delegateEvents' + this.uid;
+            if (selector === '') {
+                this.$el.on(eventName, method);
+            } else {
+                this.$el.on(eventName, selector, method);
+            }
+        }
+        return this;
+    };
+
+    View.prototype.undelegateEvents = function() {
+        this.$el.off('.delegateEvents' + this.uid);
         return this;
     };
 

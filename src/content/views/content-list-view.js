@@ -222,7 +222,7 @@ debug, Writable, ContentView, More, ShowMoreButton) {
      * @returns {ContentView | null} The contentView for the content, or null.
      */
     ContentListView.prototype.getContentView = function (newContent) {
-        for (var i=0; i < this.views.length; i++) {
+        for (var i=0, len = this.views.length; i < len; i++) {
             var contentView = this.views[i];
             if ((newContent === contentView.content) || (newContent.id && contentView.content.id === newContent.id)) {
                 return contentView;
