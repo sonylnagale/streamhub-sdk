@@ -28,12 +28,11 @@ define([
         this.opts = opts;
         this.uid = Util.uniqueId();
 
-        this.setElement(opts.el || document.createElement(this.elTag));
+        this.setElement(opts.el || document.createElement(this.elTag))
         this.delegateEvents();
     };
     inherits(View, EventEmitter);
 
-    // Cached regex to split keys for `delegate`.
     var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
     View.prototype.$ = function(selector) {
@@ -67,24 +66,22 @@ define([
 
     /**
      * Attatch the declared events
-     * @param eventMap {Object.<string, (string|function)>} Mapping of event/selectors to a function
-     * or the name of
+     * @param events {Object.<string, (string|function)>} Mapping of event/selectors to a function
+     * or the name of a method on this view.
+     * Backbone.View style, e.g. { "click testSelector": "updateTestEl" }
      */
-    View.prototype.delegateEvents = function (eventMap) {
-        if (!eventMap) {
-            eventMap = this.events;
-        }
-        this.detatchHandlers();
-        for (var key in eventMap) {
-            method = eventMap[key];
-            if (typeof method === 'string') {
-                method = this[method];
-            }
-            if (!method) throw 'Event "' + key + '" has no corresponding callback';
+    View.prototype.delegateEvents = function (events) {
+        if (!(events || (events = this.events))) return this;
+        this.undelegateEvents();
+        for (var key in events) {
+            var method = events[key];
+            if (typeof method === 'string') method = this[method];
+            if (!method) continue;
             method = $.proxy(method, this);
 
             var match = key.match(delegateEventSplitter);
-            var eventName = match[1], selector = match[2];
+            var eventName = match[1];
+            var selector = match[2];
             eventName += '.delegateEvents' + this.uid;
             if (selector === '') {
                 this.$el.on(eventName, method);
@@ -122,6 +119,7 @@ define([
     View.prototype.destroy = function () {
         this.$el.remove();
         this.template = null;
+        this.undelegateEvents();
     };
 
     return View;
