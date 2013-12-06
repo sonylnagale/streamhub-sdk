@@ -28,7 +28,7 @@ define([
         this.opts = opts;
         this.uid = Util.uniqueId();
 
-        this.setElement(opts.el || document.createElement(this.elTag))
+        this.setElement(opts.el || document.createElement(this.elTag));
         this.delegateEvents();
     };
     inherits(View, EventEmitter);
@@ -71,22 +71,30 @@ define([
      * Backbone.View style, e.g. { "click testSelector": "updateTestEl" }
      */
     View.prototype.delegateEvents = function (events) {
-        if (!(events || (events = this.events))) return this;
+        if (!(events || (events = this.events))) {
+            return this;
+        }
         this.undelegateEvents();
         for (var key in events) {
-            var method = events[key];
-            if (typeof method === 'string') method = this[method];
-            if (!method) continue;
-            method = $.proxy(method, this);
+            if (events.hasOwnProperty(key)) {
+                var method = events[key];
+                if (typeof method === 'string') {
+                    method = this[method];
+                }
+                if (!method) {
+                    continue;
+                }
+                method = $.proxy(method, this);
 
-            var match = key.match(delegateEventSplitter);
-            var eventName = match[1];
-            var selector = match[2];
-            eventName += '.delegateEvents' + this.uid;
-            if (selector === '') {
-                this.$el.on(eventName, method);
-            } else {
-                this.$el.on(eventName, selector, method);
+                var match = key.match(delegateEventSplitter);
+                var eventName = match[1];
+                var selector = match[2];
+                eventName += '.delegateEvents' + this.uid;
+                if (selector === '') {
+                    this.$el.on(eventName, method);
+                } else {
+                    this.$el.on(eventName, selector, method);
+                }
             }
         }
         return this;

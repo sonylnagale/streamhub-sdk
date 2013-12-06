@@ -36,7 +36,7 @@ function ($, View) {
             it('understands method names as callbacks', function () {
                 view.setElement('<div><test>test</test></div>');
                 view.truth = false;
-                view.setTruth = function() { this.truth = true };
+                view.setTruth = function() { this.truth = true; };
                 var events = { 'click test': 'setTruth' };
 
                 view.delegateEvents(events);
