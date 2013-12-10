@@ -82,7 +82,7 @@ define([
                     method = this[method];
                 }
                 if (!method) {
-                    continue;
+                    throw "Undefined method for: " + key;
                 }
                 method = $.proxy(method, this);
 

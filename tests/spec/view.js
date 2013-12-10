@@ -37,10 +37,10 @@ function ($, View) {
                 view.setElement('<div><test>test</test></div>');
                 view.truth = false;
                 view.setTruth = function() { this.truth = true; };
-                var events = { 'click test': 'setTruth' };
+                var events = { 'click.hub test': 'setTruth' };
 
                 view.delegateEvents(events);
-                view.$('test').trigger('click');
+                view.$('test').trigger('click.hub');
 
                 expect(view.truth).toBe(true);
             });
@@ -71,7 +71,22 @@ function ($, View) {
 
                 view.delegateEvents(events);
                 view.undelegateEvents();
-                view.$('test').trigger('click');
+                view.$('test').trigger('click.hub');
+
+                expect(view.truth).toBe(false);
+            });
+            it('can take out the trash for namespaced events', function() {
+                view.setElement('<div><test>test</test></div>');
+                view.truth = false;
+                var events = {
+                    'click.hub test': function () {
+                        view.truth = true;
+                    }
+                };
+
+                view.delegateEvents(events);
+                view.undelegateEvents();
+                view.$('test').trigger('click.hub');
 
                 expect(view.truth).toBe(false);
             });
