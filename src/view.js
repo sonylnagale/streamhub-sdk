@@ -87,6 +87,9 @@ define([
                 method = $.proxy(method, this);
 
                 var match = key.match(delegateEventSplitter);
+                if (!match) {
+                    throw "Invalid event/selector pair: " + key;
+                }
                 var eventName = match[1];
                 var selector = match[2];
                 eventName += '.delegateEvents' + this.uid;
