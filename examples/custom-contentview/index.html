@@ -44,7 +44,7 @@
 
         <ul class="content-actions">
             <li class="content-action" data-content-action="share">
-                <a class="hub-tooltip-link content-action-share" href="https://twitter.com/intent/tweet?in_reply_to={{tweetId}}" title="Share">
+                <a class="hub-tooltip-link content-action-share" href="#" title="Share">
                     <span>Share</span>
                 </a>
             </li>
@@ -121,16 +121,17 @@
              * Mixin to a ContentListView such that it will render a
              * CustomRssContentView for RSS Content
              */
-            function HasCustomRssContentView (contentListView) {
+            function HasCustomRssContentView () {
                 /**
                  * Override ListView#createContentView to create a special ContentView
                  * class for RSS Items
                  */
-                listView.createContentView = function (content) {
+                var ogCreateContentView = this.createContentView;
+                this.createContentView = function (content) {
                     if (content.source === 'feed') {
                         return makeCustomContentView(content);
                     }
-                    return ListView.prototype.createContentView.apply(this, arguments);
+                    return ogCreateContentView.apply(this, arguments);
                 }
 
                 /**
