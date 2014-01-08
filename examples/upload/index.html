@@ -109,7 +109,6 @@
                 this.filepicker_.pickAndStore(FP_OPTIONS.PICK, FP_OPTIONS.STORAGE, successCallback);
             };
         </script>
-        <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
         <!-- end FILEPICKER -->
         <script>
         require([
@@ -117,10 +116,10 @@
             'streamhub-sdk/collection',
             'streamhub-sdk/content',
             'streamhub-sdk/content/content-view-factory',
-            'streamhub-sdk/views/streams/pond',
+            'streamhub-sdk/util',
             'streamhub-sdk/auth'//,
             //'stream/insert'
-        ],function (ListView, Collection, Content, ContentViewFactory, Pond, Auth) {//, Insert) {
+        ],function (ListView, Collection, Content, ContentViewFactory, Util, Auth) {//, Insert) {
             var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
@@ -168,8 +167,16 @@
                 listView.write(contentToWrite);
             });
             
-            var fp = window.fp = new FilepickerClient();
-            fp.init();
+            var fpSrc = '//api.filepicker.io/v1/filepicker.js';
+            Util.loadScript(fpSrc, function(err) {
+                if (err) {
+                    throw 'There was an error loading ' + fpSrc;
+                    return;
+                }
+                var fp = window.fp = new FilepickerClient();
+                fp.init();
+            }, window.document);
+            
         });
         </script>
     </body>

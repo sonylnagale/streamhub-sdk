@@ -126,6 +126,67 @@ define(['streamhub-sdk/debug', 'streamhub-sdk/jquery'], function (debug, $) {
     Array.prototype.indexOf = Array.prototype.indexOf || function(val) {
         return $.inArray(val, this);
     };
+    
+    
+    var scriptCallbacks = {};
+    /**
+     * Loads a script and calls the callback.
+     * @param src {!string} Source for the script tag.
+     * @param callback {!function(Object, Object)} function(err, data)
+     * @param [doc] {Element} Document element to use.
+     */
+    exports.loadScript = function (src, callback, doc) {
+        if (scriptCallbacks[src] === true) {
+        //Loaded
+            callback();
+            return;
+        }
+        
+        if (scriptCallbacks[src]) {
+        //Loading
+            scriptCallbacks[src].push(callback);
+            return;
+        }
+        
+        doc = doc || document;
+        var head = $(doc).find('head')[0];
+        var script = doc.createElement('script');
+        
+        script.type = 'text/javascript';
+        script.src = src;
+        script.async = true;
+        script.defer = true;
+        
+        attachCallback(script, callback);
+        head.appendChild(script);
+        
+        function attachCallback(script, callback) {
+            scriptCallbacks[script.src] = [callback];
+
+            script.onerror = script.onload = script.onreadystatechange = function(ev) {
+                if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+                    if (ev.type === 'error') {
+                        var err = ev;
+                    } else {
+                        var data = ev;
+                    }
+                    executeCallbacks(script.src, err, data);
+                    
+                    // IE memory leaks
+                    script = script.onload = script.onreadystatechange = null;
+                }
+            };
+        };
+        
+        function executeCallbacks(src, err, data) {
+            var callbacks = scriptCallbacks[src];
+            for (var i=0, l=callbacks.length; i<l; i++) {
+                callbacks[i](err, data);
+            }
+            scriptCallbacks[src] = true;
+        };
+    };
+    
 
     return exports;
 });
