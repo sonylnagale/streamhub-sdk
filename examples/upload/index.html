@@ -10,8 +10,7 @@
     <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 </head>
     <body>
-        <input type="filepicker" name="myName"/>
-        <button onclick="fp.pickAndStore()" name="myName">poop</button>
+        <button onclick="upload.pickAndStore()" name="myName">Upload</button>
         <form id="write-form">
             <p>Content body:
                 <textarea name="body"></textarea>
@@ -29,87 +28,6 @@
                 baseUrl: "/"
             });
         </script>
-        <script type="text/javascript">
-        // FILEPICKER
-            /**  @constructor */
-            var FilepickerClient = function() {
-            	return this;
-        	};
-            //goog.addSingletonGetter(FilepickerClient);
-            
-            /** @type{string} **/
-            FilepickerClient.FILEPICKER_SOURCE_URL = '//api.filepicker.io/v1/filepicker.js';
-            
-            /**
-             * The below 2 settings (FILEPICKER_API_KEY/MEDIA_CACHE_URL) default to the dev accounts.
-             * Production settings are defined in lfconv/templates/plovr/plovr.prod.base.js
-             */
-            
-            /** @define {string} **/
-            FilepickerClient.FILEPICKER_API_KEY = 'AtvGm2B6RR9mDKb8bImIHz';
-            /** @define {string} **/
-            FilepickerClient.MEDIA_CACHE_URL = 'http://dazfoe7f6de09.cloudfront.net/';
-            
-            /** FilePicker Options
-             * - maxSize should match the value set in the filepicker dashboard.
-             * - the ordering of 'services' reflects the ordering in the modal (top-down).
-             * @type {Object.<string, Object>}
-             **/
-            FilepickerClient.FILEPICKER_OPTIONS = {
-                PICK: {
-                    'container': 'modal',
-                    'maxSize': 4*1024*1024, // allows files < 4MB
-                    'mimetypes': ['image/*'],
-                    'multiple': true,
-                    'services': ['COMPUTER', 'WEBCAM', 'IMAGE_SEARCH', 'FACEBOOK', 'INSTAGRAM', 'FLICKR', 'PICASA', 'BOX', 'DROPBOX', 'GOOGLE_DRIVE']
-                },
-                STORAGE: {
-                    'location': 'S3',
-                    'access': 'public'
-                }
-            };
-            
-            /**
-             * Download the Filepicker JS API
-             * - if we already called this before, then just callback.
-             * - if the global object already exists, log a message and abort
-             * @param {function()} callback
-             */
-            FilepickerClient.prototype.init = function(callback) {
-                this.filepicker_ = filepicker;
-                this.filepicker_.setKey(FilepickerClient.FILEPICKER_API_KEY);
-            };
-            
-            /**
-             * @param {boolean} allowMultiple Whether the FP config should allow multiple
-             * @param {Function} successCallback
-             */
-            FilepickerClient.prototype.pickAndStore = function(allowMultiple, successCallback) {
-                var FP_OPTIONS = FilepickerClient.FILEPICKER_OPTIONS;
-                allowMultiple = allowMultiple || false;
-                successCallback = successCallback || function (inkBlob) {
-                    alert('Success!');
-                    //debugger
-                    //TODO (joao) Create content & write to view
-                    
-                    var contentToWrite = new Content({
-                        body: ''
-                    });
-                    inkBlob && inkBlob.forEach(function (blob) {
-                        contentToWrite.attachments.push({
-                            type: 'photo',
-                            url: blob.url
-                        });
-                    }, this);
-                    debugger
-                    //contentToWrite = CVF.createContentView(contentToWrite);
-                    view.write(contentToWrite);
-                };
-                FP_OPTIONS.PICK['multiple'] = allowMultiple;
-                this.filepicker_.pickAndStore(FP_OPTIONS.PICK, FP_OPTIONS.STORAGE, successCallback);
-            };
-        </script>
-        <!-- end FILEPICKER -->
         <script>
         require([
             'streamhub-sdk/content/views/content-list-view',
@@ -117,9 +35,9 @@
             'streamhub-sdk/content',
             'streamhub-sdk/content/content-view-factory',
             'streamhub-sdk/util',
-            'streamhub-sdk/auth'//,
-            //'stream/insert'
-        ],function (ListView, Collection, Content, ContentViewFactory, Util, Auth) {//, Insert) {
+            'streamhub-sdk/upload/main',
+            'streamhub-sdk/auth'
+        ],function (ListView, Collection, Content, ContentViewFactory, Util, Upload, Auth) {
             var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
@@ -133,14 +51,15 @@
                 el: document.getElementById("listView")
             });
 
-            window.Content = Content;//Hack for FP success callback
-            window.CVF = new ContentViewFactory();//Hack for FP success callback
-
             var collection = window.collection =  new Collection(opts);
             
             var archive = window.archive = collection.createArchive();
             
             archive.pipe(listView.more);
+            
+            var upload = window.upload = new Upload();
+            
+            upload.pipe(view);
             
             var $writeForm = $('#write-form');
             $writeForm.submit(function (e) {
@@ -166,16 +85,6 @@
                 //collection.write(contentToWrite);
                 listView.write(contentToWrite);
             });
-            
-            var fpSrc = '//api.filepicker.io/v1/filepicker.js';
-            Util.loadScript(fpSrc, function(err) {
-                if (err) {
-                    throw 'There was an error loading ' + fpSrc;
-                    return;
-                }
-                var fp = window.fp = new FilepickerClient();
-                fp.init();
-            }, window.document);
             
         });
         </script>

@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var inherits = require('inherits');
 var Content = require('streamhub-sdk/content');
+var Readable = require('stream/readable');
 var Util = require('streamhub-sdk/util');
 var View = require('streamhub-sdk/view');
 
@@ -8,7 +9,8 @@ var View = require('streamhub-sdk/view');
 
 var _picker = null;
 var Upload = function(key, opts, doc) {
-    View.call(this);
+    View.call(this, opts);
+    Readable.call(this, opts);
     this._key = key || Upload.API_KEY;
     this.opts = opts || this.DEFAULT_OPTS;
     var src = this.opts.src;
@@ -28,6 +30,9 @@ var Upload = function(key, opts, doc) {
     }.bind(this), doc);
 };
 inherits(Upload, View);
+inherits.parasitically(Upload, Readable);
+
+Upload.prototype._read = function() {};
 
 Upload.prototype.DEFAULT_OPTS = {
     pick: {
@@ -47,7 +52,7 @@ Upload.prototype.DEFAULT_OPTS = {
 Upload.prototype.onStore = function (err, inkBlob) {
     if (err) {
         throw 'There was an error storing the file.';
-        console.log(err);//DEBUG (joao)
+        console.log('ERROR!', err);//DEBUG (joao)
         return;
     }
     
@@ -62,7 +67,7 @@ Upload.prototype.onStore = function (err, inkBlob) {
         });
     }, this);
     
-    view.write(contentToWrite);//TODO (joao) Stream content out
+    this.push(contentToWrite);
 };
 
 Upload.API_KEY = 'AtvGm2B6RR9mDKb8bImIHz';
@@ -76,11 +81,11 @@ Upload.prototype.pickAndStore = function(callback) {
     
     callback = callback || this.onStore;
     var successFn = function(inkBlob) {
-        callback(undefined, inkBlob);
-    };
+        callback.call(this, undefined, inkBlob);
+    }.bind(this);
     var errorFn = function(error) {
-        callback(error);
-    };
+        callback.call(this, error);
+    }.bind(this);
     _picker.pickAndStore(this.opts.pick, this.opts.store, successFn, errorFn);
 };
 
