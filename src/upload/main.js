@@ -21,8 +21,8 @@ var Upload = function(key, opts, doc) {
     
     Util.loadScript(src, function(err) {
         if (err) {
+            _picker = false;
             throw 'There was an error loading ' + src;
-            return;
         }
         
         _picker = filepicker;
@@ -53,8 +53,8 @@ Upload.prototype.DEFAULT_OPTS = {
 
 Upload.prototype.onStore = function (err, inkBlob) {
     if (err) {
-        throw 'There was an error storing the file.';
         console.log('ERROR!', err);//DEBUG (joao)
+        throw 'There was an error storing the file.';
         return;
     }
     
@@ -78,8 +78,16 @@ Upload.API_KEY = 'AtvGm2B6RR9mDKb8bImIHz';
 Upload.CACHE_URL = 'http://dazfoe7f6de09.cloudfront.net/';
 
 Upload.prototype.pickAndStore = function(callback) {
-    if (!_picker) {
-        throw 'The FilePicker script hasn\'t loaded correctly.';
+    if (_picker === false) {
+        throw 'The FilePicker script failed to load correctly.';
+    }
+    
+    if (_picker === null) {
+    //Hasn't loaded yet
+        //TODO (joao) Test this
+        setTimeout(function() {
+            this.pickAndStore(callback);
+        }.bind(this), 150);
         return;
     }
     

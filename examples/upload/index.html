@@ -60,6 +60,18 @@
             });
 
             var collection = window.collection =  new Collection(opts);
+            collection._writableState.onwrite = function(err) {
+                if (err === 'FORBIDDEN') {
+                    if (Auth.getToken()) {
+                        throw 'User is not permitted to write content to this collection';
+                    }
+                    //User needs to authenticate
+                    //TODO (joao) authenticate user
+                    
+                    
+                    //TODO (joao) retry the upload?
+                }
+            }
             
             collection.pipe(listView);
             
