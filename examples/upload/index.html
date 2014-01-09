@@ -16,7 +16,9 @@
                 <textarea name="body"></textarea>
             </p>
             <p>or Tweet ID: <input name="tweet-id" type="text" /></p>
-            <p>Token: <input type="text" name="lftoken" value="eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJkb21haW4iOiAibGFicy10NDAyLmZ5cmUuY28iLCAiZXhwaXJlcyI6IDEzODcxMzMzMzAuNjY2NDU1LCAidXNlcl9pZCI6ICJwZXRzXzEifQ.Jd-6HCrguDBriBiu-QOCqNLZb34SGt6nEOuHhuyE8fQ" /></p>
+            <p>Token:
+                <input type="text" name="lftoken" value="eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJkb21haW4iOiAibGl2ZWZ5cmUuY29tIiwgImV4cGlyZXMiOiAxMzkxOTA1MjEyLjgyMDM4NiwgInVzZXJfaWQiOiAiX3VwMTc3MDQxMSJ9.U5TTVwVqH-_1aHdkWjI6JGTmt1A3IT0Q5pMIveV0U_s" />
+            </p>
             <input type="submit" />
         </form>
         <div id="listView"></div>
@@ -38,12 +40,18 @@
             'streamhub-sdk/upload/main',
             'streamhub-sdk/auth'
         ],function (ListView, Collection, Content, ContentViewFactory, Util, Upload, Auth) {
-            var opts = {
+            /* var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
                 "articleId": "xbox-0",
                 "environment": "t402.livefyre.com"
-            };
+            }; */
+            var opts = {/* TESTING OPTS */
+                    "network": "livefyre.com",
+                    "siteId": "290596",
+                    "articleId": "177",
+                    "environment": "qa-ext.livefyre.com"
+                };
             
             var listView = window.view = new ListView({
                 initial: 3,
@@ -53,13 +61,17 @@
 
             var collection = window.collection =  new Collection(opts);
             
+            collection.pipe(listView);
+            
             var archive = window.archive = collection.createArchive();
             
             archive.pipe(listView.more);
             
             var upload = window.upload = new Upload();
             
-            upload.pipe(view);
+            Auth.setToken($('#write-form').serializeArray()[2].value);
+            
+            upload.pipe(collection);
             
             var $writeForm = $('#write-form');
             $writeForm.submit(function (e) {
@@ -78,12 +90,12 @@
                 if (lftoken) {
                     Auth.setToken(lftoken);
                 }
-                if ( ! Auth.getToken() || ! contentToWrite) {
+                /* if ( ! Auth.getToken() || ! contentToWrite) {
                     alert("Cant write. Not enough info");
                     return;
-                }
+                } */
                 //collection.write(contentToWrite);
-                listView.write(contentToWrite);
+                //listView.write(contentToWrite);
             });
             
         });

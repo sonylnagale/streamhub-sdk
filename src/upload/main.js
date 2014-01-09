@@ -34,6 +34,8 @@ inherits.parasitically(Upload, Readable);
 
 Upload.prototype._read = function() {};
 
+Upload.prototype.NAME = 'StreamhubUpload';
+
 Upload.prototype.DEFAULT_OPTS = {
     pick: {
         'container': 'modal',
@@ -63,7 +65,9 @@ Upload.prototype.onStore = function (err, inkBlob) {
     inkBlob && inkBlob.forEach(function (blob) {
         contentToWrite.attachments.push({
             type: 'photo',
-            url: blob.url
+            url: blob.url,
+            link: blob.url,
+            provider_name: this.NAME
         });
     }, this);
     
