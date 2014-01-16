@@ -10,7 +10,7 @@
     <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 </head>
     <body>
-        <button onclick="upload.pickAndStore()" name="myName">Upload</button>
+        <button id="upload">Fancy Upload</button>
         <form id="write-form">
             <p>Content body:
                 <textarea name="body"></textarea>
@@ -37,9 +37,9 @@
             'streamhub-sdk/content',
             'streamhub-sdk/content/content-view-factory',
             'streamhub-sdk/util',
-            'streamhub-sdk/upload/main',
-            'streamhub-sdk/auth'
-        ],function (ListView, Collection, Content, ContentViewFactory, Util, Upload, Auth) {
+            'streamhub-sdk/auth',
+            'streamhub-sdk/upload/button'
+        ],function (ListView, Collection, Content, ContentViewFactory, Util, Auth, Button) {
             /* var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
@@ -79,11 +79,7 @@
             
             archive.pipe(listView.more);
             
-            var upload = window.upload = new Upload();
-            
             Auth.setToken($('#write-form').serializeArray()[2].value);
-            
-            upload.pipe(collection);
             
             var $writeForm = $('#write-form');
             $writeForm.submit(function (e) {
@@ -108,6 +104,10 @@
                 } */
                 //collection.write(contentToWrite);
                 //listView.write(contentToWrite);
+            });
+            
+            var button = window.button = new Button(null, collection, {
+                el: document.getElementById("upload")
             });
             
         });

@@ -63,10 +63,11 @@ Upload.prototype.onStore = function (err, inkBlob) {
         body: ''
     });
     inkBlob && inkBlob.forEach(function (blob) {
+        var url = Upload.CACHE_URL + blob.key;
         contentToWrite.attachments.push({
             type: 'photo',
-            url: blob.url,
-            link: blob.url,
+            url: url,
+            link: url,
             provider_name: this.NAME
         });
     }, this);
@@ -85,6 +86,7 @@ Upload.prototype.pickAndStore = function(callback) {
     if (_picker === null) {
     //Hasn't loaded yet
         //TODO (joao) Test this
+        debugger
         setTimeout(function() {
             this.pickAndStore(callback);
         }.bind(this), 150);
