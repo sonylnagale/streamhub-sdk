@@ -14,7 +14,6 @@ var UploadCommand = function(fn, collection) {
     upload.pipe(collection);
     
     function cmd() {
-//        debugger
         upload.pickAndStore(callback);
     };
     
@@ -24,8 +23,6 @@ var UploadCommand = function(fn, collection) {
     };
 };
 inherits(UploadCommand, AuthRequiredCommand);
-
-//UploadCommand.prototype.canExecute = function() { return true; };//DEBUG (joao)
 
 UploadCommand.prototype.onDone = function (err, data) {
     //Abstract

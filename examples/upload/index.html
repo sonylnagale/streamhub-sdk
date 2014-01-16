@@ -60,7 +60,9 @@
             });
 
             var collection = window.collection =  new Collection(opts);
+            var onwriteFn = collection._writableState.onwrite;
             collection._writableState.onwrite = function(err) {
+                onwriteFn(err);
                 if (err === 'FORBIDDEN') {
                     if (Auth.getToken()) {
                         throw 'User is not permitted to write content to this collection';
@@ -102,7 +104,7 @@
                     alert("Cant write. Not enough info");
                     return;
                 } */
-                //collection.write(contentToWrite);
+                collection.write(contentToWrite);
                 //listView.write(contentToWrite);
             });
             
