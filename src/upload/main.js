@@ -7,6 +7,10 @@ var View = require('streamhub-sdk/view');
 
 'use strict';
 
+/**
+ * The reference to window.filepicker is stored here once loaded.
+ * @private
+ */
 var _picker = null;
 
 /**
@@ -23,9 +27,10 @@ var _picker = null;
  * @extends {View}
  */
 var Upload = function(opts, doc) {
-    opts = opts || this.DEFAULT_OPTS;
+    opts = opts || Upload.DEFAULT_OPTS;
     View.call(this, opts);
     Readable.call(this, opts);
+
     if (opts.api) {
         this._apiKey = opts.api.key;
         this._cacheUrl = opts.api.cache;
@@ -39,15 +44,18 @@ var Upload = function(opts, doc) {
         return this;
     }
     
-    Util.loadScript(src, function(err) {
-        if (err) {
+    $.getScript(src, scriptLoadCallback);
+    
+    var self = this;
+    function scriptLoadCallback(script, status, data) {
+        if (status !== 'success') {
             _picker = false;
             throw 'There was an error loading ' + src;
         }
-        
+
         _picker = filepicker;
-        _picker.setKey(this._apiKey);
-    }.bind(this), doc);
+        _picker.setKey(self._apiKey);
+    }
 };
 inherits(Upload, View);
 inherits.parasitically(Upload, Readable);
@@ -83,7 +91,7 @@ Upload.prototype._cacheUrl = 'http://dazfoe7f6de09.cloudfront.net/';
  * The default options for using FilePicker and pickAndStore
  * @type {!Object}
  */
-Upload.prototype.DEFAULT_OPTS = {
+Upload.DEFAULT_OPTS = {
     pick: {
         'container': 'modal',
         'maxSize': 4*1024*1024, // allows files < 4MB

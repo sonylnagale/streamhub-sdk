@@ -30,12 +30,12 @@ var UploadCommand = function(fn, collection, opts) {
             return;
         }
         self.upload.pickAndStore(callback);
-    };
+    }
     
     function callback(err, data) {
         self.upload.onStore(err, data);
         self.onDone(err, data);
-    };
+    }
 };
 inherits(UploadCommand, AuthRequiredCommand);
 
