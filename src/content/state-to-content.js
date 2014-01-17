@@ -142,6 +142,32 @@ inherits) {
         return [content];
     };
 
+    /**
+     * Convert a response from the Stream service into Content models
+     * @private
+     * @param streamData {object} A response from the Stream service
+     * @return {Content[]} An Array of Content models
+     */
+    StateToContent.prototype.streamDataTransform = function (streamData) {
+        var states = streamData.states,
+            state,
+            contents = [];
+
+        this.on('data', function (content) {
+            contents.push(content);
+        });
+
+        for (var contentId in states) {
+            // Filter out non-content states for now (opines, etc)
+            if ( ! states.hasOwnProperty(contentId)) {
+                continue;
+            }
+            state = states[contentId];
+            this.write(state);
+        }
+
+        return contents;
+    };
 
     StateToContent._addChildren = function (content, children) {
         var child;
@@ -282,8 +308,8 @@ inherits) {
         'SHARE',
         'OEMBED'
     ];
-    
-    
+
+
     StateToContent.Storage = Storage;
     return StateToContent;
 });

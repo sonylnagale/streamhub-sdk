@@ -33,7 +33,9 @@ StateToContent, debug) {
         this._collection = opts.collection;
         this._streamClient = opts.streamClient || new StreamClient();
         this._request = null;
-        this._replies = opts.replies || false;
+        this._stateToContent = opts.stateToContent || new StateToContent({
+            replies: opts.replies || false
+        });
         Readable.call(this, opts);
     };
 
@@ -95,7 +97,8 @@ StateToContent, debug) {
                 log('long poll timeout, requesting again on next tick');
                 return pollAgain();
             }
-            var contents = self._contentsFromStreamData(data);
+            // Hmm
+            var contents = self._stateToContent.streamDataTransform(data);
             // Update _latestEvent so we only get new data
             self._latestEvent = data.maxEventId;
 
@@ -135,34 +138,6 @@ StateToContent, debug) {
 
 
     /**
-     * Convert a response from the Stream service into Content models
-     * @private
-     * @param streamData {object} A response from the Stream service
-     * @return {Content[]} An Array of Content models
-     */
-    CollectionUpdater.prototype._contentsFromStreamData = function (streamData) {
-        var stateToContent = this._createStateToContent(streamData),
-            states = streamData.states,
-            state,
-            contents = [];
-
-        stateToContent.on('data', function (content) {
-            contents.push(content);
-        });
-
-        for (var contentId in states) {
-            if ( ! states.hasOwnProperty(contentId)) {
-                continue;
-            }
-            state = states[contentId];
-            stateToContent.write(state);
-        }
-
-        return contents;
-    };
-
-
-    /**
      * Get an Object that can be passed to LivefyreStreamClient to get new
      * data
      * @private
@@ -175,16 +150,6 @@ StateToContent, debug) {
             environment: this._collection.environment,
             commentId: this._latestEvent
         };
-    };
-
-    /**
-     * Create a StateToContent Transform that will have states written in,
-     * and should read out Content instances
-     */
-    CollectionUpdater.prototype._createStateToContent = function (opts) {
-        opts = opts || {};
-        opts.replies = this._replies;
-        return new StateToContent(opts);
     };
 
     return CollectionUpdater;
