@@ -48,7 +48,6 @@ function(LivefyreHttpClient, inherits) {
         }
 
         if (opts.media) {
-            //postData.media = JSON.stringify(opts.media);//Broken?
             postData.attachments = JSON.stringify(opts.media);
         }
 

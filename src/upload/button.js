@@ -1,4 +1,4 @@
-var Button = require('livefyre-bootstrap/button');
+var Button = require('streamhub-sdk/views/button');
 var Command = require('streamhub-sdk/command');
 var inherits = require('inherits');
 var UploadCommand = require('streamhub-sdk/upload/command');
