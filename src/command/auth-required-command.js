@@ -9,19 +9,26 @@ var log = require('streamhub-sdk/debug')
 /**
  * @param [fn] {function} Option function to replace the default function.
  * @param [opts] {Object}
- * @param [opts.allowAuth] {boolean} Default is true. Specify false to disable
- *      the command and prevent authentication prompts.
+ * @param [opts.authCmd] {Command} Command called authenticate a user who hasn't
+ *      already authenticated.
+ * @param [opts.disable] {boolean} Set to disable this command on construction.
  * @constructor
  * @extends {Command}
  */
 var AuthRequiredCommand = function (fn, opts) {
     opts = opts || {};
-    this._allowAuth = opts.allowAuth !== false;
     Command.call(this, fn);
     
-    if (!this._allowAuth) {
+    if (opts.authCmd) {
+        this.setAuthCommand(opts.authCmd);
+    }
+    
+    if (opts.disable) {
         this.disable();
     };
+    
+    //Emit potential canExecute change whenever token is set
+    Auth.on('token', this._emitChange);
 };
 inherits(AuthRequiredCommand, Command);
 
@@ -30,37 +37,103 @@ inherits(AuthRequiredCommand, Command);
  * @override
  */
 AuthRequiredCommand.prototype.execute = function () {
-    if (Auth.getToken()) {
-        return this.canExecute() && Command.prototype.execute.apply(this, arguments);
+    if (this.canExecute()) {
+        if (!Auth.getToken()) {
+            this._authenticate(authRequiredCallback);
+        } else {
+            authRequiredCallback.apply(this, arguments);
+        }
     }
     
-    this._allowAuth && this._authenticate();
+    /**
+     * This callback executes this command, wrapped so that it can be passed
+     * to an authenticating command to be called after authentication.
+     */
+    function authRequiredCallback() {
+        Auth.getToken() && Command.prototype.execute.apply(this, arguments);
+    }
 };
 
 /**
- * @type {!boolean}
- * @private
- */
-AuthRequiredCommand.prototype._allowAuth = true;
-
-/**
- * Check whether auth-authentication is allowed.
+ * Check whether the Command can be executed.
+ * 
+ * return | _canExecute | Auth.getToken() | _authCmd.canExecute()
+ * -------|-------------|-----------------|---------------------
+ *  false |    false    |                 |
+ *  true  |    true     |     truthy      |
+ *  false |    true     |     falsey      |     false
+ *  true  |    true     |     falsey      |     true
+ * -------------------------------------------------------------
  * @returns {!boolean}
  */
-AuthRequiredCommand.prototype.allowAuth = function () {
-    return this._allowAuth;
+AuthRequiredCommand.prototype.canExecute = function () {
+    if (!this._canExecute) {
+        return false;
+    }
+    
+    if (Auth.getToken()) {
+        return true;
+    }
+    
+    return this._authCmd.canExecute();
 };
 
 /**
+ * Command used to initiate an authentication view or process.
+ * Default is a disabled skeleton command.
+ * @type {!Command}
+ */
+AuthRequiredCommand.prototype._authCmd = (function () {
+    var cmd = new Command();
+    cmd.disable();
+    return cmd;
+})();
+
+/**
+ * Replaces the current authentication command with the new command.
+ * @param cmd {!Command}
+ */
+AuthRequiredCommand.prototype.setAuthCommand = function (cmd) {
+    this._authCmd.removeListener('change:canExecute', this._emitChange);
+    this._authCmd = cmd;
+    this._authCmd.on('change:canExecute', this._handleCanExecuteChange);
+};
+
+/**
+ * This is the listener placed on this._authCmd for 'change:canExecute' and Auth
+ * for 'token' to emit the possibility of a changed to canExecute for this command.
  * @protected
  */
-AuthRequiredCommand.prototype._authenticate = function () {
-    if (!this.allowAuth_) {
-        log('Attempt to _authenticate() thwarted by !allowAuth_', this);
+AuthRequiredCommand.prototype._emitChange = (function () {
+    var self = this;
+    return function (v) {
+        self.emit('change:canExecute', self.canExecute());
+    };
+})();
+
+/**
+ * Checks if this._authCmd can be executed, then executes it.
+ * @param [callback] {function}
+ * @protected
+ */
+AuthRequiredCommand.prototype._authenticate = function (callback) {
+    if (!this._authCmd.canExecute()) {
+        log('Attempt to _authenticate() thwarted by !_authCmd.canExecute()', this);
         return;
     }
     
-    //Sorta abstracty stub
+    this._authCmd.execute.apply(this._authCmd, arguments);
+};
+
+/**
+ * Prepares this command for trash collection.
+ */
+AuthRequiredCommand.prototype.destroy = function () {
+    Auth.off('token', this._emitChange);
+    this._authCmd.off('change:canExecute', this._emitChange);
+    this._authCmd = null;
+    this._execute = null;//Command
+    this._listeners = null;//EventEmitter
 };
 
 module.exports = AuthRequiredCommand;

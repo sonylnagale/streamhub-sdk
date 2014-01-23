@@ -32,7 +32,6 @@ Button.prototype.disabledClass = 'disabled';
  * @protected
  */
 Button.prototype._execute = function _execute() {
-    // TODO: Don't execute if not enabled
     this._command.execute();
 };
 

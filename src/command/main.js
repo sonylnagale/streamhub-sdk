@@ -19,7 +19,7 @@ inherits(Command, EventEmitter);
  * Execute the Command
  */
 Command.prototype.execute = function () {
-    this._execute();
+    this.canExecute() && this._execute.apply(this, arguments);
 };
 
 /**
@@ -39,7 +39,7 @@ Command.prototype.disable = function () {
 /**
  * Change whether the Command can be executed
  * @private
- * @param canExecute {boolean}
+ * @param canExecute {!boolean}
  */
 Command.prototype._changeCanExecute = function (canExecute) {
     this._canExecute = canExecute;
@@ -48,7 +48,7 @@ Command.prototype._changeCanExecute = function (canExecute) {
 
 /**
  * Check whether the Command can be executed
- * @returns {boolean}
+ * @returns {!boolean}
  */
 Command.prototype.canExecute = function () {
     return this._canExecute;

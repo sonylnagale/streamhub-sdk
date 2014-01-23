@@ -113,12 +113,12 @@ Upload.DEFAULT_OPTS = {
  */
 Upload.prototype.onStore = function (err, inkBlob) {
     if (err) {
-        console.log('ERROR!', err);//DEBUG (joao)
-        throw 'There was an error storing the file.';
+        if (err.code !== 101) {//101 when dialog closed using x-box.
+            throw 'There was an error storing the file.';
+        }
         return;
     }
     
-    console.log('Success!');//DEBUG (joao)
     var contentToWrite = new Content({
         body: ''
     });
