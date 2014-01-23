@@ -61,8 +61,8 @@ AuthRequiredCommand.prototype.execute = function () {
  * -------|-------------|-----------------|---------------------
  *  false |    false    |                 |
  *  true  |    true     |     truthy      |
- *  false |    true     |     falsey      |     false
- *  true  |    true     |     falsey      |     true
+ *  false |    true     |     falsy      |     false
+ *  true  |    true     |     falsy      |     true
  * -------------------------------------------------------------
  * @returns {!boolean}
  */
