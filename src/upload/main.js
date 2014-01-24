@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var inherits = require('inherits');
 var Content = require('streamhub-sdk/content');
+var ModalView = require('streamhub-sdk/modal');
 var Readable = require('stream/readable');
 var Util = require('streamhub-sdk/util');
 var View = require('streamhub-sdk/view');
@@ -40,6 +41,11 @@ var Upload = function(opts, doc) {
     
     var src = this.opts.src;
     
+    this.render();
+    this._modal = new ModalView({
+        modalSubView: this
+    });
+    
     if (_picker) {
         return this;
     }
@@ -72,6 +78,55 @@ Upload.prototype._read = function() {};
  * @type {!string}
  */
 Upload.prototype.name = 'StreamhubUpload';
+
+/**
+ * Class to be added to the view's element.
+ * @type {!string}
+ */
+Upload.prototype.class = ' upload';
+
+/**
+ * The default element tag.
+ * @override
+ * @type {!string}
+ */
+Upload.prototype.elTag = 'iframe';
+
+/**
+ * Template for el
+ * @override
+ * @param [context] {Object}
+ */
+Upload.prototype.template = function (context) {
+    return ['<iframe id="',
+            context.container,
+            '" style="width:560px;height:432px;"',
+            '></iframe>'].join('');
+};
+
+/**
+ * Get contextual data for a template.
+ * @override
+ * @returns {!Object}
+ */
+Upload.prototype.getTemplateContext = function () {
+    return {
+        container: this.opts.pick.container
+    };
+};
+
+/**
+ * If a template is set, render it in this.el
+ * Subclasses will want to setElement on child views after rendering,
+ *     then call .render() on those sub-elements
+ */
+Upload.prototype.render = function () {
+    var context;
+    if (typeof this.template === 'function') {
+        context = this.getTemplateContext();
+        this.$el.html(this.template(context));
+    }
+};
 
 /**
  * Key for FilePicker API.
@@ -156,11 +211,16 @@ Upload.prototype.pickAndStore = function(callback) {
     
     callback = callback || this.onStore;
     var successFn = function(inkBlob) {
+        //BUG (joao) Can't scroll page after posting pic.
+        this._modal.hide();
         callback.call(this, undefined, inkBlob);
     }.bind(this);
     var errorFn = function(error) {
+        this._modal.hide();
         callback.call(this, error);
     }.bind(this);
+    
+    this._modal.show();
     _picker.pickAndStore(this.opts.pick, this.opts.store, successFn, errorFn);
 };
 
