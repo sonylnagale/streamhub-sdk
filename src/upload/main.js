@@ -93,7 +93,7 @@ Upload.prototype._cacheUrl = 'http://dazfoe7f6de09.cloudfront.net/';
  */
 Upload.DEFAULT_OPTS = {
     pick: {
-        'container': 'modal',
+        'container': 'picker',
         'maxSize': 4*1024*1024, // allows files < 4MB
         'mimetypes': ['image/*'],
         'multiple': true,
