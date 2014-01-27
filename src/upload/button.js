@@ -1,3 +1,4 @@
+//var $ = require('streamhub-sdk/jquery');
 var Button = require('streamhub-sdk/views/button');
 var Command = require('streamhub-sdk/command');
 var inherits = require('inherits');
@@ -35,5 +36,49 @@ inherits(UploadButton, Button);
  * @type {string}
  */
 UploadButton.prototype.elClass += ' lf-upload-btn';
+
+/**
+ * The default element tag.
+ * @override
+ * @type {!string}
+ */
+UploadButton.prototype.elTag = 'button';
+
+/**
+ * Template for el
+ * @override
+ * @param [context] {Object}
+ */
+UploadButton.prototype.template = function (context) {
+    return ['<button class="lf-btn lf-upload-btn">',
+            'Post Your Photo ',
+            '<i class="fycon-composer-photo"></i>',
+            '</button>'].join('');
+};
+
+/**
+ * Get contextual data for a template.
+ * @override
+ * @returns {!Object}
+ */
+UploadButton.prototype.getTemplateContext = function () {
+    return this;
+};
+
+/**
+ * If a template is set, render it in this.el
+ * Subclasses will want to setElement on child views after rendering,
+ *     then call .render() on those sub-elements
+ * @param [parent] {Element} Parent container to render into.
+ */
+UploadButton.prototype.render = function (parent) {
+    var context;
+    if (typeof this.template === 'function') {
+        context = this.getTemplateContext();
+        this.$el.html(this.template(context));
+    }
+    
+    parent && $(parent).append(this.el);
+};
 
 module.exports = UploadButton;
