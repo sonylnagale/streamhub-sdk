@@ -199,6 +199,7 @@ function($, jasmineJquery, Content, TiledAttachmentListView) {
                 tiledAttachmentListView.setElement($('<div></div>'));
                 tiledAttachmentListView.render();
                 oembedAttachment.type = 'photo';
+                debugger;
                 for (var i=0; i < 3; i++) {
                     tiledAttachmentListView.add(oembedAttachment);
                 }

@@ -32,12 +32,12 @@
             'tests/mocks/mock-attachments-stream'
         ], function (Hub, ListView, MockAttachmentsStream) {
             
-            var feed = window.view = new ListView({
-                el: document.getElementById("feed"),
-                modal: false
-            });
+            //var feed = window.view = new ListView({
+            //    el: document.getElementById("feed"),
+            //    modal: false
+            //});
 
-            (new MockAttachmentsStream()).pipe(feed);
+            //(new MockAttachmentsStream()).pipe(feed);
 
             var feed1 = window.view = new ListView({
                 el: document.getElementById("feed1")

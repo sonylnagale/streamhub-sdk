@@ -34,6 +34,17 @@ function($, View, OembedView, AttachmentListTemplate, inherits) {
     AttachmentListView.prototype.contentAttachmentSelector = '.content-attachment';
     AttachmentListView.prototype.listLengthAttribute = 'data-hub-list-length';
 
+    AttachmentListView.prototype.events = View.prototype.events.extended({
+        'focusContent.hub': function (e, context) {
+            if (e.target === this.el) {
+                return;
+            }
+            e.stopPropagation();
+            context.content = this.content;
+            this.$el.trigger('focusContent.hub', context);
+        }
+    });
+
     /**
      * Set the element for the view to render in.
      * You will probably want to call .render() after this, but not always.

@@ -31,6 +31,12 @@ function($, View, OembedPhotoTemplate, OembedVideoTemplate, OembedLinkTemplate, 
     };
     inherits(OembedView, View);
 
+    OembedView.prototype.events = {
+        'click': function (e) {
+            $(e.target).trigger('focusContent.hub', { attachmentToFocus: this.oembed });
+        }
+    };
+
     /**
      * A mapping of oembed type to its mustache template for rendering 
      * @readonly

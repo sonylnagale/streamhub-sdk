@@ -75,13 +75,14 @@ function ($, View, AttachmentListView, OembedView, TiledAttachmentListTemplate, 
         var self = this;
         var oembedView = AttachmentListView.prototype.add.call(this, oembed);
 
-        oembedView.$el.on('click', function(e) {
-            /**
-             * Focus content
-             * @event TiledAttachmentListView#focusContent.hub
-             */
-            $(e.target).trigger('focusContent.hub', { content: self.content, attachmentToFocus: oembedView.oembed });
-        });
+        //oembedView.$el.on('click', function(e) {
+        //        debugger;
+        //    /**
+        //     * Focus content
+        //     * @event TiledAttachmentListView#focusContent.hub
+        //     */
+        //    $(e.target).trigger('focusContent.hub', { content: self.content, attachmentToFocus: oembedView.oembed });
+        //});
 
         this.retile();
         return this;

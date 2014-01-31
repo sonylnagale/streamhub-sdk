@@ -34,12 +34,14 @@ define([
 
         if (this.content) {
             this.content.on("reply", function(content) {
+                if (this.content.attachments.length) debugger;
                 this.render();
             }.bind(this));
             this.content.on("change:visibility", function(newVis, oldVis) {
                 this._handleVisibilityChange(newVis, oldVis);
             }.bind(this));
             this.content.on("change", function() {
+                if (this.content.attachments.length) debugger;
                 this.render();
             }.bind(this));
         }
@@ -157,6 +159,7 @@ define([
 
         if (this.attachmentsView) {
             this.attachmentsView.setElement(this.$el.find(this.attachmentsElSelector)[0]);
+            this.attachmentsView.setContent(this.content);
             this.attachmentsView.render();
         }
 
