@@ -14,6 +14,7 @@
     "requirejs-hogan-plugin": "git://github.com/millermedeiros/requirejs-hogan-plugin.git#~0.2.1",
     "requirejs-plugins": "~1.0.2",
     "livefyre-bootstrap": "git://github.com/Livefyre/livefyre-bootstrap.git",
+    "streamhub-editor":"git://github.com/markdoten/streamhub-editor.git#c644923dd369289bda57918f0628aff9ec795784",
     "stream": "git://github.com/Livefyre/stream.git#~0.1",
     "event-emitter": "git://github.com/Livefyre/event-emitter.git",
     "inherits": "git://github.com/Livefyre/inherits.git",

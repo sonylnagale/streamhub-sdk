@@ -38,7 +38,7 @@ Command.prototype.disable = function () {
 
 /**
  * Change whether the Command can be executed
- * @private
+ * @protected
  * @param canExecute {!boolean}
  */
 Command.prototype._changeCanExecute = function (canExecute) {

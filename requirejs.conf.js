@@ -18,6 +18,9 @@ require.config({
     name: "livefyre-bootstrap",
     location: "lib/livefyre-bootstrap/src"
   },{
+    name: "streamhub-editor",
+    location: "lib/streamhub-editor/src/javascript"
+  },{
     name: "streamhub-sdk",
     location: "src"
   },{
@@ -32,6 +35,12 @@ require.config({
   },{
     name: "streamhub-sdk/content",
     location: "src/content"
+  },{
+    name: "streamhub-sdk/edit",
+    location: "src/edit"
+  },{
+    name: "streamhub-sdk/input",
+    location: "src/input"
   },{
     name: "streamhub-sdk/modal",
     location: "src/modal"

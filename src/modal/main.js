@@ -123,10 +123,10 @@ define([
         var self = this;
 
         this.$el.addClass(this.elClass);
-
+//TODO (joao) Store current body.overflow setting. Use it for on'hideModal.hub'
         this.$el.on('hideModal.hub', function (e) {
             self.hide();
-            $('body').css('overflow', 'auto');
+            $('body').css('overflow', 'auto');//TODO (joao) Is there a reason this isn't inside hide()?
         });
 
         this.$el.on('click', this.closeButtonSelector, function (e) {

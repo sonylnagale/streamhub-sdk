@@ -1,68 +1,60 @@
 //var $ = require('streamhub-sdk/jquery');
+var inherits = require('inherits');
 var Button = require('streamhub-sdk/views/button');
 var Command = require('streamhub-sdk/command');
-var inherits = require('inherits');
+var Edit = require('streamhub-sdk/edit');
 var ModalInputCommand = require('streamhub-sdk/command/modal-input-command');
-var Upload = require('streamhub-sdk/upload');
 
 'use strict';
 
 /**
- * @param [command] {function||Command} Collection not necessary if this is provided.
+ * @param [command] {function|Command} Collection not necessary if this is provided.
  * @param [collection] {Collection} Must be specified here or as opts.collection.
  * @param [opts] {Object}
  * @param [opts.collection] {Collection} Must be specified here or the collection parameter.
- * @param [opts.upload] {Upload} Upload instance to use in place a of default constructed Upload.
- * @param [opts.uploadOpts] {Object} Opts to pass to the default Upload on construction.
+ * @param [opts.edit] {Edit} Edit to use instead of the default Edit.
  * @constructor
  * @extends {Button}
  */
-var UploadButton = function(command, collection, opts) {
+var EditButton = function(command, collection, opts) {
     opts = opts || {};
     collection = opts.collection = collection || opts.collection;
     if (!collection && !command) {
     //A collection must be specified unless the user specifies their own command
-        throw 'Attempting to create an UploadButton without specifying a collection or a command.';
+        throw 'Attempting to create an EditButton without specifying a collection or a command.';
     }
     
-    var upload = opts.upload || new Upload(opts.uploadOpts);
+    var edit = opts.edit || new Edit({collection: collection});
     if (typeof(command) === 'function') {
     //Pass a function to the default command
-        command = new ModalInputCommand(command, upload, opts);//(command, edit, opts);
+        command = new ModalInputCommand(command, edit, opts);
     }
-    command = command || new ModalInputCommand(undefined, upload, opts);
-    command.callback = function (err, data) {
-        data && data.forEach(function (content) {
-            collection.write(content);
-        });
-    }
-    
+    command = command || new ModalInputCommand(undefined, edit, opts);
     Button.call(this, command, opts);
 };
-inherits(UploadButton, Button);
+inherits(EditButton, Button);
 
 /**
  * @override
  * @type {string}
  */
-UploadButton.prototype.elClass += ' lf-upload-btn';
+EditButton.prototype.elClass += ' lf-edit-btn';
 
 /**
  * The default element tag.
  * @override
  * @type {!string}
  */
-UploadButton.prototype.elTag = 'button';
+EditButton.prototype.elTag = 'button';
 
 /**
  * Template for el
  * @override
  * @param [context] {Object}
  */
-UploadButton.prototype.template = function (context) {
-    return ['<button class="lf-btn lf-upload-btn">',
-            'Post Your Photo ',
-            '<i class="fycon-composer-photo"></i>',
+EditButton.prototype.template = function (context) {
+    return ['<button class="lf-btn lf-edit-btn">',
+            'Post Your Comment ',
             '</button>'].join('');
 };
 
@@ -71,7 +63,7 @@ UploadButton.prototype.template = function (context) {
  * @override
  * @returns {!Object}
  */
-UploadButton.prototype.getTemplateContext = function () {
+EditButton.prototype.getTemplateContext = function () {
     return this;
 };
 
@@ -81,7 +73,7 @@ UploadButton.prototype.getTemplateContext = function () {
  *     then call .render() on those sub-elements
  * @param [parent] {Element} Parent container to render into.
  */
-UploadButton.prototype.render = function (parent) {
+EditButton.prototype.render = function (parent) {
     var context;
     if (typeof this.template === 'function') {
         context = this.getTemplateContext();
@@ -91,4 +83,4 @@ UploadButton.prototype.render = function (parent) {
     parent && $(parent).append(this.el);
 };
 
-module.exports = UploadButton;
+module.exports = EditButton;

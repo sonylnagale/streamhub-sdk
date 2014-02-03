@@ -70,7 +70,8 @@
         user-select: none;
     }
     
-    .lf-upload-btn, .lf .lf-btn-info {
+    .lf-upload-btn, .lf-edit-btn, .lf-modal-body .editor-post-btn,
+        .lf .lf-btn-info {
         color: #ffffff;
         background-color: #0f98ec;
         border-color: #0a6aa4;
@@ -86,6 +87,12 @@
         cursor: pointer;
         text-transform: none;
         margin: 0;
+    }
+    
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.428571429;
     }
     
     button {
@@ -114,28 +121,142 @@
         text-align: start;
     }
     
+    textarea {
+        resize: none;/* For Chrome */
+    }
+    
     .lf * {
         box-sizing: border-box;
     }
     
-    .hub-modal-content-view iframe {
+    .lf-modal-content {
         position: relative;
-        margin: 30px auto 0;
+        color: #2f3440;
+        background-color: #ffffff;
+        border: 0;
+        -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        -ms-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        -o-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        border-radius: 6px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        background-clip: padding-box;
+        outline: none;
+        text-align: center;
+        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        -ms-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        -o-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        display: block;
+    }
+    
+    .lf-modal-header {
+        padding: 15px;
+        background-color: #f7f7f5;
+        border-bottom: 1px solid #ececea;
+        min-height: 16.428571429px;
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+    }
+    
+    .lf-modal-body {
+        position: relative;
+        text-align: center;
+        padding: 30px 15px 15px;
+    }
+    
+    .lf-modal-footer {
+        margin-top: 0;
+        padding: 5px 15px 30px;
+        text-align: center;
+        border-top: 0;
+    }
+    
+    .hub-modal-content-view iframe, .hub-modal-content-view article {
+        position: relative;
+        margin: 50px auto 0;
         display: block;
         border: 0;
     }
+    
+    .lf-modal-content {
+    /* !lf-bootstrap */
+        margin: 20px 40px;
+        width: 605px;
+    }
+    
+    .lf-modal-body {
+    /* !lf-bootstrap */
+        margin: 30px;
+        margin-bottom: 15px;
+        border: 1px solid #ececea;
+        text-align: left;
+        padding: 0;
+        border-radius: 3px;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+        -ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+        -o-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    }
+    
+    .lf-modal-body .btn-wrapper {
+    /* !lf-bootstrap */
+        background-color: #f8f8f8;
+        text-align: right;
+        border-top: 1px solid #ececea;
+        padding: 6px;
+        margin-top: 20px;
+    }
+    
+    .lf-modal-body .user-info, .lf-modal-body .editor-container {
+    /* !lf-bootstrap */
+        margin: 20px 30px 0;
+    }
+    
+    .lf-modal-body .editor-container {
+    /* !lf-bootstrap */
+        display: block;
+    }
+    
+    .editor-field {
+    /* !lf-bootstrap */
+        border: 0;
+        width: 100%;
+    }
+    
     </style>
     <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 </head>
     <body class="lf">
+        <div id="comment-editor"></div>
+        <!--article class="lf-modal-content">
+            <header class="lf-modal-header">Post Your Comment</header>
+            <section class="lf-modal-body">
+                <div class="user-info">
+                    <span class="name">Ron Burgandy</span>
+                    <span class="handle">@tomoleary</span>
+                </div>
+                <div class="editor-container">
+                    <textarea class="editor-field">
+Ron Burgandy. Stay classy, San Diego. Hello, Baxter? Baxter, is that you?
+Bark twice if you're in Milwaukee. Is this Wilt Chamberlain?
+                    </textarea>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="lf-btn editor-post-btn">Post Comment</button>
+                </div>
+            </section>
+            <footer class="lf-modal-footer"></footer>
+        </article-->
+        <br>
         <!--iframe id="picker" style="width:560px;height:432px;"></iframe><br>
         <input type="filepicker" data-fp-container="picker" name="myName"/><br-->
         <button id="top-upload">Post Your Photo <i class="fycon-composer-photo"></i></button><br>
+        <button id="top-comment">Post Your Comment</button><br>
         <form id="write-form">
-            <p>Content body:
-                <textarea name="body"></textarea>
-            </p>
-            <p>or Tweet ID: <input name="tweet-id" type="text" /></p>
             <p>Token:
                 <input type="text" name="lftoken" value="eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJkb21haW4iOiAibGl2ZWZ5cmUuY29tIiwgImV4cGlyZXMiOiAxMzkxOTA1MjEyLjgyMDM4NiwgInVzZXJfaWQiOiAiX3VwMTc3MDQxMSJ9.U5TTVwVqH-_1aHdkWjI6JGTmt1A3IT0Q5pMIveV0U_s" />
             </p>
@@ -159,8 +280,11 @@
             'streamhub-sdk/content/content-view-factory',
             'streamhub-sdk/util',
             'streamhub-sdk/auth',
-            'streamhub-sdk/upload/button'
-        ],function (ListView, Collection, Content, ContentViewFactory, Util, Auth, Button) {
+            'streamhub-sdk/upload',
+            'streamhub-sdk/upload/button',
+            'streamhub-sdk/edit',
+            'streamhub-sdk/edit/button'
+        ],function (ListView, Collection, Content, ContentViewFactory, Util, Auth, Upload, UploadButton, CommentView, CommentButton) {
             /* var opts = {
                 "network": "labs-t402.fyre.co",
                 "siteId": "303827",
@@ -202,42 +326,44 @@
             
             archive.pipe(listView.more);
             
-            Auth.setToken($('#write-form').serializeArray()[2].value);
+            Auth.setToken($('#write-form').serializeArray()[0].value);
             
             var $writeForm = $('#write-form');
             $writeForm.submit(function (e) {
                 e.preventDefault();
 
                 var formArray = $writeForm.serializeArray(),
-                    body = formArray[0].value,
-                    tweetId = formArray[1].value,
-                    lftoken = formArray[2].value,
-                    contentToWrite;
-                if (body) {
-                    contentToWrite = new Content(body);
-                } else if (tweetId) {
-                    contentToWrite = { tweetId: tweetId };
-                }
+                    lftoken = formArray[0].value;
                 if (lftoken) {
                     Auth.setToken(lftoken);
                 }
-                /* if ( ! Auth.getToken() || ! contentToWrite) {
-                    alert("Cant write. Not enough info");
-                    return;
-                } */
-                collection.write(contentToWrite);
-                //listView.write(contentToWrite);
             });
             
-            var topButton = window.topButton = new Button(null, collection, {
+            var editor = window.editor = new CommentView({
+                el: document.getElementById("comment-editor"),
+                collection: listView,
+                emptyText: 'EMPTY'
+            });
+            editor.render();
+            
+            var topButton = window.topUpload = new UploadButton(undefined, collection, {
                 el: document.getElementById("top-upload")
             });
-            
-            var bottomButton = window.bottomButton = new Button(null, collection, {
-                el: document.getElementById("bottom-upload")
-            });
+            /* TODO (joao) Make two UploadButtons work on the same page
+            var secondUploadOpts = Upload.DEFAULT_OPTS;
+            secondUploadOpts.pick.container = 'picker2';
+            var bottomButton = window.bottomButton = new UploadButton(undefined, collection, {
+                el: document.getElementById("bottom-upload"),
+                uploadOpts: secondUploadOpts
+            }); */
             
             //var authDelegate = new fyre.conv.RemoteAuthDelegate();
+            
+            var topComment =  window.topComment = new CommentButton(undefined, collection, {
+                el: document.getElementById("top-comment"),
+                collection: collection,
+                emptyText: 'EMPTY'
+            });
             
         });
         </script>
