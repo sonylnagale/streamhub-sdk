@@ -81,7 +81,7 @@ define([
             this._attach();
         }
 
-        this._modalSubView = modalSubView;
+        this._modalSubView = modalSubView || this._modalSubView;
 
         this.render();
 
@@ -123,10 +123,12 @@ define([
         var self = this;
 
         this.$el.addClass(this.elClass);
-
+      //TODO (joao) Store current body.overflow setting. Use it for on'hideModal.hub'
         this.$el.on('hideModal.hub', function (e) {
             self.hide();
-            $('body').css('overflow', 'auto');
+          //TODO (joao) Is there a reason this isn't inside hide()?
+          //Maybe this separation is needed for stacked modal scenarios?
+            $('body').css('overflow', 'auto');//TODO (joao) Is there a reason this isn't inside hide()?
         });
 
         this.$el.on('click', this.closeButtonSelector, function (e) {
