@@ -14,7 +14,7 @@
     "phantom": "*"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/less/bin/lessc --compress src/css/style.less src/css/style.css",
+    "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/less/bin/lessc -ru --compress src/css/style.less src/css/style.css",
     "start": "./node_modules/http-server/bin/http-server .",
     "build": "./node_modules/requirejs/bin/r.js -o ./tools/build.conf.js && npm run-script build-css",
     "build-css": "mkdir -p dist && cp src/css/style.css dist/streamhub-sdk.min.css",
