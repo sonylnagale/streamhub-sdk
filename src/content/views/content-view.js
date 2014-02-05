@@ -187,7 +187,8 @@ define([
             });
 
             this.addButton(likeButton);
-            this.addButton(replyButton);
+            //TODO(ryanc): Wait until we have replies on SDK
+            //this.addButton(replyButton);
             this.addButton(shareButton);
         } else {
             for (var i=0; i < this._controls['left'].length; i++) {
